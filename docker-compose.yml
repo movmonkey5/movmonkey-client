@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # Development Service
+  dev:
+    container_name: dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+<<<<<<< HEAD
+      - "3000:3000"
+=======
+      - "3001:3000"
+>>>>>>> dev
+
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+    networks:
+      - nextjs-network
+
+networks:
+  nextjs-network:
+    driver: bridge
