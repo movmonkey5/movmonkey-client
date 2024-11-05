@@ -39,7 +39,7 @@ export default function DeliveryDetails({ job }) {
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       <Container>
         <div className="flex flex-wrap items-center justify-between gap-2 lg:gap-10">
-          <div
+          {/* <div
             onClick={() => {
               setView("overview");
             }}
@@ -101,6 +101,71 @@ export default function DeliveryDetails({ job }) {
               }`}
             />
             Videos
+          </div> */}
+          <div className="bg-[#FFF2DE] p-4 border-primary rounded-2xl border ">
+            <InfoIcon
+              className={`size-16 mx-auto mt-1 mb-4 text-secondary`}
+            />
+
+            <button
+              onClick={() => {
+                setView("overview");
+              }}
+              className={cn(
+                "cursor-pointer rounded-full px-8 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
+                {
+                  "bg- border-2 border-secondary bg-secondary text-white":
+                    view === "overview",
+                  "border-2 border-secondary bg-white text-secondary":
+                    view !== "overview",
+                },
+              )}
+            >
+              Information
+            </button>
+          </div>
+
+          <div className="bg-[#FFF2DE] p-4 border-primary rounded-2xl border ">
+            <PhotosIcon
+              className={`size-16 mx-auto mt-1 mb-4 text-secondary`}
+            />
+            <button
+              onClick={() => {
+                setView("photos");
+              }}
+              className={cn(
+                "cursor-pointer rounded-full px-10 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
+                {
+                  "bg- border-2 border-secondary bg-secondary text-white":
+                    view === "photos",
+                  "border-2 border-secondary bg-white text-secondary":
+                    view !== "photos",
+                },
+              )}
+            >
+              Photos
+            </button>
+          </div>
+          <div className="bg-[#FFF2DE] p-4 border-primary rounded-2xl border ">
+            <VideoIcon
+              className={`size-16 mx-auto mt-1 mb-4 text-secondary`}
+            />
+            <button
+              onClick={() => {
+                setView("videos");
+              }}
+              className={cn(
+                "cursor-pointer rounded-full px-10 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
+                {
+                  "bg- border-2 border-secondary bg-secondary text-white":
+                    view === "videos",
+                  "border-2 border-secondary bg-white text-secondary":
+                    view !== "videos",
+                },
+              )}
+            >
+              Videos
+            </button>
           </div>
         </div>
 
