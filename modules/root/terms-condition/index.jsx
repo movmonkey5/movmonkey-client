@@ -5,8 +5,6 @@ export default function TermsConditionPage() {
   return (
     <div >
       {" "}
-
-
       <Container>
         <h2 className="bg-primary text-white rounded-xl px-8 py-8 text-center text-3xl md:text-4xl font-semibold">Customers Terms and Condition</h2>
         <div className="mb-5 flex min-h-16 items-center justify-center bg-lightPrimary px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl mt-8 rounded-xl">

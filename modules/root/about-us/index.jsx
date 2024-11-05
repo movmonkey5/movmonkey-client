@@ -54,7 +54,7 @@ export default function AboutUsPage() {
       <div className="mb-5 flex min-h-16 items-center justify-center bg-[#49b74b28] px-5 pb-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-3xl lg:mt-5 rounded-2xl">
         Our Story
       </div>
-        <div className="border rounded-2xl p-5 text-center">
+        <div className="border rounded-2xl p-5 ">
         <p className="md:text-lg">
           {`Imagine a world where about 65% of removal, delivery, and cleaning companies lost customers because they couldn’t get the cleaning or removal right. That was what MovMonkey's founder, Moses, saw in December 2024. `}
         </p>
@@ -75,10 +75,10 @@ export default function AboutUsPage() {
         Our Mission
       </div>
        <div className="border rounded-2xl ">
-       <p className="md:text-lg text-center px-5 pt-5">
+       <p className="md:text-lg  px-5 pt-5">
           {`MovMonkey’s mission is to match our customers with reliable, top-rated service providers. We are your personal service provider shopper, offering you a variety of quotes from pre-checked service providers. While we have done the heavy lifting, it's still your job to pick the one that fits your needs and wallet. Feeling stuck on choosing the right service provider for your specific needs? Oh, we know the feeling. But guess what? You are not alone.`}
         </p>
-        <p className="my-3 px-5 font-semibold text-center md:text-lg">
+        <p className="my-3 px-5 font-semibold md:text-lg">
           {`The good news is that MovMonkey is on a mission to change the game! Simply choose MovMonkey and enjoy a triple win:`}
         </p>
         <ul className=" pt-5 md:text-lg text-center">
