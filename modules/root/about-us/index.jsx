@@ -10,12 +10,12 @@ import DarkYoutube from "@/components/icon/DarkYoutube";
 
 export default function AboutUsPage() {
   return (
-    <div className="mt-5 lg:mt-20 ">
+    <div className="mt-5 ">
       <Container>
-        <div className="relative rounded bg-primary text-black">
-          <div className="mx-auto space-y-4 px-5 py-5 lg:py-20 2xl:max-w-5xl">
-            <h3 className="text-2xl font-semibold lg:text-3xl">Who We Are</h3>
-            <p className="text-xl md:text-2xl">
+        <div className="relative rounded text-black">
+          <div className="mx-auto mt-4 px-5 pt-5 2xl:max-w-5xl">
+            <h3 className="text-2xl bg-primary font-semibold text-center lg:p-5 md:p-4 p-3.5 text-white rounded-md lg:text-3xl">Who We Are</h3>
+            <p className="md:text-lg">
               {`Think of MovMonkey as a helpful neighbour. A caring neighbour who
               helps you move, delivers your stuff, or cleans up your lawn
               whenever you are away, all without any surprise costs. That's
@@ -27,18 +27,18 @@ export default function AboutUsPage() {
               neighbour would.`}
             </p>
 
-            <div className="flex items-center gap-2 pt-5 lg:pt-10">
+            <div className="flex items-center gap-3 pt-5 lg:pt-10">
               <Link href={""}>
-                <DarkTwitter className="h-6 w-6 text-black" />
+                <DarkTwitter className="size-7 text-black" />
               </Link>
               <Link href={""}>
-                <DarkFacebook className="h-6 w-6 text-black" />
+                <DarkFacebook className="size-7 text-black" />
               </Link>
               <Link href={""}>
-                <DarkInstagram className="h-6 w-6 text-black" />
+                <DarkInstagram className="size-7 text-black" />
               </Link>
               <Link href={""}>
-                <DarkYoutube className="h-6 w-6 text-black" />
+                <DarkYoutube className="size-7 text-black" />
               </Link>
             </div>
           </div>
@@ -49,44 +49,58 @@ export default function AboutUsPage() {
         </div>
       </Container>
 
-      <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-primary px-5 py-2 text-center text-2xl font-semibold text-black md:h-20 md:text-4xl lg:mt-20">
+      <Container extraClassName="grid grid-cols-2">
+      <Container>
+      <div className="mb-5 flex min-h-16 items-center justify-center bg-[#49b74b28] px-5 pb-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-3xl lg:mt-5 rounded-2xl">
         Our Story
       </div>
-
-      <Container>
-        <p className="text-xl md:text-2xl">
-          {`Imagine a world where about 65% of removal, delivery, and cleaning companies lost customers because they couldn’t get the cleaning or removal right. That was what MovMonkey's founder, Moses, saw in July 2024. As a result, he started MovMonkey with one big goal: to make sure cleaning, moving, and delivery are done the right way and at the right price. With MovMonkey, your only surprise would be how easy life just got. Watch yourself go from "Oh no" to "Oh wow" in minutes. Think we can't do that? Try us and watch us prove you wrong.`}
+        <div className="border rounded-2xl p-5 text-center">
+        <p className="md:text-lg">
+          {`Imagine a world where about 65% of removal, delivery, and cleaning companies lost customers because they couldn’t get the cleaning or removal right. That was what MovMonkey's founder, Moses, saw in December 2024. `}
         </p>
+        <p className="md:text-lg my-3">
+          {`As a result, he started MovMonkey with one big goal: to make sure cleaning, moving, and delivery are done the right way and at the right price.  `}
+        </p>
+        <p className="md:text-lg">
+          {`With MovMonkey, your only surprise would be how easy life just got `}
+        </p>
+        <p className="md:text-lg mt-3">
+          {`Watch yourself go from "Oh no" to "Oh wow" in minutes. Think we can't do that? Try us and watch us prove you wrong.`}
+        </p>
+        </div>
       </Container>
-
-      <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-primary px-5 py-2 text-center text-2xl font-semibold text-black md:h-20 md:text-4xl lg:mt-20">
+       
+      <Container>
+      <div className="mb-5 flex min-h-16 items-center justify-center bg-[#49b74b28] px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-3xl lg:mt-5 rounded-2xl">
         Our Mission
       </div>
-
-      <Container>
-        <p className="text-xl md:text-2xl">
-          {` MovMonkey’s mission is to match our customers with reliable, top-rated service providers. We are your personal service provider shopper, offering you a variety of quotes from pre-checked service providers. While we have done the heavy lifting, it's still your job to pick the one that fits your needs and wallet. Feeling stuck on choosing the right service provider for your specific needs? Oh, we know the feeling. But guess what? You are not alone.`}
+       <div className="border rounded-2xl ">
+       <p className="md:text-lg text-center px-5 pt-5">
+          {`MovMonkey’s mission is to match our customers with reliable, top-rated service providers. We are your personal service provider shopper, offering you a variety of quotes from pre-checked service providers. While we have done the heavy lifting, it's still your job to pick the one that fits your needs and wallet. Feeling stuck on choosing the right service provider for your specific needs? Oh, we know the feeling. But guess what? You are not alone.`}
         </p>
-        <p className="pt-8 text-xl md:text-2xl">
+        <p className="my-3 px-5 font-semibold text-center md:text-lg">
           {`The good news is that MovMonkey is on a mission to change the game! Simply choose MovMonkey and enjoy a triple win:`}
         </p>
-
-        <ul className=" list-disc pt-8 text-xl md:text-2xl">
-          <li className="ml-9 block">&#8226; Quicker quote offers</li>
-          <li className="ml-9 block">&#8226; Zero hidden fees</li>
-          <li className="ml-9 block">
-            &#8226; Access to top-rated service providers
+        <ul className=" pt-5 md:text-lg text-center">
+          <li className=" block bg-[#49b74b28] rounded-2xl p-1"> Quicker quote offers</li>
+          <li  className="block bg-[#49b74b28] rounded-2xl p-1 my-1">Zero hidden fees</li>
+          <li className=" block bg-[#49b74b28] rounded-2xl p-1 mb-1">
+             Access to top-rated service providers
           </li>
-          <li className="ml-9 block">
-            &#8226; Track your removal, delivery and cleaning job in one pot
+          <li className="block bg-[#49b74b28] rounded-2xl p-1">
+            Track your removal, delivery and cleaning job in one pot
           </li>
         </ul>
+       </div>
+      
       </Container>
-      <div>
+      </Container>
+
+      <Container>
           <div className="w-full mt-4">
-            <Image src={Light} alt="About Us" className="h-auto w-full" />
+            <Image src={Light} alt="About Us" className="h-auto w-full rounded-2xl mb-10" />
           </div>
-      </div>
+      </Container>
     </div>
   );
 }

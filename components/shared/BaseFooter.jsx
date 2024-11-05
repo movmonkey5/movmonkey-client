@@ -10,6 +10,7 @@ import footer_logo from "@/public/logo/footer-logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import ApiKit from "@/common/ApiKit";
+import Location from "../icon/Location";
 
 export default function BaseFooter() {
   const [isDriverOrCleaner, setIsDriverOrCleaner] = useState(false);
@@ -80,28 +81,28 @@ export default function BaseFooter() {
           <div className=" flex flex-col items-center justify-center space-y-6 lg:space-y-0">
             <Link
               href="/contact"
-              className="block w-fit hover:underline md:mb-4"
+              className="block hover:underline md:mb-4"
             >
               Contact us
             </Link>
             <div className="flex w-full flex-col items-center justify-center gap-4">
-              <div className="flex w-[70%] items-center justify-center gap-3 text-center md:w-full">
-                <HomeIcon />
+              <div className="flex items-center gap-2 max-sm:w-60">
+                <Location />
 
-                <p className="max-w-48 ">
+                <p className="text-center w-fit">
                   366 Wheatley Cres PE28 4XN Cambridgeshire - UK
                 </p>
               </div>
               <Link
                 href="tel:+01-48039349"
-                className="flex w-fit items-center gap-3"
+                className="flex items-center gap-2"
               >
                 <Phone />
                 <p>+01-48039349</p>
               </Link>
               <Link
                 href="mailto:support@movmonkey.com"
-                className="flex w-fit items-center gap-3"
+                className="flex items-center gap-2"
               >
                 <Mail />
                 <p>support@movmonkey.com</p>
