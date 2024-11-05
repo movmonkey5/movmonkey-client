@@ -4,17 +4,17 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { ClipboardList, Pencil } from "lucide-react";
+import { ClipboardList, Pencil, MessageCircleMore } from "lucide-react";
 import ApiKit from "@/common/ApiKit";
 import Container from "@/components/shared/Container";
 import Loading from "@/components/shared/Loading";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import userPlaceHolder from "@/public/image/user-placeholder-green.png";
-import { MessageCircleMore } from "lucide-react";
 
 export default function CustomerProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
+  const [draftJobType, setDraftJobType] = useState("removal"); // New state for job type
 
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["me.getProfile"],
@@ -31,9 +31,12 @@ export default function CustomerProfilePage() {
     queryFn: () => ApiKit.me.job.completed.getJobs().then(({ data }) => data),
   });
 
+  // Updated draftJobs query to be dynamic based on draftJobType
   const { data: draftJobs, isLoading: draftJobsLoading } = useQuery({
-    queryKey: ["/me/jobs/draft"],
-    queryFn: () => ApiKit.me.job.draft.getJobs().then(({ data }) => data),
+    queryKey: ["/me/jobs", draftJobType, "DRAFT"],
+    queryFn: () =>
+      ApiKit.me.job.draft.getJobs(draftJobType).then(({ data }) => data),
+    enabled: activeTab === "draft", // Only fetch when draft tab is active
   });
 
   if (profileLoading) {
@@ -48,7 +51,7 @@ export default function CustomerProfilePage() {
       {jobs?.results?.length
         ? jobs.results.map((job) => (
             <Link
-              href={`/${type === "draft" ? "review-jobs" : "created-jobs"}/${job.slug}/${job?.uid}`}
+              href={`/${job.status === "DRAFT" ? "review-jobs" : "created-jobs"}/${job.slug}/${job?.uid}`}
               key={job?.uid}
               className="mb-3 block w-fit cursor-pointer rounded-lg bg-primary px-2 font-semibold max-lg:py-2 lg:rounded-full lg:px-4 lg:py-1"
             >
@@ -58,6 +61,9 @@ export default function CustomerProfilePage() {
         : `No ${type.toLowerCase()} jobs found.`}
     </>
   );
+
+  // Define available job types
+  const jobTypes = ["removal", "delivery", "cleaning"]; // Add more types as needed
 
   return (
     <div className="min-h-[calc(100vh-80px)]">
@@ -121,13 +127,43 @@ export default function CustomerProfilePage() {
               <TabsTrigger value="draft">Jobs in Draft</TabsTrigger>
             </TabsList>
             <TabsContent value="actives" className="ml-2">
-              {renderJobList(activeJobs, "Active")}
+              {activeJobsLoading ? (
+                <Loading />
+              ) : (
+                renderJobList(activeJobs, "Active")
+              )}
             </TabsContent>
             <TabsContent value="completed" className="ml-2">
-              {renderJobList(completedJobs, "Completed")}
+              {completedJobsLoading ? (
+                <Loading />
+              ) : (
+                renderJobList(completedJobs, "Completed")
+              )}
             </TabsContent>
             <TabsContent value="draft" className="ml-2">
-              {renderJobList(draftJobs, "Draft")}
+              {/* Job Type Selection */}
+              <div className="mb-4">
+                <label htmlFor="jobType" className="mr-2 font-medium">
+                  Select Job Type:
+                </label>
+                <select
+                  id="jobType"
+                  value={draftJobType}
+                  onChange={(e) => setDraftJobType(e.target.value)}
+                  className="rounded border px-2 py-1"
+                >
+                  {jobTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {draftJobsLoading ? (
+                <Loading />
+              ) : (
+                renderJobList(draftJobs, "Draft")
+              )}
             </TabsContent>
           </Tabs>
         </div>

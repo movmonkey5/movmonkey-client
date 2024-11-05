@@ -1,20 +1,6 @@
 import Image from "next/image";
-import FsLightbox from "fslightbox-react";
-import { useState } from "react";
 
 export default function CleanerJobPhotos({ photos }) {
-  const [lightboxController, setLightboxController] = useState({
-    toggler: false,
-    slide: 1,
-  });
-
-  const openLightboxOnSlide = (slideIndex) => {
-    setLightboxController({
-      toggler: !lightboxController.toggler,
-      slide: slideIndex,
-    });
-  };
-
   return (
     <div className="mt-4">
       <div className="flex w-full flex-wrap gap-2 rounded">
@@ -23,11 +9,10 @@ export default function CleanerJobPhotos({ photos }) {
             <Image
               key={index}
               src={photo?.image}
-              className="aspect-video cursor-pointer rounded object-cover sm:w-72"
+              className="aspect-video rounded object-cover sm:w-72"
               alt={photo?.slug}
               width={1000}
               height={1000}
-              onClick={() => openLightboxOnSlide(index + 1)}
             />
           ))}
       </div>
@@ -42,12 +27,6 @@ export default function CleanerJobPhotos({ photos }) {
           </p>
         </div>
       )}
-
-      <FsLightbox
-        toggler={lightboxController.toggler}
-        sources={photos?.map((photo) => photo.image)}
-        slide={lightboxController.slide}
-      />
     </div>
   );
 }

@@ -61,7 +61,7 @@ const JobActions = ({ job, onJobCompleted }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full justify-between gap-8">
+    <div className="flex w-full flex-col justify-between gap-8 md:flex-row">
       <Button
         size="lg"
         className=" w-full md:w-4/12"
@@ -70,6 +70,13 @@ const JobActions = ({ job, onJobCompleted }) => {
         Mark as Completed
       </Button>
 
+      <Button
+        size="lg"
+        className=" w-full md:w-4/12"
+        onClick={() => setIsDisputeOpen(true)}
+      >
+        Chat With Service provider
+      </Button>
       <Button
         size="lg"
         className=" w-full md:w-4/12"

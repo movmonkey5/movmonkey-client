@@ -77,7 +77,7 @@ export default function AuthNavbar() {
     }
   };
   return (
-    <nav className="sticky top-[-.5px] z-50 mb-6 mt-8 h-16 bg-white pb-16 sm:h-max md:py-8">
+    <nav className="sticky top-[-.5px] z-50 mb-6 h-16 bg-white pb-16 sm:h-max md:py-8">
       <Container extraClassName={"!py-0"}>
         <div className="relative flex h-16 items-center justify-between sm:h-20">
           <div className="block bg-white px-2 py-4 sm:hidden">

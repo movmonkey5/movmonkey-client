@@ -10,7 +10,7 @@ const QuotationButton = ({ job }) => {
     try {
       setIsProcessing(true); // Show loading or disable buttons during the process
       // Make the API call to reject the job, but ignore any client_secret related data
-      await ApiKit.me.updateStatus(job.uid, { "status": "DECLINED" });
+      await ApiKit.me.updateStatus(job.uid, { status: "DECLINED" });
       console.log("Job rejected successfully");
       // Add any additional logic after rejecting the job (like notifying the user)
     } catch (error) {
@@ -26,7 +26,10 @@ const QuotationButton = ({ job }) => {
         <p className="text-center text-xl font-medium">
           Your job is active now
         </p>
-        <Link href={`/track-job/${job.uid}`} className="w-full max-w-[200px]">
+        <Link
+          href={`/track-jobs/${job.kind.toLowerCase()}/${job.uid}`}
+          className="w-full max-w-[200px]"
+        >
           <Button size="lg" className="w-full">
             Track Your Job
           </Button>

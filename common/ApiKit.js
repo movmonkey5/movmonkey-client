@@ -262,8 +262,8 @@ const ApiKit = {
         },
       },
       draft: {
-        getJobs: () => {
-          const url = "/me/jobs/draft?job_count=10";
+        getJobs: (type) => {
+          const url = `/me/jobs/${type}?status=DRAFT`;
           return client.get(url);
         },
       },
@@ -274,6 +274,10 @@ const ApiKit = {
         },
         getJobDeatails: (uid) => {
           const url = `/me/jobs/assinged/${uid}`;
+          return client.get(url);
+        },
+        getFiles: (uid) => {
+          const url = `/me/jobs/assinged/${uid}/files`;
           return client.get(url);
         },
       },
