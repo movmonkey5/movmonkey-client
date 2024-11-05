@@ -26,21 +26,6 @@ export default function AboutUsPage() {
               where they're going safely and on time, just like a caring
               neighbour would.`}
             </p>
-
-            <div className="flex items-center gap-3 pt-5 lg:pt-10">
-              <Link href={""}>
-                <DarkTwitter className="size-7 text-black" />
-              </Link>
-              <Link href={""}>
-                <DarkFacebook className="size-7 text-black" />
-              </Link>
-              <Link href={""}>
-                <DarkInstagram className="size-7 text-black" />
-              </Link>
-              <Link href={""}>
-                <DarkYoutube className="size-7 text-black" />
-              </Link>
-            </div>
           </div>
 
           <div className="absolute -left-20 top-1/2 hidden h-40 w-40 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-secondary text-2xl font-semibold text-white lg:text-3xl 2xl:flex">
@@ -81,13 +66,13 @@ export default function AboutUsPage() {
         <p className="my-3 px-5 font-semibold md:text-lg">
           {`The good news is that MovMonkey is on a mission to change the game! Simply choose MovMonkey and enjoy a triple win:`}
         </p>
-        <ul className=" pt-5 md:text-lg text-center">
-          <li className=" block bg-[#49b74b28] rounded-2xl p-1"> Quicker quote offers</li>
-          <li  className="block bg-[#49b74b28] rounded-2xl p-1 my-1">Zero hidden fees</li>
-          <li className=" block bg-[#49b74b28] rounded-2xl p-1 mb-1">
+        <ul className=" pt-5 md:text-lg">
+          <li className=" block bg-[#49b74b28] rounded-xl pl-5 p-1"> Quicker quote offers</li>
+          <li  className="block bg-[#49b74b28] rounded-xl pl-5 p-1 my-1">Zero hidden fees</li>
+          <li className=" block bg-[#49b74b28] rounded-xl pl-5 p-1 mb-1">
              Access to top-rated service providers
           </li>
-          <li className="block bg-[#49b74b28] rounded-2xl p-1">
+          <li className="block bg-[#49b74b28] rounded-xl pl-5 p-1">
             Track your removal, delivery and cleaning job in one pot
           </li>
         </ul>
