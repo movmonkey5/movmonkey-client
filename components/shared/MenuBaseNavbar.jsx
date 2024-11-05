@@ -73,7 +73,7 @@ export default function MenuBaseNavbar({
   };
   return (
     <div className="relative z-50 flex items-center gap-24 ">
-      <div className="flex items-center gap-4 rounded-[12px] bg-secondary px-4 py-9 text-white lg:gap-8 lg:px-8">
+      <div className="flex items-center gap-4 rounded-[12px] bg-secondary px-4 py-8 text-white lg:gap-8 lg:px-8">
         <Link href={""}>
           <Facebook />
         </Link>
@@ -87,7 +87,7 @@ export default function MenuBaseNavbar({
           <Youtube />
         </Link>
       </div>
-      <ul className=" flex items-center gap-4 rounded-[12px] bg-secondary px-4 py-6 text-white lg:gap-8 lg:px-8">
+      <ul className=" flex items-center gap-4 rounded-[12px] bg-secondary px-4 py-7 text-white lg:gap-8 lg:px-8">
         <li>
           <Link
             href="/"

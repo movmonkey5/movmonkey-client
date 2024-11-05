@@ -127,7 +127,9 @@ export default function UserJobDetailsPage({ params }) {
               Submit Review
             </Button>
           ) : (
-            <span className="font-bold mb-8">You have succesfully rated this job</span>
+            <span className="mb-8 font-bold">
+              You have succesfully rated this job
+            </span>
           )}
           <ReviewDialog
             isOpen={showReview}
@@ -210,7 +212,9 @@ export default function UserJobDetailsPage({ params }) {
                 />
                 <h1 className="text-sm font-bold ">
                   {" "}
-                  Ratings {userDetails ? userDetails.rating : "XXX"}{" "}
+                  Ratings {userDetails
+                    ? userDetails.rating.toFixed(2)
+                    : "XXX"}{" "}
                   <span className="text-yellow-500">★ </span> ({" "}
                   <span className="text-gray-500">
                     {userDetails.rating_count} reviews)

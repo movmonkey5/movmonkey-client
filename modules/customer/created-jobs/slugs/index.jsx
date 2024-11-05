@@ -60,27 +60,21 @@ export default function UserJobDetailsPage({ params }) {
         <div className="space-y-3">
           <div className="flex gap-2 text-lg font-bold max-sm:flex-col-reverse sm:items-center sm:justify-between md:text-2xl">
             <span>Job Id: {data?.slug}</span>
-            {data.status != "IN_PROGRESS" && (
-              <Button
-                variant="secondary"
-                className="flex gap-1 text-base"
-                onClick={() => {
-                  router.push(`/created-jobs/edit/cleaning_job/${data.uid}`);
-                }}
-              >
-                <PencilLineIcon />
-                Edit Job
-              </Button>
+            {data.status !== "IN_PROGRESS" && data.status !== "COMPLETED" && (
+              <Link href={`/created-jobs/edit/cleaning_job/${data.uid}`}>
+                <Button variant="secondary" className="flex gap-1 text-base">
+                  <PencilLineIcon />
+                  Edit Job
+                </Button>
+              </Link>
             )}
-          </div>
+          </div>{" "}
           <h2 className="text-lg font-bold md:text-2xl">
-            Job Kind: Cleaning Job
+            Job Kind: {data.kind?.split("_").join(" ")}
           </h2>
-
           <h2 className="w-fit bg-primary p-2 text-lg font-bold md:text-2xl">
             Job Execution Date: {format(data?.moving_date, "PPP")}
           </h2>
-
           <div>
             <h2 className="mt-4 text-lg font-bold md:text-2xl">
               Description of the job:
