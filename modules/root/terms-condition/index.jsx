@@ -3,554 +3,458 @@ import React from "react";
 
 export default function TermsConditionPage() {
   return (
-    <div className="max-sm:break-all">
+    <div >
       {" "}
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl lg:mt-20">
+
+
+      <Container>
+        <h2 className="bg-primary text-white rounded-xl px-8 py-8 text-center text-3xl md:text-4xl font-semibold">Customers Terms and Condition</h2>
+        <div className="mb-5 flex min-h-16 items-center justify-center bg-lightPrimary px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl mt-8 rounded-xl">
           User Responsibilities on MovMonkey’s Platform
         </div>
-        <Container>
-          <div className="space-y-2 px-5 text-xl leading-[45px] md:text-2xl">
-            <p>
-              {`Our platform facilitates removal, delivery, and cleaning service connections and processes
-payments, creating direct dealings between drivers and customers.`}
-            </p>
-            <p className="pt-8">
-              {`By engaging with the platform for any service, you affirm that:`}
-            </p>
-            <ul className="list-disc pt-1 text-xl md:text-2xl">
-              <li className="ml-9">
-                You possess the legal capacity to agree to and comply with these
-                terms.
-              </li>
-              <li className="ml-9">
-                The platform’s use is for your personal purposes, not for
-                resale.
-              </li>
-              <li className="ml-9">
-                {` You meet the age requirement per your region's laws, typically
-                18 or older.`}
-              </li>
-              <li className="ml-9">
-                {`You’re limited to one account per role (driver and customer).`}
-              </li>
-              <li className="ml-9">
-                You’ll safeguard your account credentials and any identification
-                we provide.
-              </li>
-              <li className="ml-9">
-                {`Upon request by MovMonkey, you will verify your identity without impersonation.`}
-              </li>
-              <li className="ml-9">{`Drivers are to use a genuine photo for their profile.`}</li>
-              <li className="ml-9">{`Any claims of association with MovMonkey must be truthful.`}</li>
-              <li className="ml-9">
-                {`Legal and platform rules must be observed during use or service provision.`}
-              </li>
-              <li className="ml-9">
-                {`Illegal activities, fraud, harmful promotions, or criminal assistance through the platform are prohibited.`}
-              </li>
-              <li className="ml-9">
-                {`Confidentiality of information received from other users is paramount, and it should only be used for service-related purposes.`}
-              </li>
-              <li className="ml-9">
-                {`Accumulating or storing user information beyond what is necessary for the service is not allowed.`}
-              </li>
-              <li className="ml-9">
-                {`Soliciting platform users to switch to competitor services is forbidden.`}
-              </li>
-              <li className="ml-9">
-                {`Communication with other users should be strictly for service facilitation and cease post-service completion.`}
-              </li>
-              <li className="ml-9">
-                {`Harassment, intimidation, or disturbance of other users or MovMonkey staff is unacceptable.`}
-              </li>
-              <li className="ml-9">
-                {`Reproducing or distributing content from the website or platform without MovMonkey’s consent is prohibited.`}
-              </li>
-              <li className="ml-9">
-                {`Actions that negatively affect other users’ experiences or service provision are prohibited.`}
-              </li>
-              <li className="ml-9">
-                {`Infringing on others’ copyright, privacy, contractual rights, or engaging in discriminatory practices is prohibited.`}
-              </li>
-              <li className="ml-9">
-                {`Assisting others in violating these guidelines is not permitted.`}
-              </li>
-              <li className="ml-9">
-                {`If MovMonkey requests identification documentation from you, you must comply immediately to avoid having your account suspended.`}
-              </li>
-            </ul>
-          </div>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl ">
+
+        <div className="space-y-2 p-5 pt-2 leading-6 md:text-lg border border-primary rounded-2xl">
+          <p>
+            {`Direct transactions between drivers and consumers are facilitated by our platform, which also handles payment processing and connections for removal, delivery and cleaning services.`}
+          </p>
+          <p className="pt-1.5 font-semibold">
+            {`By using the Platform for any service, you represent and warrant that :`}
+          </p>
+          <ul className="list-disc md:text-lg">
+            <li className="ml-9 my-0.5">
+              You are of legal age to accept and comply with these terms and conditions
+            </li>
+            <li className="ml-9">
+              You will only use the Platform for your own personal use and not for commercial purposes
+            </li>
+            <li className="ml-9 my-0.5">
+              {` You are of legal age to use the Platform, generally eighteen years of age or older`}
+            </li>
+            <li className="ml-9 ">
+              {`Each role (driver and customer) may only have one account`}
+            </li>
+            <li className="ml-9 my-0.5">
+              You will protect your account details and any identity provided by us
+            </li>
+            <li className="ml-9">
+              {`You will authenticate yourself to MovMonkey upon request`}
+            </li>
+            <li className="ml-9 my-0.5">{`Drivers must use a real photo for their profile and must accurately state any affiliation with MovMonkey`}</li>
+            <li className="ml-9">{`Any claims of association with MovMonkey must be truthful.`}</li>
+            <li className="ml-9 my-0.5">
+              {`The rules set by the platforms and the law must be followed when using or providing services`}
+            </li>
+            <li className="ml-9">
+              {`It is forbidden to engage in illegal activities, fraud, misleading advertising or provide illegal assistance through the site`}
+            </li>
+            <li className="ml-9 my-0.5">
+              {`Information obtained from other users must be kept confidential and used only for service-related purposes`}
+            </li>
+            <li className="ml-9">
+              {`It is prohibited to collect or store user data beyond what is necessary for the service`}
+            </li>
+            <li className="ml-9 my-0.5">
+              {`It is prohibited to solicit platform users to switch to competing services`}
+            </li>
+            <li className="ml-9">
+              {`Harassment, intimidation or disruption of other users or MovMonkey staff is unacceptable`}
+            </li>
+            <li className="ml-9 my-0.5">
+              {`Communication with other users should be limited to facilitating the service and ending after the service is completed`}
+            </li>
+            <li className="ml-9">
+              {`It is forbidden to reproduce or distribute content from the website or platform without the permission of MovMonkey`}
+            </li>
+            <li className="ml-9 my-0.5">
+              {`It is forbidden to take any action that could harm the services provided to other users or their experience`}
+            </li>
+            <li className="ml-9">
+              {`It is forbidden to violate copyright, privacy, contractual rights or discriminate against others. It is also forbidden to help others break these rules`}
+            </li>
+            <li className="ml-9 my-0.5">
+              {`If MovMonkey asks you for identification, you must provide it immediately in order to keep your account active.`}
+            </li>
+          </ul>
+        </div>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl rounded-2xl ">
           MovMonkey Customer Agreement
         </div>
-        <Container>
-          <p className="mt-3 text-xl md:text-2xl">
-            {`The "MovMonkey Customer Agreement" forms an integral part of MovMonkey's broader Terms
-             & Conditions, incorporated by reference. By utilizing the platform and requesting removal,
-             delivery, and cleaning services, each customer acknowledges, represents, and warrants the
-             following:`}
+
+        <div className="border border-primary rounded-2xl p-5 pt-4">
+          <p className=" md:text-lg">
+            {`The "MovMonkey Customer Agreement" is incorporated by reference and is an integral part of the larger MovMonkey Terms and Conditions. Each consumer using the Platform to request cleaning, delivery and removal services understands, warrants and represents the following:`}
           </p>
-          <ul className="list-disc pt-8 text-xl md:text-2xl">
+          <ul className="list-disc pt-3 md:text-lg leading-6">
             <li className="ml-9">
-              <span className=" pr-2 font-semibold">Age and Authority:</span>
-              Customers confirm they are at least 18 years old and possess the
-              legal authority to utilize the services and contract for jobs.
+              <span className=" pr-2 font-semibold">Age and Eligibility:</span>
+              Customers represent that they are at least eighteen years of age and have the legal right to use the Services and enter into contracts
             </li>
-            <li className="ml-9">
+            <li className="ml-9 my-[3px]">
               <span className=" pr-2 font-semibold">Item Disclosure:</span>
-              {`Customers agree to disclose all items included in a job to the
-              driver before acceptance, adhering to MovMonkey's Prohibited Items
-              list. MovMonkey reserves the right to dispose of any prohibited
-              items and instruct drivers accordingly.`}
+              {`Customers agree to comply with MovMonkey's Prohibited Items List and to disclose to the Driver all items included in a job prior to acceptance`}
             </li>
             <li className="ml-9">
-              <span className=" pr-2 font-semibold">Special Items:</span>
-              {`Unless otherwise agreed in writing, customers shall not include special items in jobs. MovMonkey disclaims responsibility for such items and retains disposal rights.`}
+              <span className=" pr-2 font-semibold">Illegal Material:</span>
+              {`MovMonkey reserves the right to dispose of any illegal material and to instruct the Driver accordingly`}
             </li>
-            <li className="ml-9">
+            <li className="ml-9 my-[3px]">
               <span className=" pr-2 font-semibold">
-                Packing Responsibility:
+                Special Items:
               </span>
-              {`Customers are responsible for adequately packing items, including live animals, to ensure safe transport and compliance with relevant laws.`}
-            </li>
-            {/* <li className="ml-9">
-              <span className=" pr-2 font-semibold">Animal Welfare:</span>
-              {`Customers may not arrange jobs involving euthanasia or similar services for live animals.`}
-            </li> */}
-            <li className="ml-9">
-              <span className=" pr-2 font-semibold">Platform Usage:</span>
-              {`Customers must use the MovMonkey Platform exclusively to contract with drivers and service providers and refrain from sharing personal information outside the platform, as their information is only shared with their chosen driver or service provider. We do not send a driver or service provider to your property prior to the execution of the job. We have provided enough features and technology to facilitate smooth communication and transmission between you, drivers, and service providers.`}
+              {`Customers are not permitted to include special items in jobs unless specifically agreed in writing. MovMonkey reserves the right to dispose of such items and disclaims any liability.`}
             </li>
             <li className="ml-9">
-              <span className=" pr-2 font-semibold">Non-Discrimination:</span>
-              {`Customers must not discriminate or harass others based on protected characteristics.`}
+              <span className=" pr-2 font-semibold">Packing Responsibilities:</span>
+              {`To ensure safe transportation and compliance with applicable regulations, customers must properly pack items, including live animals`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              <span className=" pr-2 font-semibold">Animal Welfare Concerns:</span>
+              {`Customers are not permitted to schedule euthanasia or related procedures for live animals.`}
             </li>
             <li className="ml-9">
-              <span className=" pr-2 font-semibold">Insurance:</span>
-              {` Customers were advised to get their personal insurance to cover their items, which includes cargo insurance in case of freight. and MovMonkey isn't responsible for any job-related losses or damages.`}
+              <span className=" pr-2 font-semibold">Platform Use:</span>
+              {` To contract with drivers and service providers, clients must only use the MovMonkey platform. They must also refrain from disclosing any personal information outside of the platform, as their information will only be used by MovMonkey`}
             </li>
-            <li className="ml-9">
-              <span className=" pr-2 font-semibold">Indemnification:</span>
-              {`Customers indemnify MovMonkey against claims arising from their actions, content, or platform usage.`}
-            </li>
-            <li className="ml-9">
-              <span className=" pr-2 font-semibold">
-                Representation and Compliance:
-              </span>
-              {`Customers affirm their status as bona fide business entities or individuals, commit to commercial use of the platform, and agree not to disclose personal information or contact users outside the platform without permission.`}
+            <li className="ml-9 my-[3px]">
+              <span className=" pr-2 font-semibold">Non-discrimination:</span>
+              {`Customers are not discriminated against on the basis of Representation and Compliance: Users warrant that they are legitimate businesses or individuals, promise to use the platform for business purposes, and promise not to share personal information or contact users outside of the platform without consent`}
             </li>
             <li className="ml-9">
               <span className=" pr-2 font-semibold">
                 Statute of Limitations:
               </span>
-              {`Any claims arising from the agreement between customers, drivers, and service providers must be filed within the week of job execution.`}
+              {`Any claims arising from the contract between the client, driver and service provider must be submitted within one week of the completion of the job`}
             </li>
-            <li className="ml-9">
-              <span className=" pr-2 font-semibold">Termination:</span>
-              {`MovMonkey reserves the right to terminate customer accounts or access to the platform for non-compliance with the agreement or terms, with no liability for such termination.`}
+            <li className="ml-9 my-[3px]">
+              <span className=" pr-2 font-semibold">
+                Termination:
+              </span>
+              {`MovMonkey reserves the right to cancel user accounts or access to the platform if users breach any of the terms of the agreement. There will be no financial consequences associated with this action.`}
             </li>
           </ul>
-          <p className="pt-8 text-xl md:text-2xl">
-            For any further inquiries, please get in touch with{" "}
+          <p className="pt-8 md:text-lg">
+            For any further inquiries, please contact{" "}
             <span className="font-semibold">support@movmonkey.com.</span>
           </p>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl ">
-          Customer’s Terms of Use
         </div>
-        <Container>
-          <p className="mt-3 text-xl md:text-2xl">
-            The{" "}
-            <span className="font-semibold">
-              &quot;Terms and Conditions&quot;
-            </span>{" "}
-            establish the required conditions stipulated by MovMonkey, which you
-            must consent to if you wish to access or utilize the MovMonkey
-            platform{" "}
-            <span className="font-semibold">(&quot;Platform&quot;)</span> via
-            our website located at{" "}
-            <span className="font-semibold">
-              www.MovMonkey.com (&quot;Website&quot;)
-            </span>{" "}
-            for either receiving Removal, Delivery, and Cleaning Services from
-            or providing Removal, Delivery, and Cleaning Services to other users
-            of the platform. These terms, whether explicitly stated or
-            referenced herein, constitute a binding legal agreement between you
-            and MovMonkey. By engaging with or accessing the platform in any
-            capacity, including receiving or providing removal, delivery, and
-            cleaning services, you explicitly acknowledge and agree to abide by
-            these terms and any prospective amendments or additions, as
-            published periodically on our website. Upon your utilization of the
-            platform, or upon receiving or offering removal, delivery, and
-            cleaning services, you assume the status of a{" "}
-            <span className="font-semibold">&quot;user&quot;</span> of
-            MovMonkey&#39;s platform, whether categorized as a{" "}
-            <span className="font-semibold">
-              &quot;driver&quot;, &quot;service provider&quot;, or
-              &quot;customer&quot;
-            </span>{" "}
-            as stated.
-          </p>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl ">
-          Connect both Removal & Delivery drivers, Cleaning service and
-          customers
-        </div>
-        <Container>
-          <p className="mt-3 text-xl md:text-2xl">
-            MovMonkey serves as a hub for individuals or businesses (referred to
-            as <span className="font-semibold">&quot;customers&quot;</span>)
-            needing assistance with cleaning, transporting, moving, or
-            delivering items (referred to as{" "}
-            <span className="font-semibold">
-              &quot;removal&quot;, &quot;delivery&quot;, and &quot;cleaning
-              services&quot;
-            </span>
-            ) and those willing to provide these services (referred to as
-            <span className="font-semibold">
-              &quot;drivers&quot; or &quot;service providers&quot;
-            </span>
-            ). When a driver or service provider completes removal, delivery,
-            and cleaning services for a customer within a specified timescale
-            and for specific items, it constitutes a{" "}
-            <span className="font-semibold">&quot;job.&quot;</span> Both drivers
-            and customers are considered{" "}
-            <span className="font-semibold">&quot;users&quot;</span> of our
-            platform.
-          </p>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl ">
-          Our platform is totally free for customers to use
-        </div>
-        <Container>
-          <p className="mt-3 text-xl md:text-2xl">{`There is no hidden fee. We connect independent drivers, or service providers seeking to fulfil jobs for customers, with those who need such services. Drivers and service providers are self-employed individuals who opt to offer removal, delivery, and cleaning services for jobs listed on our platform. We, MovMonkey, do not control the timing of when a customer posts a job or when a driver decides to bid on a job. Agreeing to provide removal, delivery, and cleaning services for customers through our platform does not prevent a driver from working on other platforms or for other individuals simultaneously`}</p>
-          <p className="pt-8 text-xl md:text-2xl">{`MovMonkey is a platform that connects drivers and customers, also known as customers. Drivers and service providers decide whether to bid on and provide delivery and removal services requested by a customer.`}</p>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl lg:mt-20">
-          {`MovMonkey's limited responsibility for user's actions`}
-        </div>
-        <Container>
-          <div className="space-y-2 px-5 text-xl leading-[45px] md:text-2xl">
-            <p>
-              {`While our platform helps users connect for removal, delivery, and cleaning services and facilitates payments, all transactions made through it are solely between drivers and customers. MovMonkey merely serves as a platform to bring users together for jobs. We have no control over and are not accountable for the actions or inactions of any user, whether related to the platform's use or the provision or receipt of removal, delivery, and cleaning services, whether in public, private, or offline interactions or otherwise. Hence, users must adhere to specific guidelines to maintain the platform's usefulness for all parties involved.`}
-            </p>
-            <p className="pt-8">
-              {`Each time a user accesses or uses the platform or receives or performs removal, delivery, and
-                cleaning services through it, they confirm that they:`}
-            </p>
-            <ul className="list-disc pt-1 text-xl md:text-2xl">
-              <li className="ml-9">
-                Have the legal right, authority, and capacity to agree to these
-                terms and fulfil their obligations.
-              </li>
-              <li className="ml-9">
-                {`Use the platform for personal use only, and don't resell it to
-                others.`}
-              </li>
-              <li className="ml-9">
-                {`Are of legal age to use the platform or perform removal, delivery, and cleaning services as required by their jurisdiction.`}
-              </li>
-              <li className="ml-9">
-                {`Will maintain only one driver, one service provider, and one customer account.`}
-              </li>
-              <li className="ml-9">
-                Will keep their account password or any provided identification
-                confidential and secure.
-              </li>
-              <li className="ml-9">
-                {`Will provide proof of identity upon request and won't impersonate others or misrepresent themselves.`}
-              </li>
-              <li className="ml-9">{`Won't claim to be associated with MovMonkey as an agent, representative, or employee.`}</li>
-              <li className="ml-9">{`Will use the platform and perform removal, delivery, and cleaning services lawfully and in accordance with all applicable laws.`}</li>
-              <li className="ml-9">
-                {`I won't use the platform for illegal activities, fraud, or promoting criminal behaviour.`}
-              </li>
-              <li className="ml-9">
-                {`Will keep confidential any third-party information obtained while using the platform.`}
-              </li>
-              <li className="ml-9">
-                {`We won't collect or store information about other users beyond what's necessary for job performance.`}
-              </li>
-              <li className="ml-9">
-                {`Won't divert users away from the platform to other similar services.`}
-              </li>
-              <li className="ml-9">
-                {`I won't contact other users outside the platform except as necessary for job-related communication.`}
-              </li>
-              <li className="ml-9">
-                {`We won't harass or threaten any third party, including additional MovMonkey users and MovMonkey staff.`}
-              </li>
-              <li className="ml-9">
-                {`We won't reproduce or distribute platform-related content without written permission.`}
-              </li>
-              <li className="ml-9">
-                {`I won't use the platform in a way that disrupts other users' experiences.`}
-              </li>
-              <li className="ml-9">
-                {`Won't violate any third party's rights, including intellectual property, privacy, or contractual rights.`}
-              </li>
-              <li className="ml-9">
-                {`I won't discriminate against others based on specific traits.`}
-              </li>
-              <li className="ml-9">
-                {`I won't assist others in violating these rules.`}
-              </li>
-            </ul>
-            <p className="pt-8">
-              {`According to MovMonkey, failure to provide identity proof may result in account suspension or
-                termination. MovMonkey's Non-Discrimination Policy`}
-            </p>
-            <p className="pt-8">
-              {`MovMonkey is committed to creating an inclusive environment where discrimination has no place. We stand against any form of bias towards users or anyone else, be it due to their race, faith, country of origin, disabilities, sexual preferences, gender identity, relationship status, age, or any legally protected trait. We aim to make every user feel valued and included, maintaining a strict policy against discriminatory acts. This policy extends to rejecting or
-              cancelling tasks simply because of the demographic profile of a neighbourhood or any personal bias against individuals   for reasons such as their age, background, disability, gender identity, marital status, nationality, race, religious   beliefs, sex, or who they love.`}
-            </p>
-          </div>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl ">
-          Customer Responsibility for Driver Verification
-        </div>
-        <Container>
-          <p className="mt-3 text-xl md:text-2xl">{`Before entrusting a driver with their jobs, customers are solely responsible for confirming their identity and making sure it corresponds to the data the driver or service provider has provided on the website.`}</p>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl ">
-          Customer Screening
-        </div>
-        <Container>
-          <p className="mt-3 text-xl md:text-2xl">{`MovMonkey does not routinely perform background checks or screenings on customers who use our platform for removal, delivery, and cleaning services. However, we do hold the right to conduct such checks on customers of our own choice. Remember, any checks we might do shouldn't stop you from using your judgement when interacting with others through our service. Always prioritise safety and apply common sense during any interaction or task. Using our platform, all users understand and accept that they might encounter third parties or situations through jobs that could be risky, offensive, harmful, or otherwise unpleasant. Users also agree to hold MovMonkey harmless from any losses, damages, or liabilities that might arise from their use of the platform.`}</p>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl lg:mt-20">
-          Rules on Job Contents Banned Items
-        </div>
-        <Container>
-          <div className="space-y-2 px-5 text-xl leading-[45px] md:text-2xl">
-            <p>
-              {`Customers cannot include, and drivers cannot accept, jobs with these "banned items":`}
-            </p>
 
-            <ul className="list-disc pt-8 text-xl md:text-2xl">
-              <li className="ml-9">Any illegal items, such as drugs</li>
-              <li className="ml-9">
-                The platform’s use is for your personal purposes, not for
-                resale.
-              </li>
-              <li className="ml-9">{` Hazardous Waste`}</li>
-              <li className="ml-9">
-                {`Unset precious stones, gold, or platinum in raw form.`}
-              </li>
-              <li className="ml-9">
-                Hazardous materials were not categorized correctly.
-              </li>
-              <li className="ml-9">
-                {`Cigarettes, alcohol, or products regulated by the Alcohol and Tobacco Tax and Trade Bureau.`}
-              </li>
-              <li className="ml-9">{`Firearms, weapons, or ammunition.`}</li>
-              <li className="ml-9">{`Common fireworks or replica explosives.`}</li>
-              <li className="ml-9">{`Prescription drugs or human remains.`}</li>
-              <li className="ml-9">{`People`}</li>
-              <li className="ml-9">
-                {`Special items are mentioned below unless approved by MovMonkey.`}
-              </li>
-            </ul>
-          </div>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl lg:mt-20">
-          Special items
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl rounded-2xl ">
+          {`Terms of Use for Customers`}
         </div>
-        <Container>
-          <div className="space-y-2 px-5 text-xl leading-[45px] md:text-2xl">
-            <p>
-              {`Only some customers with permission from MovMonkey can offer jobs with "special items," like`}
-            </p>
 
-            <ul className="list-disc pt-8 text-xl md:text-2xl">
-              <li className="ml-9">
-                Heavy or oversized items over 400 lbs. or exceeding 12 feet in
-                any dimension.
-              </li>
-              <li className="ml-9">
-                Live animals or do jobs related to animal euthanasia.
-              </li>
-              <li className="ml-9">{` Drivers may need special licences or equipment for such jobs.`}</li>
-              <li className="ml-9">
-                {`Some special items may require drivers to be 21 and have specific qualifications or permits. The customer must check if the driver is qualified.`}
-              </li>
-              <li className="ml-9">
-                Drivers, service providers, and customers need to follow federal
-                and state laws regarding pick-up and delivery locations and
-                comply.
-              </li>
-              <li className="ml-9">
-                {`Cigarettes, alcohol, or products regulated by the Alcohol and Tobacco Tax and Trade Bureau.`}
-              </li>
-              <li className="ml-9">{`Firearms, weapons, or ammunition.`}</li>
-              <li className="ml-9">{`Common fireworks or replica explosives.`}</li>
-              <li className="ml-9">{`Prescription drugs or human remains.`}</li>
-              <li className="ml-9">{`People`}</li>
-              <li className="ml-9">
-                {`Special items are mentioned below unless approved by MovMonkey.`}
-              </li>
-            </ul>
-          </div>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl lg:mt-20">
+        <p className="md:text-lg rounded-2xl px-5 py-3 border border-primary">
+          The{" "}
+          <span className="font-semibold">
+            &quot;Terms and Conditions&quot;
+          </span>{" "}
+          outline the necessary requirements set out by MovMonkey to which you must agree if you wish to use or access the MovMonkey platform {" "}
+          <span className="font-semibold">(&quot;Platform&quot;)</span> through our website{" "}
+          <span className="font-semibold">
+            www.MovMonkey.com (&quot;Website&quot;)
+          </span>{" "}
+          {` for the purposes of either receiving removal, delivery and cleaning services from, or offering removal, delivery and cleaning services to, other Platform users. Whether expressly stated or implied, these terms and conditions constitute a legally enforceable contract between you and MovMonkey. By using the Platform in any way, including for Removal, Delivery or Cleaning Services, you expressly accept and agree to be bound by these Terms and any future modifications or amendments that may be posted on our website from time to time. When you use the Platform, or when you offer or receive removals, deliveries and cleaning services, you become a "User" of the MovMonkey Platform, regardless of whether you are classified as a`}
+          {" "}
+          <span className="font-semibold">
+            &quot;Driver&quot;, &quot;Provider&quot;, or
+            &quot;Customer&quot;
+          </span>{" "}
+          as indicated.
+        </p>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary px-5 py-2 text-center text-2xl font-semibold text-primary rounded-2xl md:h-20 md:text-2xl ">
+          Connect both Removal, Delivery and Cleaning Services and Customers
+        </div>
+
+        <div className=" md:text-lg border border-primary rounded-2xl px-5 py-2">
+          <p>
+            For people or companies (referred to
+            as <span className="font-semibold">&quot;Customers&quot;</span>)
+            who need help cleaning, moving, transporting or delivering goods (referred to as{" "}
+            <span className="font-semibold">
+              &quot;Removal&quot;, &quot;Delivery&quot;, and &quot;Cleaning Services&quot;
+            </span>
+            ) and for those who are willing to offer these services (referred to as
+            <span className="font-semibold">
+              &quot;Drivers&quot; or &quot;Service Providers&quot;
+            </span>
+            ), MovMonkey acts as a central location.
+          </p>
+
+          <p className="mt-2">
+            {` A Driver's or Service Provider's removal, delivery and cleaning of certain items for a Customer within a predetermined window of time is referred to as a`} <strong>{`"Job"`}</strong>. {`Customers and drivers are referred to on our platform as`} <strong>{`"Users"`}</strong>.
+          </p>
+        </div>
+
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary px-5 py-2 text-center text-2xl font-semibold text-primary rounded-2xl md:h-20 md:text-2xl ">
+          The use of our platform is completely free for the customer
+        </div>
+
+        <div className="border border-primary rounded-2xl px-5 py-2">
+          <p className="md:text-lg">{`Customers can use our platform free of charge. There are no hidden costs. We connect people who need these services with freelance drivers or service providers who want to complete jobs for customers. Freelancers who choose to provide removal, delivery and cleaning services for jobs posted on our site are known as Drivers and Service Providers. The moment a customer offers a job or a driver decides to submit a bid is not under our control at MovMonkey`}</p>
+          <p className="md:text-lg">{`MovMonkey is a platform that facilitates the connection between drivers and customers. When a consumer requests delivery and removal services, drivers and service providers decide whether to bid on the job and offer those services`}</p>
+        </div>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl ">
+          {`MovMonkey's minimal responsibility for user behaviour`}
+        </div>
+
+        <div className="px-5 py-3 md:text-lg border border-primary rounded-2xl">
+          <p>
+            {`All transactions completed through our platform are exclusively between drivers and consumers, even though it facilitates payments and helps users connect for removal, delivery and cleaning services. MovMonkey acts solely as a platform to connect individuals for employment. We have no control over and are not liable for the actions or inactions of any user, whether in relation to the use of the platform or the giving or receiving of removal, delivery and cleaning services, whether public, private, offline or otherwise. Therefore, in order to keep the site useful for everyone, users must follow certain rules`}
+          </p>
+          <p className="pt-4">
+            {`Each time a user uses the platform, accesses it, or performs removal, delivery or cleaning services through it, they represent and warrant that they :`}
+          </p>
+          <ul className="list-disc pt-2 leading-6 md:text-lg">
+            <li className="ml-9">
+              {`Have the capacity, right and authority to accept these terms and conditions and to fulfill their obligations`}
+            </li>
+            <li className="ml-9 my-[3px] ">
+              {`Are of legal age to use the Platform or perform removals, deliveries and cleaning services as required by their jurisdiction`}
+            </li>
+            <li className="ml-9">
+              {`Will maintain a single driver, service provider and customer account`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`Will use the Platform for personal use only and will not resell it to others.`}
+            </li>
+            <li className="ml-9">
+              Will not misrepresent themselves or impersonate others
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`Will keep their account password and any associated identification private and secure.`}
+            </li>
+            <li className="ml-9">{`Will provide proof of identity upon request.`}</li>
+            <li className="ml-9 my-[3px]">{`Will not impersonate an agent, employee or representative of MovMonkey.`}</li>
+            <li className="ml-9">
+              {`I agree not to use the platform for any illegal activity, fraud or the promotion of criminal behaviour. I also agree to keep confidential any third party information that I obtain through the use of the Platform`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`I will use the platform to provide removal, delivery and cleaning services legally and in accordance with all applicable laws.`}
+            </li>
+            <li className="ml-9">
+              {`We will not collect or retain more user data than is necessary to carry out our work`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`We won't direct users to other services that are similar to ours`}
+            </li>
+            <li className="ml-9">
+              {`I won't contact people outside the site unless it's absolutely necessary for work-related correspondence.`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`I promise not to intimidate or harass other parties, including staff and other MovMonkey users.`}
+            </li>
+            <li className="ml-9">
+              {`I promise not to use the platform in a way that interferes with the experience of other users. I promise not to copy or distribute any content related to the platform without express written consent.`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`I promise not to treat people differently because of how they look. I also promise not to help others break the rules.`}
+            </li>
+          </ul>
+          <p className="pt-8">
+            {`MovMonkey states that failure to provide proof of identity may result in account suspension or termination. MovMonkey's non-discrimination policy`}
+          </p>
+          <p className="pt-8">
+            {`MovMonkey is committed to providing a welcoming and non-discriminatory environment. We do not discriminate against users or anyone else on the basis of age, sexual orientation, gender identity, race, religion, national origin, disability, or any other characteristic protected by law. Our aim is to ensure that every user feels important and included, while maintaining a strong anti-discrimination policy.
+This policy includes refusing or canceling tasks based solely on the demographics of a neighborhood or any personal bias against people based on their age, ancestry, disability, gender identity, marital status, national origin, race, religion, sex or love life.`}
+          </p>
+        </div>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl ">
+          Your safety depends on driver verification
+        </div>
+
+        <p className="md:text-lg border border-primary rounded-2xl px-5 py-4" >{`Although we conduct background checks on each of our drivers and service providers, we respectfully request that customers conduct their own due diligence once they have obtained the driver's or service provider's details through our platform. An essential first step is to confirm their identity and ensure that it matches the information they have provided. This extra measure of security contributes to a safe and secure encounter.`}</p>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl ">
+          Customer evaluation
+        </div>
+
+        <div className="md:text-lg border border-primary rounded-2xl px-5 py-3">
+          <p>
+            {`Customers using the MovMonkey platform for removal, delivery and cleaning services are not subject to regular background checks or screening by MovMonkey. We do, however, have the authority to conduct these types of checks on customers of our choosing. Remember that you should always use your own discretion when dealing with anyone using our site, regardless of any checks we may perform. Put safety first and use common sense in any encounter or work`}
+          </p>
+          <p className="mt-3">
+            {`By using our site, all users acknowledge and agree that their work may expose them to situations or other people that could be dangerous, offensive, harmful or otherwise unpleasant. In addition, users agree to hold MovMonkey harmless from any liability for any loss, damage or other consequences resulting from their use of the site`}</p>
+        </div>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl ">
+          Job Content Guidelines Banned Items
+        </div>
+
+        <div className="px-5 py-3 leading-6 md:text-lg border border-primary rounded-2xl">
+          <p>
+            {`Jobs that contain certain "banned items" will not be accepted by customers or drivers:`}
+          </p>
+
+          <ul className="list-disc pt-3 md:text-lg">
+            <li className="ml-9">Any illegal goods, such as drugs.</li>
+            <li className="ml-9 my-[3px]">
+              Hazardous waste.
+            </li>
+            <li className="ml-9">{` Raw platinum, gold or unset gems.`}</li>
+            <li className="ml-9 my-[3px]">
+              {`Hazardous materials that have not been properly categorised.`}
+            </li>
+            <li className="ml-9">
+              Firearms, weapons or ammunition.
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`Cigarettes, alcohol or goods regulated by the Alcohol and Tobacco Tax and Trade Bureau.`}
+            </li>
+            <li className="ml-9">{`Ordinary fireworks or imitation explosives.`}</li>
+            <li className="ml-9 my-[3px]">{`Human remains or prescription drugs`}</li>
+            <li className="ml-9">{`Individuals`}</li>
+            <li className="ml-9 my-[3px]">{`Special items listed below require MovMonkey approval before use`}</li>
+          </ul>
+        </div>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl ">
+          Unique items
+        </div>
+
+        <div className="px-5 py-3 leading-6 md:text-lg border border-primary rounded-2xl ">
+          <p>
+            <strong>{`Jobs involving "special items", such as heavy or enormous items weighing more than 400 pounds or measuring more than 12 feet in any dimension, can only be offered by a select few clients with MovMonkey's approval.`}</strong>
+          </p>
+
+          <ul className="list-disc pt-4 md:text-lg">
+            <li className="ml-9">
+              Work with live animals or animal euthanasia.
+            </li>
+            <li className="ml-9 my-[3px]">
+              Certain jobs may require drivers to have certain licenses or equipment.
+            </li>
+            <li className="ml-9">{` Certain jobs may require drivers to have a certain age and set of qualifications or permits.`}</li>
+            <li className="ml-9 my-[3px]">
+              {`The customer is responsible for verifying the driver's qualifications.`}
+            </li>
+            <li className="ml-9">
+              Federal and state regulations regarding delivery and pick-up locations must be followed by customers, service providers and drivers.
+            </li>
+
+          </ul>
+        </div>
+
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl">
           Refund Policy Guidelines
         </div>
-        <Container>
-          <div className="space-y-2 px-5 text-xl leading-[45px] md:text-2xl">
-            <p>
-              {`If a driver or service provider fails to fulfil their delivery obligations, a customer can request a
-                refund of the MovMonkey Magnum Fee. Refunds may be warranted in situations such as:`}
-            </p>
+        <div className=" px-5 py-3 leading-6 md:text-lg border border-primary rounded-2xl">
+          <p className="font-semibold">
+            {`A customer may request a refund of the MovMonkey Magnum Fee in the event that a driver or service provider fails to meet their delivery obligations. Refunds may be appropriate in the following scenarios:`}
+          </p>
 
-            <ul className="list-disc pt-8 text-xl md:text-2xl">
-              <li className="ml-9">
-                The driver or service provider claims a vehicle malfunctioned
-                after booking.
-              </li>
-              <li className="ml-9">
-                The driver or service provider cites a family emergency
-                preventing the completion of the job.
-              </li>
-              <li className="ml-9">{`The driver or service provider fails to initiate contact to arrange the job.`}</li>
-              <li className="ml-9">
-                {`The driver or service provider doesn't show up as agreed.`}
-              </li>
-            </ul>
+          <ul className="list-disc pt-4 md:text-lg">
+            <li className="ml-9">
+              After a reservation is made, the driver or service provider reports that the vehicle has broken down.
+            </li>
+            <li className="ml-9 my-[3px] ">
+              The service provider or driver cites a family emergency as the reason for not being able to complete the job.
+            </li>
+            <li className="ml-9">{`Neither the driver nor the supplier makes the first move to set up the job.`}</li>
+            <li className="ml-9 mt-[3px]">
+              {`Federal and state regulations regarding delivery and pick-up locations must be followed by customers, service providers and drivers.`}
+            </li>
+          </ul>
 
-            <p className="pt-8">
-              {`However, a customer isn't entitled to a full refund in cases
-              where:`}
-            </p>
+          <p className="pt-6 font-semibold">
+            {`However, the following situations prevent a consumer from receiving a full refund:`}
+          </p>
 
-            <ul className="list-disc pt-8 text-xl md:text-2xl">
-              <li className="ml-9">They change their minds after booking.</li>
-              <li className="ml-9">
-                They opt to handle the job or shipment themselves.
-              </li>
-              <li className="ml-9">{`They involve a third party in the job or shipment.`}</li>
-              <li className="ml-9">
-                {`The item doesn't match the job listing, hindering moving, cleaning, or delivery.`}
-              </li>
-              <li className="ml-9">
-                {`They fail to provide the necessary delivery, removal, and cleaning information or documents.`}
-              </li>
-              <li className="ml-9">
-                {`A third party cancels with the customer.`}
-              </li>
-              <li className="ml-9">
-                {`They alter the removal, cleaning, or delivery dates, causing inconvenience to the driver.`}
-              </li>
-            </ul>
-
-            <p className="pt-8">
-              {`MovMonkey advises against using payment methods without dispute options. In fraudulent
-                transactions, the non-offending party may receive a full refund of the MovMonkey booking
-                payment after an initial investigation.`}
-            </p>
-
-            <p className="pt-8">
-              If a job {`isn't`} completed, contact us at
-              <span className="font-semibold"> support@movmonkey.com</span> with
-              evidence of cancellation. Upon receiving the request, MovMonkey
-              contacts the driver or service provider for confirmation within 3
-              days. Refunds are processed only after the cancellation
-              investigation, typically lasting up to 2 weeks.
-            </p>
-
-            <p className="pt-8">
-              {`Refund requests must be made within 3 days of the full payment, and refunds are issued to the original payment method. MovMonkey reserves the right to issue refunds via PayPal in exceptional circumstances but cannot process refunds via personal checks.`}
-            </p>
-
-            <p className="pt-8">
-              {`MovMonkey may temporarily suspend or permanently terminate a user's account for various
-               reasons, including breaches of terms, identity verification issues, suspected fraudulent activities, or the discovery of prohibited items in a job. Such actions are taken at MovMonkey's sole discretion, with or without prior notice. Users can inform MovMonkey of any extenuating circumstances surrounding account suspension or termination, which may be considered in decision-making.`}
-            </p>
-          </div>
-        </Container>
-      </div>
-      <div>
-        <div className="mb-2 mt-5 flex min-h-16 items-center justify-center bg-secondary px-5 py-2 text-center text-2xl font-semibold text-white md:h-20 md:text-2xl lg:mt-20">
-          Cancelled Services Policy for Customers
+          <ul className="list-disc pt-4 md:text-lg">
+            <li className="ml-9">They change their mind after booking.</li>
+            <li className="ml-9 my-[3px]">
+              They decide to complete the task or shipment themselves.
+            </li>
+            <li className="ml-9">{`They transfer the task or shipment to a third party.`}</li>
+            <li className="ml-9 my-[3px]">
+              {`The item isn't what was listed on the job, which makes moving, cleaning and delivery difficult.`}
+            </li>
+            <li className="ml-9">
+              {`You fail to provide the documentation or information required for delivery, removal and cleaning.`}
+            </li>
+            <li className="ml-9 my-[3px]">
+              {`The customer cancels with a third party.`}
+            </li>
+            <li className="ml-9">
+              {`They inconvenience the driver by changing the dates of the removal, cleaning or delivery.`}
+            </li>
+          </ul>
         </div>
-        <Container>
-          <div className="space-y-2 px-5 text-xl leading-[45px] md:text-2xl">
-            <p>
-              {`MovMonkey acknowledges the fluid nature of our clients' schedules and the potential necessity of cancelling a job or shipment after a driver or service provider has been booked. In such instances, MovMonkey provides a framework to minimize inconvenience and financial impact on both the customer and the driver.`}
-            </p>
 
-            <p className="pt-8">
-              {`If a job or shipment is cancelled no later than 72 hours before the scheduled delivery or job
-                execution time, the customer is not obligated to pay a cancellation fee to the driver or service
-                provider. Furthermore, should the cancellation result from the driver's failure to fulfil the
-                agreed-upon terms, no fee is payable to the driver or service provider.`}
-            </p>
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl">
+          The use of non-contested payment methods is discouraged by MovMonkey
+        </div>
 
-            <p className="pt-8">
-              {`It is essential to distinguish between the cancellation fee payable to the driver and the
-                MovMonkey Magnum Fee incurred upon a driver's or service provider’s reservation. Distinct
-                policies govern these fees. For information regarding the refund of the MovMonkey Magnum
-                Fee, customers are advised to consult the specific refund policy provided by MovMonkey.`}
-            </p>
+        <div className="border border-primary rounded-2xl md:text-lg px-5 py-3">
+          <p>
+            {`Following an initial investigation of fraudulent transactions, the non-offending party may be entitled to a full refund of the MovMonkey booking cost.`}
+          </p>
 
-            <p className="pt-8">
-              {`For cancellations within 72 hours of the scheduled cleaning, removal, or delivery, a tiered
-                cancellation fee structure is applied to compensate the driver or service provider for the time
-                and resources already expended in preparation for the job.`}
-            </p>
+          <p className="pt-4">
+            Please email us at <strong>support@movmonkey.com</strong> with proof of cancellation if a job {`hasn't`} been completed. Within three days of receiving the services, MovMonkey will contact the driver or service provider to confirm. Refunds will only be processed once the cancellation has been investigated, which can take up to two weeks on average.
+          </p>
 
-            <p className="pt-8">{`The fee schedule is as follows:`}</p>
+          <p className="pt-4">
+            {`Refunds will be sent back using the original method of payment and requests for refunds must be made within three days of full payment. In exceptional cases, MovMonkey reserves the right to issue refunds via PayPal; personal cheques cannot be processed for refunds.`}
+          </p>
 
-            <ul className="list-disc pt-1 text-xl md:text-2xl">
-              <li className="ml-9">
-                Cancellation 48–72 hours before job execution incurs a £50 fee
-                in the case of a United States $60 fee payable to the driver.
-              </li>
-              <li className="ml-9">
-                Cancellation 24-48 hours before job execution incurs a £100 fee
-                in the case of a United States $120 fee payable to the driver.
-              </li>
-              <li className="ml-9">{`Cancellation within 24 hours of job execution requires the greater of £100, or 60% in the case of a United States $100, or 60% of the full payment agreed to be paid to driver or service provider.`}</li>
-            </ul>
+          <p className="pt-4">
+            {`MovMonkey has the right to temporarily suspend or permanently cancel a user's account for a number of reasons, such as violation of the Terms and Conditions, problems with identification verification, suspicion of fraud, or the discovery of prohibited material during the course of a work. Such actions may be taken with or without prior warning, at MovMonkey's sole discretion. If there are unusual circumstances that lead to account suspension or termination, users may notify MovMonkey so that they can be taken into account when making decisions.`}
+          </p>
+        </div>
+        <div className="mb-5 mt-8 flex min-h-16 items-center justify-center bg-lightPrimary rounded-2xl px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-2xl ">
+          Cancellation Policy for Customers
+        </div>
+        <div className="px-5 py-3 leading-6 md:text-lg border border-primary rounded-2xl">
+          <p>
+            {`MovMonkey recognises that schedules are subject to change and that it may be necessary to postpone a job or shipment once a driver or service provider has been reserved. MovMonkey provides a framework in these situations to reduce the inconvenience and financial impact to both the driver and the customer.`}
+          </p>
 
-            <p className="pt-8">
-              {`Payment of cancellation fees can be made through previously agreed-upon methods of booking on the platform, including but not limited to PayPal or credit card. Customers should contact the MovMonkey support team for additional information on payment methods.`}
-            </p>
+          <p className="pt-4">
+            {`The Customer does not have to pay a cancellation fee to the Driver or Service Provider if a job or shipment is cancelled no later than 72 hours prior to the scheduled delivery or job execution time. In addition, neither the driver nor the service provider will be charged if the cancellation is the result of the driver's inability to comply with the terms of the agreement.`}
+          </p>
 
-            <p className="pt-8">
-              {`When a bank transfer refund is not applicable, MovMonkey will issue a coupon code equivalent to the amount paid upon booking. For a one-time booking on MovMonkey's platform, the customer can use or share this code, which has no expiration date. `}
-            </p>
+          <p className="pt-4">
+            {`It is important to understand the difference between the MovMonkey Magnum costs that are applied to a driver's or service provider's booking and the cancellation costs that are paid to the driver. These costs are governed by specific policies. Customers are advised to refer to MovMonkey's unique refund policy for information regarding the return of the MovMonkey Magnum Fee.`}
+          </p>
 
-            <p className="pt-8">
-              {`In the event of a cancellation, the customer must initiate contact with MovMonkey through the email address associated with their account. Failure to do so will result in the forfeiture of the
-               booking fee paid to MovMonkey. Upon initiating the cancellation process, customers are
-               encouraged to provide all relevant information to assess eligibility for either a bank transfer
-               refund or the issuance of a coupon code.`}
-            </p>
-          </div>
-        </Container>
-      </div>
+          <p className="pt-4">
+            {`A tiered cancellation fee structure will be implemented for cancellations made within 72 hours of the scheduled cleaning, removal or delivery. This is to compensate for the time and resources the driver or service provider has already invested in preparing for the job.`}
+          </p>
+
+          <p className="pt-6 font-semibold">{`However, the following situations prevent a consumer from receiving a full refund:`}</p>
+
+          <ul className="list-disc pt-2 md:text-lg">
+            <li className="ml-9">
+            If a job is cancelled 48-72 hours prior to completion, a fee of £50 in the UK (or $60 in the US and other locations) will be payable to the driver/cleaner.
+            </li>
+            <li className="ml-9 my-[3px] ">
+            Refunds for cancellations made 24-48 hours prior to the completion of the task will be £100; in the case of the USA, the driver will be paid $120 and other locations will be paid $120.
+            </li>
+            <li className="ml-9">{`If a task is cancelled within twenty-four hours of completion, the driver or service provider is entitled to a full payment of £100 or 60% of $100 in US Dollars, whichever is greater.`}</li>
+            <li className="ml-9 mt-[3px] ">
+            Cancellation charges can be paid by any of the payment methods mentioned above when booking on the website, including credit card and PayPal.
+            </li>
+          </ul>
+        </div>
+
+        <div>
+        <p className="pt-8">
+            {`If customers require further details on payment options, they can contact MovMonkey support.`}
+          </p>
+
+          <p className="pt-4">
+            {`If a refund by bank transfer is not possible, MovMonkey will provide a promo code equal to the total amount paid at the time of booking. The customer has no expiration date and can use or share this code for a single booking on the MovMonkey platform.`}
+          </p>
+
+          <p className="pt-4">
+            {`Should a consumer wish to cancel, they must contact MovMonkey using the email address associated with their account. If this isn't done, MovMonkey will forfeit the money paid for the booking. When consumers initiate the cancellation process, they are urged to provide all relevant details in order to determine their eligibility for a discount code or bank transfer refund`}
+          </p>
+        </div>
+      </Container>
     </div>
   );
 }

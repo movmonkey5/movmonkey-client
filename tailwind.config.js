@@ -51,6 +51,7 @@ module.exports = {
         "primary-bg": "#FBE9CE",
         secondary: "#49B74B",
         "secondary-bg": "#E4EDE4",
+        lightPrimary: "#49b74b28",
         white: "#FFFFFF",
         black: "#000000",
         gary: "#8A8A8A",

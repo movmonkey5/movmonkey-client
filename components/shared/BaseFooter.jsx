@@ -88,7 +88,6 @@ export default function BaseFooter() {
             <div className="flex w-full flex-col items-center justify-center gap-4">
               <div className="flex items-center gap-2 max-sm:w-60">
                 <Location />
-
                 <p className="text-center w-fit">
                   366 Wheatley Cres PE28 4XN Cambridgeshire - UK
                 </p>

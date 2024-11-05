@@ -15,7 +15,7 @@ export default function AboutUsPage() {
         <div className="relative rounded text-black">
           <div className="mx-auto mt-4 px-5 pt-5 2xl:max-w-5xl">
             <h3 className="text-2xl bg-primary font-semibold text-center lg:p-5 md:p-4 p-3.5 text-white rounded-md lg:text-3xl">Who We Are</h3>
-            <p className="md:text-lg">
+            <p className="md:text-lg mt-3">
               {`Think of MovMonkey as a helpful neighbour. A caring neighbour who
               helps you move, delivers your stuff, or cleans up your lawn
               whenever you are away, all without any surprise costs. That's
