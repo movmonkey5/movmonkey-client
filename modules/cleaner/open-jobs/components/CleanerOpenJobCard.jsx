@@ -15,7 +15,7 @@ export default function CleanerOpenJobCard({ job }) {
 
   return (
     <Link
-      href={`/cleaner/open-jobs/${job.slug}/${job.kind.toLowerCase()}`}
+      href={`/cleaner/open-jobs/${job.slug}`}
       className={`flex rounded-md border text-sm ${colorSchema[job.kind]}`}
     >
       <div
