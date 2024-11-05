@@ -49,7 +49,7 @@ export default function AboutUsPage() {
         </div>
       </Container>
 
-      <Container extraClassName="grid grid-cols-2">
+      <Container extraClassName="grid grid-cols-1 md:grid-cols-2">
       <Container>
       <div className="mb-5 flex min-h-16 items-center justify-center bg-[#49b74b28] px-5 pb-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-3xl lg:mt-5 rounded-2xl">
         Our Story
