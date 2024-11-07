@@ -2,7 +2,7 @@ export const initialValues = {
   title: "",
   moving_from: "",
   moving_to: "",
-  total_distance: 0,
+  total_distance: "",
   unit: "",
   category_slug: null,
   bed_room_count: null,

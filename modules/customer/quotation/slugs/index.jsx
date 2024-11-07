@@ -185,7 +185,7 @@ export default function UserJobDetailsPage({ params }) {
             </div>
 
             <div className="flex w-full items-center justify-between pb-6">
-              {userDetails ? (
+              {isAccepted ? (
                 <div className="w-full md:w-2/3">
                   <div className="flex flex-col">
                     <h5 className=" my-2 text-2xl font-semibold md:my-0 lg:text-3xl">
@@ -213,12 +213,12 @@ export default function UserJobDetailsPage({ params }) {
                 />
                 <h1 className="text-sm font-bold ">
                   {" "}
-                  Ratings {userDetails
-                    ? userDetails.rating.toFixed(2)
+                  Ratings {isAccepted
+                    ? userDetails.rating?.toFixed(2)
                     : "XXX"}{" "}
                   <span className="text-yellow-500">★ </span> ({" "}
                   <span className="text-gray-500">
-                    {userDetails.rating_count} reviews)
+                    {userDetails?.rating_count} reviews)
                   </span>
                 </h1>
               </div>
@@ -234,6 +234,17 @@ export default function UserJobDetailsPage({ params }) {
             {jobCategory === "delivery_job" && (
               <DeliveryJobDetails job={quotation || job} />
             )}
+            {/* Additional Information */}
+            <div className="mt-10 bg-primary-bg px-4 py-2 text-base md:text-xl">
+              <p className="font-semibold">Additional Information</p>
+              <p>
+                The content provided above serves as a reference for the removal
+                of three bedrooms. Any duplication or unauthorized use of this
+                content without explicit permission for the purpose of
+                facilitating the removal of three bedrooms is strictly
+                prohibited.
+              </p>
+            </div>
 
             {/* Action Buttons */}
             <QuotationButton

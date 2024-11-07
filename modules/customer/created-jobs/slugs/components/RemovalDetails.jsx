@@ -14,6 +14,7 @@ import { CircleChevronLeft, PencilLineIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import JobPhotos from "../../components/Photos";
 
 export default function RemovalDetails({ job }) {
   const [view, setView] = useState("overview");
@@ -37,7 +38,7 @@ export default function RemovalDetails({ job }) {
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       <Container>
-      <div className="grid grid-cols-3 place-items-center w-full gap-3 sm:gap-5 md:gap-10 p-1 sm:p-5">
+      <div className=" grid grid-cols-3 place-items-center w-full gap-3 sm:gap-5 md:gap-10 p-1 sm:p-5">
     
     <div className="bg-[#FFF2DE] px-1.5 py-2 md:p-4 border-primary rounded-2xl border flex flex-col items-center justify-center w-full sm:w-48 md:w-60 ">
       <InfoIcon
@@ -109,7 +110,7 @@ export default function RemovalDetails({ job }) {
         <div className="mt-5">
           {view === "overview" && <Overview job={job} isCustomer={true} />}
           {view === "videos" && <Video videos={videos} />}
-          {view === "photos" && <Photos photos={photos} />}
+          {view === "photos" && <JobPhotos photos={photos} />}
         </div>
       </Container>
     </div>

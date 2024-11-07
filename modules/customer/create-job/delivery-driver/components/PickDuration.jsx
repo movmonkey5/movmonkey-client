@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
+import { format, isAfter, isToday } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -19,6 +19,11 @@ export default function PickDuration({ formik }) {
   const { moving_date, dropoff } = formik.values;
   const [open, setOpen] = useState(false);
   const [openDropoff, setOpenDropoff] = useState(false);
+
+  const isDateInTheFuture = (date) => {
+    const today = new Date();
+    return isAfter(date, today) || isToday(date);
+  };
 
   return (
     <div className="flex flex-col gap-4 xs:flex-row">
@@ -47,11 +52,13 @@ export default function PickDuration({ formik }) {
               mode="single"
               selected={new Date(moving_date)}
               onSelect={(date) => {
-                formik.setFieldValue(
-                  "moving_date",
-                  format(date, "P").split("/").join("-"),
-                );
-                setOpen(false);
+                if (isDateInTheFuture(date)) {
+                  formik.setFieldValue(
+                    "moving_date",
+                    format(date, "P").split("/").join("-"),
+                  );
+                  setOpen(false);
+                }
               }}
               initialFocus
             />
@@ -80,11 +87,13 @@ export default function PickDuration({ formik }) {
               mode="single"
               selected={new Date(dropoff)}
               onSelect={(date) => {
-                formik.setFieldValue(
-                  "dropoff",
-                  format(date, "P").split("/").join("-"),
-                );
-                setOpenDropoff(false);
+                if (isDateInTheFuture(date)) {
+                  formik.setFieldValue(
+                    "dropoff",
+                    format(date, "P").split("/").join("-"),
+                  );
+                  setOpenDropoff(false);
+                }
               }}
               initialFocus
             />

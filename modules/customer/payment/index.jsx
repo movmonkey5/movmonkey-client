@@ -29,7 +29,7 @@ export default function Home({ params }) {
     queryKey: ["me/quotations", uid],
     queryFn: () => ApiKit.me.getQuotationDetails(uid).then(({ data }) => data),
   });
-console.log(user)
+  console.log(user);
   // Avoid rendering conditional hooks, handle jobDetails query safely
   const onlyCategory = category.split("_")[0];
 
@@ -131,18 +131,17 @@ console.log(user)
             {/* Driver Details Section */}
             <div className="w-full md:w-1/2">
               <div className="rounded-lg bg-primary p-5 text-left shadow-md">
-                <h1 className="text-3xl font-extrabold">Driver's Details</h1>
+                <h1 className="text-3xl font-extrabold">Job Details</h1>
                 <p>
                   <strong>JOB ID:</strong> XXXX-XXXX-XXXX
                 </p>
                 <p>
-                  <strong>Driver:</strong> XXXXXXXX
+                  <strong>Move From Address:</strong>{" "}
+                  {jobDetails.distance?.moving_from}
                 </p>
                 <p>
-                  <strong>Move From Address:</strong> {jobDetails.distance?.moving_from}
-                </p>
-                <p>
-                  <strong>Move to Address:</strong> {jobDetails.distance?.moving_to}
+                  <strong>Move to Address:</strong>{" "}
+                  {jobDetails.distance?.moving_to}
                 </p>
               </div>
             </div>

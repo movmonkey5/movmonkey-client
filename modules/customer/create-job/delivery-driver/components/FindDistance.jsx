@@ -8,33 +8,16 @@ import Container from "@/components/shared/Container";
 import FormikErrorBox from "@/components/form/FormikErrorBox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import JobMap from "./JobMap";
+import MapWrapper from "../../MapWrapper";
 
 const labels = ["title"];
-// MapWrapper.js
-
-import { useLoadScript } from "@react-google-maps/api";
-
-const MapWrapper = ({ origin, destination }) => {
-  // Load the Google Maps API once here
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"]
-  });
-
-  if (!isLoaded) return <div>Loading map...</div>;
-
-  // Render JobMap only once the API is loaded
-  return <JobMap origin={origin} destination={destination} />;
-};
-
 
 export default function FindDistance({ formik, setCurrentStep }) {
   useScrollToTop();
-
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
-
+  const [originCoords, setOriginCoords] = useState(null);
+  const [destinationCoords, setDestinationCoords] = useState(null);
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
 
@@ -52,24 +35,26 @@ export default function FindDistance({ formik, setCurrentStep }) {
         originAutocomplete.addListener("place_changed", () => {
           const place = originAutocomplete.getPlace();
           formik.setFieldValue("moving_from", place.formatted_address);
+          setOriginCoords([
+            place.geometry.location.lng(),
+            place.geometry.location.lat(),
+          ]);
         });
 
         destinationAutocomplete.addListener("place_changed", () => {
           const place = destinationAutocomplete.getPlace();
           formik.setFieldValue("moving_to", place.formatted_address);
+          setDestinationCoords([
+            place.geometry.location.lng(),
+            place.geometry.location.lat(),
+          ]);
         });
       }, 100);
     } else {
       console.error("Google Maps API not loaded");
     }
   }, []);
-
-  useEffect(() => {
-    if (formik.values.moving_from === "" || formik.values.moving_to === "") {
-      formik.setFieldValue("total_distance", null);
-    }
-  }, [formik.values.moving_from, formik.values.moving_to]);
-
+console.log(originCoords, destinationCoords);
   const getDistance = async () => {
     const { moving_from, moving_to } = formik.values;
 
@@ -80,14 +65,12 @@ export default function FindDistance({ formik, setCurrentStep }) {
 
     if (res.ok) {
       const distanceInMiles = parseFloat(data.distance) * 0.621371;
-      // setDistance(distanceInMiles.toFixed(2) + " Miles");
-      setDuration(data.duration);
+      setDistance(distanceInMiles.toFixed(2));
       formik.setFieldValue("total_distance", distanceInMiles.toFixed(2));
     } else {
       console.error(data.error);
     }
   };
-
   return (
     <Container>
       <div className="mb-5 w-full space-y-1">
@@ -152,15 +135,14 @@ export default function FindDistance({ formik, setCurrentStep }) {
             </div>
           </div>
         )}
-        {formik.values.total_distance && (
-          <div className="my-10">
-            <h4 className="text-center text-lg font-semibold">Job Route</h4>
-            <MapWrapper
-              origin={formik.values.moving_from}
-              destination={formik.values.moving_to}
-            />
+        {/* {formik.values.total_distance && (
+          <div className=" flex flex-col items-center justify-center">
+            <h4 className="text-lxl my-8 text-center font-semibold">
+              Job Route
+            </h4>
+            <MapWrapper origin={originCoords} destination={destinationCoords} />
           </div>
-        )}
+        )}{" "} */}
         {formik.values.total_distance && (
           <div className="flex justify-center">
             <Button

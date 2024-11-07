@@ -69,7 +69,6 @@ export default function DriverProfilePage() {
           <h3 className="px-4 text-3xl font-bold">Total Earned: $1370</h3>
         </Container>
       </div>
-      ={" "}
       <Container>
         <h4 className="text-2xl font-bold lg:text-4xl">Cleaner Profile</h4>
 
@@ -91,9 +90,9 @@ export default function DriverProfilePage() {
               <p className="text-base lg:text-xl">{profile?.email}</p>
               <p className="text-base text-[#0588d1] lg:text-xl">
                 {profile?.job_count} {profile?.job_count !== 1 ? "Jobs" : "Job"}{" "}
-                posted
+                Completed
               </p>
-              <p>Total Rated : {rating.count}</p>
+              <p>Total Rated : {rating?.count}</p>
             </div>
           </div>
           <div className="flex flex-col gap-5 max-xs:mt-0 max-xs:w-full  sm:flex-row sm:items-center">

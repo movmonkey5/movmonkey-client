@@ -8,45 +8,52 @@ import Container from "@/components/shared/Container";
 import FormikErrorBox from "@/components/form/FormikErrorBox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import MapWrapper from "../../MapWrapper";
 
 const labels = ["title"];
 
 export default function FindDistance({ formik, setCurrentStep }) {
   useScrollToTop();
-
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
-
+  const [originCoords, setOriginCoords] = useState(null);
+  const [destinationCoords, setDestinationCoords] = useState(null);
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.google) {
+    if (typeof window !== "undefined" && window.google) {
       setTimeout(() => {
-        const originAutocomplete = new window.google.maps.places.Autocomplete(originInputRef.current);
-        const destinationAutocomplete = new window.google.maps.places.Autocomplete(destinationInputRef.current);
+        const originAutocomplete = new window.google.maps.places.Autocomplete(
+          originInputRef.current,
+        );
+        const destinationAutocomplete =
+          new window.google.maps.places.Autocomplete(
+            destinationInputRef.current,
+          );
 
-        originAutocomplete.addListener('place_changed', () => {
+        originAutocomplete.addListener("place_changed", () => {
           const place = originAutocomplete.getPlace();
-          formik.setFieldValue('moving_from', place.formatted_address);
+          formik.setFieldValue("moving_from", place.formatted_address);
+          setOriginCoords([
+            place.geometry.location.lng(),
+            place.geometry.location.lat(),
+          ]);
         });
 
-        destinationAutocomplete.addListener('place_changed', () => {
+        destinationAutocomplete.addListener("place_changed", () => {
           const place = destinationAutocomplete.getPlace();
-          formik.setFieldValue('moving_to', place.formatted_address);
+          formik.setFieldValue("moving_to", place.formatted_address);
+          setDestinationCoords([
+            place.geometry.location.lng(),
+            place.geometry.location.lat(),
+          ]);
         });
       }, 100);
     } else {
-      console.error('Google Maps API not loaded');
+      console.error("Google Maps API not loaded");
     }
   }, []);
-
-  useEffect(() => {
-    if (formik.values.moving_from === "" || formik.values.moving_to === "") {
-      formik.setFieldValue("total_distance", null);
-    }
-  }, [formik.values.moving_from, formik.values.moving_to]);
-
   const getDistance = async () => {
     const { moving_from, moving_to } = formik.values;
 
@@ -57,17 +64,13 @@ export default function FindDistance({ formik, setCurrentStep }) {
 
     if (res.ok) {
       const distanceInMiles = parseFloat(data.distance) * 0.621371;
-      // setDistance(distanceInMiles.toFixed(2) + " Miles");
-      setDuration(data.duration);
-      formik.setFieldValue(
-        "total_distance",
-        distanceInMiles.toFixed(2)
-      );
+      setDistance(distanceInMiles.toFixed(2));
+      formik.setFieldValue("total_distance", distanceInMiles.toFixed(2));
     } else {
       console.error(data.error);
     }
   };
-
+  console.log(formik.values);
   return (
     <Container>
       <div className="mb-5 w-full space-y-1">
@@ -110,7 +113,6 @@ export default function FindDistance({ formik, setCurrentStep }) {
             />
           </div>
         </div>
-
         {formik.values.moving_from &&
           formik.values.moving_to &&
           !formik.values.total_distance && (
@@ -124,7 +126,6 @@ export default function FindDistance({ formik, setCurrentStep }) {
               </Button>
             </div>
           )}
-
         {formik.values.total_distance && (
           <div className="flex justify-center">
             <div className="flex size-40 items-center justify-center rounded-full bg-secondary p-3">
@@ -134,7 +135,14 @@ export default function FindDistance({ formik, setCurrentStep }) {
             </div>
           </div>
         )}
-
+        {/* {formik.values.total_distance && (
+          <div className=" flex flex-col items-center justify-center">
+            <h4 className="text-lxl my-8 text-center font-semibold">
+              Job Route
+            </h4>
+            <MapWrapper origin={originCoords} destination={destinationCoords} />
+          </div>
+        )}{" "} */}
         {formik.values.total_distance && (
           <div className="flex justify-center">
             <Button

@@ -57,7 +57,6 @@ export default function CleaningJobDetails({ job }) {
     },
   });
 
-
   if (error) {
     return <div>Error fetching job details: {error.message}</div>;
   }
@@ -65,7 +64,7 @@ export default function CleaningJobDetails({ job }) {
   return (
     <>
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
-        <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 md:px-4 md:h-20">
+        <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-4 md:h-20">
           <h3>Service Details</h3>
         </div>
       </div>
@@ -76,7 +75,7 @@ export default function CleaningJobDetails({ job }) {
         {/* Display actual content when data is available */}
         {!isLoading && jobDetails && (
           <Container className="mt-10">
-          <CleanerJobOverview job={jobDetails} isCustomer={true} />
+            <CleanerJobOverview job={jobDetails} isCustomer={true} />
 
             {/* Detail Fee Section */}
             <div className="mt-10">
@@ -84,7 +83,7 @@ export default function CleaningJobDetails({ job }) {
                 <div>Detail Fee</div>
               </div>
               <div className="flex flex-col bg-primary-bg px-4 py-2">
-                <div className="flex flex-col gap-2 bg-primary-bg md:px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
+                <div className="flex flex-col gap-2 bg-primary-bg py-2 text-base md:flex-row md:items-center md:justify-between md:px-4 md:text-xl">
                   <p>Job Title</p>
                   <p>{job.title}</p>
                 </div>
@@ -113,16 +112,6 @@ export default function CleaningJobDetails({ job }) {
             </div>
 
             {/* Additional Information */}
-            <div className="mt-10 bg-primary-bg px-4 py-2 text-xs md:text-xl">
-              <p className="font-semibold">Additional Information</p>
-              <p>
-                The content provided above serves as a reference for the removal
-                of three bedrooms. Any duplication or unauthorized use of this
-                content without explicit permission for the purpose of
-                facilitating the removal of three bedrooms is strictly
-                prohibited.
-              </p>
-            </div>
           </Container>
         )}
       </>

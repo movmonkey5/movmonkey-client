@@ -8,6 +8,7 @@ import Container from "@/components/shared/Container";
 import DrivrIcon from "@/public/icon/driver-icon.png";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import MapWrapper from "../components/MapWrapper";
 
 export default function UserJobTrack({ params }) {
   const searchParams = useSearchParams();
@@ -23,9 +24,13 @@ export default function UserJobTrack({ params }) {
           </div>
         </div>
         <div className="w-full">
-          <h1 className="my-2  w-full  text-center text-2xl font-bold md:my-8 lg:text-left lg:text-4xl">
+          {/* <h1 className="my-2  w-full  text-center text-2xl font-bold md:my-8 lg:text-left lg:text-4xl">
             Job Assigned to
-          </h1>
+          </h1> */}
+        </div>
+        <div className=" flex flex-col items-center justify-center">
+          <h4 className="text-lxl my-8 text-center font-semibold">Job Route</h4>
+          <MapWrapper />{" "}
         </div>
 
         <div className="flex w-full items-center justify-between pb-6"></div>

@@ -93,13 +93,6 @@ export default function CustomerProfilePage() {
             </div>
           </div>
           <div className="flex  items-center justify-center gap-5  max-xs:mt-0  max-xs:w-full  sm:flex-row">
-            <Link
-              href="/message"
-              className="block rounded-full bg-primary  p-4"
-            >
-              <MessageCircleMore className="font-bold text-black" />
-            </Link>
-
             <Link href="/quotation" className="block">
               <Button variant="secondary" className=" max-xs:w-full">
                 <ClipboardList className="mx-2 size-5" />
@@ -150,7 +143,7 @@ export default function CustomerProfilePage() {
                   id="jobType"
                   value={draftJobType}
                   onChange={(e) => setDraftJobType(e.target.value)}
-                  className="rounded border px-2 py-1"
+                  className="my-2 rounded-xl border  border-black px-2 text-black"
                 >
                   {jobTypes.map((type) => (
                     <option key={type} value={type}>

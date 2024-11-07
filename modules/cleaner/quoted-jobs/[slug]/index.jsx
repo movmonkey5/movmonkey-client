@@ -91,7 +91,7 @@ export default function UserJobDetailsPage({ params }) {
               "This job has been successfully completed."}
           </p>
           {renderQuotationDetails()}
-          <Link href="/driver/completed-jobs">
+          <Link href="/cleaner/completed-jobs">
             <Button className="mt-4">Back to Completed Jobs</Button>
           </Link>
         </div>
