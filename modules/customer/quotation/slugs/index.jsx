@@ -152,6 +152,7 @@ export default function UserJobDetailsPage({ params }) {
         </div>
       ) : (
         <>
+        {/* Work need */}
           <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
             <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-2 px-4 md:h-20 md:px-6">
               <h3>{quotation.title}</h3>
@@ -204,7 +205,7 @@ export default function UserJobDetailsPage({ params }) {
                 </div>
               )}
               <div className="flex flex-col items-center justify-center  gap-4 md:gap-4">
-                <Image
+                <Image alt="Driver Icon"
                   src={DrivrIcon}
                   width={100}
                   height={100}
