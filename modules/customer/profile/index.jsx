@@ -11,6 +11,7 @@ import Loading from "@/components/shared/Loading";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import userPlaceHolder from "@/public/image/user-placeholder-green.png";
+import ReviewList from "./components/ReviewList";
 
 export default function CustomerProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
@@ -20,7 +21,12 @@ export default function CustomerProfilePage() {
     queryKey: ["me.getProfile"],
     queryFn: () => ApiKit.me.getProfile().then(({ data }) => data),
   });
+  const { data: review, isLoading: reviewLoading } = useQuery({
+    queryKey: ["me/jobs/tatings"],
+    queryFn: () => ApiKit.me.getRatings().then(({ data }) => data.results),
+  });
 
+  console.log(review);
   const { data: activeJobs, isLoading: activeJobsLoading } = useQuery({
     queryKey: ["/me/jobs/actives"],
     queryFn: () => ApiKit.me.job.active.getJobs().then(({ data }) => data),
@@ -39,7 +45,7 @@ export default function CustomerProfilePage() {
     enabled: activeTab === "draft", // Only fetch when draft tab is active
   });
 
-  if (profileLoading) {
+  if (reviewLoading) {
     return <Loading className="min-h-[calc(100vh-8rem)]" />;
   }
 
@@ -160,6 +166,10 @@ export default function CustomerProfilePage() {
             </TabsContent>
           </Tabs>
         </div>
+      </Container>
+      <Container>
+        {/* Other profile information here */}
+        <ReviewList reviewList={review} />
       </Container>
     </div>
   );

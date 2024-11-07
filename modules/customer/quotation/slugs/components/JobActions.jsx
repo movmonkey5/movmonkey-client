@@ -73,7 +73,6 @@ const JobActions = ({ job, onJobCompleted }) => {
       <Button
         size="lg"
         className=" w-full md:w-4/12"
-        onClick={() => setIsDisputeOpen(true)}
       >
         Chat With Service provider
       </Button>

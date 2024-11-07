@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import userPlaceHolder from "@/public/image/user-placeholder-green.png";
 import { MessageCircleMore } from "lucide-react";
+import ReviewList from "./components/ReviewList";
 export default function DriverProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
 
@@ -19,9 +20,10 @@ export default function DriverProfilePage() {
     queryKey: ["me.getProfile"],
     queryFn: () => ApiKit.me.getProfile().then(({ data }) => data),
   });
-  const { data: rating, isLoading: ratingLoading } = useQuery({
-    queryKey: ["me.getRatings"],
-    queryFn: () => ApiKit.me.getRatings().then(({ data }) => data), // Make sure to invoke getRatings
+
+  const { data: rating, isLoading: reviewLoading } = useQuery({
+    queryKey: ["me/jobs/tatings"],
+    queryFn: () => ApiKit.me.getRatings().then(({ data }) => data),
   });
 
   const { data: activeJobs, isLoading: activeJobsLoading } = useQuery({
@@ -133,6 +135,10 @@ export default function DriverProfilePage() {
             </TabsContent>
           </Tabs>
         </div>
+      </Container>
+      <Container>
+        {/* Other profile information here */}
+        <ReviewList reviewList={rating.results} />
       </Container>
     </div>
   );

@@ -15,6 +15,8 @@ const MapWrapper = () => {
   const [route, setRoute] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [distance, setDistance] = useState(null);
+  const [duration, setDuration] = useState(null);
 
   // Get initial user location and set map center
   useEffect(() => {
@@ -50,8 +52,11 @@ const MapWrapper = () => {
         );
         const data = await res.json();
 
-        if (data.routes?.[0]?.geometry) {
-          setRoute(data.routes[0].geometry);
+        if (data.routes?.[0]) {
+          const routeData = data.routes[0];
+          setRoute(routeData.geometry);
+          setDistance((routeData.distance / 1000).toFixed(2)); // Convert meters to kilometers
+          setDuration((routeData.duration / 60).toFixed(0)); // Convert seconds to minutes
 
           // After getting the route, fit the map to show both points
           const bounds = new mapboxgl.LngLatBounds()
@@ -59,14 +64,14 @@ const MapWrapper = () => {
             .extend(destination);
 
           const { lng, lat } = bounds.getCenter();
-          const distance = bounds
+          const distanceBounds = bounds
             .getNorthEast()
             .distanceTo(bounds.getSouthWest());
 
           setViewport({
             latitude: lat,
             longitude: lng,
-            zoom: distance > 100000 ? 8 : distance > 50000 ? 10 : 12,
+            zoom: distanceBounds > 100000 ? 8 : distanceBounds > 50000 ? 10 : 12,
           });
         }
       } catch (error) {
@@ -100,37 +105,45 @@ const MapWrapper = () => {
           <div className="loader">Loading map...</div>
         </div>
       ) : (
-        <Map
-          initialViewState={viewport}
-          style={{ width: "100%", height: "100%" }}
-          mapStyle="mapbox://styles/mapbox/streets-v11"
-          mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-        >
-          {/* Origin Marker */}
-          <Marker latitude={origin[1]} longitude={origin[0]} color="blue" />
-          <Marker
-            latitude={destination[1]}
-            longitude={destination[0]}
-            color="red"
-          />
-
-          {/* User Location Marker */}
-          {userLocation && (
+        <>
+          {/* Display distance and duration above the map */}
+          <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-md shadow-md">
+            <p>Distance: {distance ? `${distance} km` : "Calculating..."}</p>
+            <p>Duration: {duration ? `${duration} mins` : "Calculating..."}</p>
+          </div>
+          <Map
+            initialViewState={viewport}
+            style={{ width: "100%", height: "100%" }}
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+          >
+            {/* Origin Marker */}
+            <Marker latitude={origin[1]} longitude={origin[0]} color="blue" />
             <Marker
-              latitude={userLocation[1]}
-              longitude={userLocation[0]}
-              color="blue"
-            >
-              <div className="h-4 w-4 rounded-full border-2 border-white bg-blue-500" />
-            </Marker>
-          )}
+              latitude={destination[1]}
+              longitude={destination[0]}
+              color="red"
+            />
 
-          {route && (
-            <Source id="route" type="geojson" data={route}>
-              <Layer {...routeLayer} />
-            </Source>
-          )}
-        </Map>
+            {/* User Location Marker */}
+            {userLocation && (
+              <Marker
+                latitude={userLocation[1]}
+                longitude={userLocation[0]}
+                color="blue"
+              >
+                <div className="h-4 w-4 rounded-full border-2 border-white bg-blue-500" />
+              </Marker>
+            )}
+
+            {/* Route Line */}
+            {route && (
+              <Source id="route" type="geojson" data={route}>
+                <Layer {...routeLayer} />
+              </Source>
+            )}
+          </Map>
+        </>
       )}
     </div>
   );

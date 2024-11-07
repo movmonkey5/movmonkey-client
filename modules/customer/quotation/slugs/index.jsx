@@ -15,6 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import JobActions from "./components/JobActions";
 import ReviewDialog from "./components/ReviewDialog";
+import { Star } from "lucide-react"; // Import icon for star rating
 
 export default function UserJobDetailsPage({ params }) {
   const notificationUid = params.slugs[1];
@@ -127,9 +128,45 @@ export default function UserJobDetailsPage({ params }) {
               Submit Review
             </Button>
           ) : (
-            <span className="mb-8 font-bold">
-              You have succesfully rated this job
-            </span>
+            <>
+              <div className="mt-8">
+                <span className="mb-8 block text-center font-bold">
+                  You have successfully rated this job
+                </span>
+
+                <div className="rounded-lg border border-gray-200 bg-gray-100 p-4 shadow-md">
+                  <p className="mb-2 text-lg font-semibold">Your Review</p>
+
+                  <div className="mb-4 flex items-center justify-center">
+                    {/* Display star icons based on the rating */}
+                    {Array.from({ length: 5 }, (_, index) => (
+                      <Star
+                        key={index}
+                        className={`h-5 w-5 ${
+                          index < quotation.rating.rating
+                            ? "text-yellow-500"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Display review details */}
+                  <p className="text-sm text-gray-500">
+                    <span className="font-bold">Date:</span>{" "}
+                    {new Date(quotation.rating.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    <span className="font-bold">Rating:</span>{" "}
+                    {quotation.rating.rating} / 5
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    <span className="font-bold">Message:</span>{" "}
+                    {quotation.rating.description}
+                  </p>
+                </div>
+              </div>
+            </>
           )}
           <ReviewDialog
             isOpen={showReview}
@@ -152,7 +189,7 @@ export default function UserJobDetailsPage({ params }) {
         </div>
       ) : (
         <>
-        {/* Work need */}
+          {/* Work need */}
           <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
             <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-2 px-4 md:h-20 md:px-6">
               <h3>{quotation.title}</h3>
@@ -205,7 +242,8 @@ export default function UserJobDetailsPage({ params }) {
                 </div>
               )}
               <div className="flex flex-col items-center justify-center  gap-4 md:gap-4">
-                <Image alt="Driver Icon"
+                <Image
+                  alt="Driver Icon"
                   src={DrivrIcon}
                   width={100}
                   height={100}

@@ -11,7 +11,7 @@ import Loading from "@/components/shared/Loading";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import userPlaceHolder from "@/public/image/user-placeholder-green.png";
-import { MessageCircleMore } from "lucide-react";
+import ReviewList from "./components/ReviewList";
 export default function DriverProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
 
@@ -19,12 +19,11 @@ export default function DriverProfilePage() {
     queryKey: ["me.getProfile"],
     queryFn: () => ApiKit.me.getProfile().then(({ data }) => data),
   });
-  const { data: rating, isLoading: ratingLoading } = useQuery({
-    queryKey: ["me.getRatings"],
-    queryFn: () => ApiKit.me.getRatings().then(({ data }) => data), // Make sure to invoke getRatings
+  const { data: review, isLoading: reviewLoading } = useQuery({
+    queryKey: ["me/jobs/tatings"],
+    queryFn: () => ApiKit.me.getRatings().then(({ data }) => data),
   });
 
-  console.log(rating);
   const { data: activeJobs, isLoading: activeJobsLoading } = useQuery({
     queryKey: ["/me/jobs/assigned"],
     queryFn: () => ApiKit.me.job.assigned.getJobs().then(({ data }) => data),
@@ -92,7 +91,7 @@ export default function DriverProfilePage() {
                 {profile?.job_count} {profile?.job_count !== 1 ? "Jobs" : "Job"}{" "}
                 completed
               </p>
-              <p>Total Rated : {rating.count}</p>
+              <p>Total Rated : {review?.count}</p>
             </div>
           </div>
           <div className="flex flex-col gap-5 max-xs:mt-0 max-xs:w-full  sm:flex-row sm:items-center">
@@ -133,6 +132,10 @@ export default function DriverProfilePage() {
             </TabsContent>
           </Tabs>
         </div>
+      </Container>
+      <Container>
+        {/* Other profile information here */}
+        <ReviewList reviewList={review.results} />
       </Container>
     </div>
   );
