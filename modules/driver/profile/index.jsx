@@ -96,12 +96,12 @@ export default function DriverProfilePage() {
             </div>
           </div>
           <div className="flex flex-col gap-5 max-xs:mt-0 max-xs:w-full  sm:flex-row sm:items-center">
-            <Link
+            {/* <Link
               href="/driver/message"
               className="block rounded-full bg-primary p-4"
             >
               <MessageCircleMore className="font-bold text-black" />
-            </Link>
+            </Link> */}
 
             <Link href="/profile/edit" className="block">
               <Button variant="secondary" className="gap-2 max-xs:w-full">

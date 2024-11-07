@@ -61,11 +61,13 @@ export default function StepThree({ formik, setCurrentStep }) {
   };
 
   const toggleExtraMovingService = (service) => {
-    const currentServices = formik.values.extra_moving_service.split(',').filter(s => s !== '');
+    const currentServices = formik.values.extra_moving_service
+      .split(",")
+      .filter((s) => s !== "");
     const updatedServices = currentServices.includes(service)
-      ? currentServices.filter(s => s !== service)
+      ? currentServices.filter((s) => s !== service)
       : [...currentServices, service];
-    formik.setFieldValue('extra_moving_service', updatedServices.join(','));
+    formik.setFieldValue("extra_moving_service", updatedServices.join(","));
   };
 
   return (
@@ -110,6 +112,7 @@ export default function StepThree({ formik, setCurrentStep }) {
             <Calendar
               mode="single"
               selected={new Date(formik.values.moving_date)}
+              fromDate={new Date()}
               onSelect={(date) => {
                 formik.setFieldValue(
                   "moving_date",
@@ -126,7 +129,6 @@ export default function StepThree({ formik, setCurrentStep }) {
           field="moving_date"
           className="w-full md:w-2/5"
         />
-
         <div
           onClick={() => {
             formik.setFieldValue(
@@ -164,15 +166,17 @@ export default function StepThree({ formik, setCurrentStep }) {
               quality={100}
               className={cn(
                 "rounded-full border-2 border-transparent",
-                formik.values.extra_moving_service.includes("PACKING_SERVICES") &&
-                  "border-secondary",
+                formik.values.extra_moving_service.includes(
+                  "PACKING_SERVICES",
+                ) && "border-secondary",
               )}
             />
             <p
               className={cn(
                 "mt-2 w-28 text-center text-sm font-semibold",
-                formik.values.extra_moving_service.includes("PACKING_SERVICES") &&
-                  "text-secondary",
+                formik.values.extra_moving_service.includes(
+                  "PACKING_SERVICES",
+                ) && "text-secondary",
               )}
             >
               Packing Services
@@ -190,15 +194,17 @@ export default function StepThree({ formik, setCurrentStep }) {
               quality={100}
               className={cn(
                 "rounded-full border-2 border-transparent",
-                formik.values.extra_moving_service.includes("PACKING_MATERIALS") &&
-                  "border-secondary",
+                formik.values.extra_moving_service.includes(
+                  "PACKING_MATERIALS",
+                ) && "border-secondary",
               )}
             />
             <p
               className={cn(
                 "mt-2 w-28 text-center text-sm font-semibold",
-                formik.values.extra_moving_service.includes("PACKING_MATERIALS") &&
-                  "text-secondary",
+                formik.values.extra_moving_service.includes(
+                  "PACKING_MATERIALS",
+                ) && "text-secondary",
               )}
             >
               Packing Materials
@@ -206,7 +212,9 @@ export default function StepThree({ formik, setCurrentStep }) {
           </div>
           <div
             className="flex cursor-pointer flex-col items-center"
-            onClick={() => toggleExtraMovingService("DISMANTLING_AND_REASSEMBLING")}
+            onClick={() =>
+              toggleExtraMovingService("DISMANTLING_AND_REASSEMBLING")
+            }
           >
             <Image
               src={service_3}
@@ -216,13 +224,17 @@ export default function StepThree({ formik, setCurrentStep }) {
               quality={100}
               className={cn(
                 "rounded-full border-2 border-transparent",
-                formik.values.extra_moving_service.includes("DISMANTLING_AND_REASSEMBLING") && "border-secondary",
+                formik.values.extra_moving_service.includes(
+                  "DISMANTLING_AND_REASSEMBLING",
+                ) && "border-secondary",
               )}
             />
             <p
               className={cn(
                 "mt-2 w-28 text-center text-sm font-semibold",
-                formik.values.extra_moving_service.includes("DISMANTLING_AND_REASSEMBLING") && "text-secondary",
+                formik.values.extra_moving_service.includes(
+                  "DISMANTLING_AND_REASSEMBLING",
+                ) && "text-secondary",
               )}
             >
               Dismantling & Reassembling

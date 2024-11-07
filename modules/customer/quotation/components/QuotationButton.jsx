@@ -54,7 +54,7 @@ const QuotationButton = ({ job }) => {
   }
 
   return (
-    <div className="mx-auto mt-10 flex max-w-[250px] flex-col items-center justify-between gap-6 sm:max-w-full sm:flex-row sm:gap-24">
+    <div className="mx-auto mt-10 flex max-w-[250px] flex-col-reverse items-center justify-between gap-6 sm:max-w-full sm:flex-row sm:gap-24">
       <Link href="/quotation" className="w-full max-w-[200px]">
         <Button size="lg" className="w-full">
           Back

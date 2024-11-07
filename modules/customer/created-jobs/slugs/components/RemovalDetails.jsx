@@ -14,6 +14,7 @@ import { CircleChevronLeft, PencilLineIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import JobPhotos from "../../components/Photos";
 
 export default function RemovalDetails({ job }) {
   const [view, setView] = useState("overview");
@@ -171,7 +172,7 @@ export default function RemovalDetails({ job }) {
         <div className="mt-5">
           {view === "overview" && <Overview job={job} isCustomer={true} />}
           {view === "videos" && <Video videos={videos} />}
-          {view === "photos" && <Photos photos={photos} />}
+          {view === "photos" && <JobPhotos photos={photos} />}
         </div>
       </Container>
     </div>

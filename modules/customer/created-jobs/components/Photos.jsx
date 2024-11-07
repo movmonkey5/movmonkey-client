@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-export default function CleanerJobPhotos({ photos }) {
+export default function JobPhotos({ photos }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -93,3 +93,4 @@ export default function CleanerJobPhotos({ photos }) {
     </div>
   );
 }
+

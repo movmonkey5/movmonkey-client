@@ -6,7 +6,6 @@ import Container from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import DeliveryOverview from "@/modules/driver/open-jobs/slug/components/delivery/Overview";
-import DeliveryPhotos from "@/modules/driver/open-jobs/slug/components/delivery/Photos";
 import DeliveryVideo from "@/modules/driver/open-jobs/slug/components/delivery/Video";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -14,6 +13,7 @@ import { CircleChevronLeft, PencilLineIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import JobPhotos from "../../components/Photos";
 
 export default function DeliveryDetails({ job }) {
   const [view, setView] = useState("overview");
@@ -102,10 +102,8 @@ export default function DeliveryDetails({ job }) {
             />
             Videos
           </div> */}
-          <div className="bg-[#FFF2DE] p-4 border-primary rounded-2xl border ">
-            <InfoIcon
-              className={`size-16 mx-auto mt-1 mb-4 text-secondary`}
-            />
+          <div className="rounded-2xl border border-primary bg-[#FFF2DE] p-4 ">
+            <InfoIcon className={`mx-auto mb-4 mt-1 size-16 text-secondary`} />
 
             <button
               onClick={() => {
@@ -125,9 +123,9 @@ export default function DeliveryDetails({ job }) {
             </button>
           </div>
 
-          <div className="bg-[#FFF2DE] p-4 border-primary rounded-2xl border ">
+          <div className="rounded-2xl border border-primary bg-[#FFF2DE] p-4 ">
             <PhotosIcon
-              className={`size-16 mx-auto mt-1 mb-4 text-secondary`}
+              className={`mx-auto mb-4 mt-1 size-16 text-secondary`}
             />
             <button
               onClick={() => {
@@ -146,10 +144,8 @@ export default function DeliveryDetails({ job }) {
               Photos
             </button>
           </div>
-          <div className="bg-[#FFF2DE] p-4 border-primary rounded-2xl border ">
-            <VideoIcon
-              className={`size-16 mx-auto mt-1 mb-4 text-secondary`}
-            />
+          <div className="rounded-2xl border border-primary bg-[#FFF2DE] p-4 ">
+            <VideoIcon className={`mx-auto mb-4 mt-1 size-16 text-secondary`} />
             <button
               onClick={() => {
                 setView("videos");
@@ -174,7 +170,7 @@ export default function DeliveryDetails({ job }) {
             <DeliveryOverview job={job} isCustomer={true} />
           )}
           {view === "videos" && <DeliveryVideo videos={videos} />}
-          {view === "photos" && <DeliveryPhotos photos={photos} />}
+          {view === "photos" && <JobPhotos photos={photos} />}
         </div>
       </Container>
     </div>

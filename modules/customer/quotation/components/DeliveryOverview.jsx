@@ -39,9 +39,9 @@ const OverviewItem = ({ title, value, extraValue }) => {
   }
 
   return (
-    <div className="flex justify-between border-b border-gray-200 py-2">
-      <div className="text-lg">{title}</div>
-      <div className="text-lg font-semibold">{content}</div>
+    <div className="flex justify-between border-b border-gray-200 py-2 text-base lg:text-xl">
+      <div className="">{title}</div>
+      <div className="font-semibold">{content}</div>
     </div>
   );
 };
