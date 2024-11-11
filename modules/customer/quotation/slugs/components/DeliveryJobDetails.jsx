@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import ApiKit from "@/common/ApiKit";
 import DeliveryOverview from "../../components/DeliveryOverview";
-import Container from "@/components/shared/Container";
+import useStore from "@/store";
+import { useEffect, useState } from "react";
 
 // Skeleton Loader Component
 function JobDetailsSkeleton() {
@@ -44,6 +45,16 @@ function JobDetailsSkeleton() {
 
 export default function DeliveryJobDetails({ job }) {
   // Fetch job details using the `useQuery` hook
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
   const {
     data: jobDetails,
     error,
@@ -92,17 +103,23 @@ export default function DeliveryJobDetails({ job }) {
               <hr />
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Subtotal</p>
-                <p>£{job.subtotal}</p>
+                <p>
+                  {job.subtotal} <small> {currency}</small>
+                </p>
               </div>
               <hr />
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Total VAT</p>
-                <p>£{job.total_vat}</p>
+                <p>
+                  {job.total_vat} <small> {currency}</small>
+                </p>
               </div>
               <hr />
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Total Amount</p>
-                <p>£{job.total_amount}</p>
+                <p>
+                  {job.total_amount} <small> {currency}</small>
+                </p>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,11 +12,21 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import userPlaceHolder from "@/public/image/user-placeholder-green.png";
 import ReviewList from "./components/ReviewList";
+import useStore from "@/store";
 
 export default function CustomerProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
   const [draftJobType, setDraftJobType] = useState("removal"); // New state for job type
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
 
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["me.getProfile"],
     queryFn: () => ApiKit.me.getProfile().then(({ data }) => data),
@@ -92,6 +102,10 @@ export default function CustomerProfilePage() {
                 {profile?.full_name}
               </h4>
               <p className="text-base lg:text-xl">{profile?.email}</p>
+              <p className="text-base lg:text-xl">
+                {" "}
+                Currency : <b>{currency}</b>
+              </p>
               <p className="text-base text-[#0588d1] lg:text-xl">
                 {profile?.job_count} {profile?.job_count !== 1 ? "Jobs" : "Job"}{" "}
                 posted

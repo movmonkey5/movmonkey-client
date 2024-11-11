@@ -135,7 +135,7 @@ export default function DriverProfilePage() {
       </Container>
       <Container>
         {/* Other profile information here */}
-        <ReviewList reviewList={review.results} />
+        <ReviewList reviewList={review?.results} />
       </Container>
     </div>
   );

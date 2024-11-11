@@ -8,12 +8,22 @@ if (typeof window !== "undefined") {
   location = window.location;
 }
 
-// Map country codes to currencies
+// Enhanced currency map with both code and symbol
 const currencyMap = {
-  uk: "gbp",
-  au: "aud",
-  ca: "cad",
-  us: "usd",
+  uk: { code: "gbp", symbol: "£" },
+  au: { code: "aud", symbol: "A$" },
+  ca: { code: "cad", symbol: "C$" },
+  us: { code: "usd", symbol: "$" },
+};
+
+// Format currency helper
+const formatCurrency = (amount, currency) => {
+  const formatter = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: currency.code.toUpperCase(),
+    currencyDisplay: "symbol",
+  });
+  return formatter.format(amount);
 };
 
 const useStore = create((set) => ({
@@ -25,10 +35,20 @@ const useStore = create((set) => ({
       set({ userLoading: true });
       const { data } = await ApiKit.me.getMe();
 
-      // Add currency based on country code
-      const currency = currencyMap[data.country] || "usd"; // default to USD if not listed
+      // Add currency info based on country code
+      const currency = currencyMap[data.country] || {
+        code: "usd",
+        symbol: "$",
+      }; // default to USD if not listed
 
-      set({ user: { ...data, currency } });
+      set({
+        user: {
+          ...data,
+          currency: currency.code,
+          currencySymbol: currency.symbol,
+          formatPrice: (amount) => formatCurrency(amount, currency),
+        },
+      });
       set({ userLoading: false });
     } catch (error) {
       localStorage.removeItem(AUTH_TOKEN_KEY);

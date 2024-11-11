@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutPage from "./components/CheckoutPage";
@@ -22,14 +22,23 @@ export default function Home({ params }) {
   const category = params.slugs[0];
   const uid = params.slugs[1];
   const [showCheckout, setShowCheckout] = useState(false); // State to show/hide checkout
-  const { user } = useStore();
 
   // Fetch quotation details (no conditional logic)
   const { data: quotationDetails, isLoading: isJobsLoading } = useQuery({
     queryKey: ["me/quotations", uid],
     queryFn: () => ApiKit.me.getQuotationDetails(uid).then(({ data }) => data),
   });
-  console.log(user);
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
+
   // Avoid rendering conditional hooks, handle jobDetails query safely
   const onlyCategory = category.split("_")[0];
 
@@ -87,19 +96,27 @@ export default function Home({ params }) {
                   <span>
                     <strong>Subtotal:</strong>
                   </span>
-                  <span>£{quotationDetails.subtotal}</span>
+                  <span>
+                    {quotationDetails.subtotal} <small> {currency}</small>
+                  </span>
                 </p>
                 <p className="flex justify-between">
                   <span>
                     <strong>VAT (20%):</strong>
                   </span>
-                  <span> £{quotationDetails.total_vat}</span>
+                  <span>
+                    {" "}
+                    {quotationDetails.total_vat} <small> {currency}</small>
+                  </span>
                 </p>
                 <p className="flex justify-between">
                   <span>
                     <strong>Service Charge:</strong>
                   </span>
-                  <span>{quotationDetails.extra_services_charge}</span>
+                  <span>
+                    {quotationDetails.extra_services_charge}{" "}
+                    <small> {currency}</small>
+                  </span>
                 </p>
                 <div className="border-t border-black"></div>
                 <div className="flex flex-col gap-2">
@@ -115,7 +132,7 @@ export default function Home({ params }) {
                 <p className="flex justify-between">
                   <strong>Total Amount:</strong>{" "}
                   <span className="text-xl font-bold">
-                    £{quotationDetails.total_amount}
+                    {currency} {quotationDetails.total_amount}
                   </span>
                 </p>
                 <Button
@@ -154,7 +171,7 @@ export default function Home({ params }) {
                 stripe={stripePromise}
                 options={{
                   mode: "payment",
-                  amount: amount * 100, // Assuming it's in pence for Stripe
+                  amount: amount,
                   currency: user.currency,
                 }}
               >

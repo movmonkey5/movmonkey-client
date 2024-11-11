@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useStore from "@/store";
 
 const calcTotalCharge = (...charges) => {
   return charges.reduce((accu, curr) => +accu + +curr, 0);
@@ -9,12 +10,24 @@ const calcTotalCharge = (...charges) => {
 
 export default function DetailPricing({ formik, job }) {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
 
   const handleConfirmSubmit = () => {
     setShowOverlay(false);
     formik.handleSubmit();
   };
 
+  // Now you can use currency anywhere in your component
+  console.log(currency); // Thi
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="mt-10">
@@ -77,12 +90,12 @@ export default function DetailPricing({ formik, job }) {
         <div className="flex items-center justify-between bg-primary px-4 py-2 text-lg font-medium">
           <p className="bg-primary text-xl font-bold text-black">TOTAL</p>
           <p className="text-xl">
-            £
             {calcTotalCharge(
               formik.values.subtotal,
               formik.values.extra_services_charge,
-              formik.values.total_vat
-            )}
+              formik.values.total_vat,
+            )}{" "}
+            <small>{currency}</small>
           </p>
         </div>
       </div>
@@ -100,18 +113,20 @@ export default function DetailPricing({ formik, job }) {
       {/* Confirmation Overlay */}
       {showOverlay && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <p className="mb-4 text-lg">After Submit You wont able to edit anu information. <br />
-            Are you sure you want to submit?</p>
+          <div className="rounded-lg bg-white p-6 text-center shadow-lg">
+            <p className="mb-4 text-lg">
+              After Submit You wont able to edit anu information. <br />
+              Are you sure you want to submit?
+            </p>
             <div className="flex justify-center gap-4">
               <Button
-                className="px-4 py-2 text-white bg-red-500 rounded"
+                className="rounded bg-red-500 px-4 py-2 text-white"
                 onClick={() => setShowOverlay(false)}
               >
                 Cancel
               </Button>
               <Button
-                className="px-4 py-2 text-white bg-green-500 rounded"
+                className="rounded bg-green-500 px-4 py-2 text-white"
                 onClick={handleConfirmSubmit}
               >
                 Yes, Submit

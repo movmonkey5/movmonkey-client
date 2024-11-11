@@ -1,12 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useStore from "@/store";
+import { useEffect, useState } from "react";
 
 const calcTotalCharge = (...charges) => {
   return charges.reduce((accu, curr) => +accu + +curr, 0);
 };
 
 export default function CleanerJobDetailPricing({ formik, job }) {
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="mt-10">
@@ -69,12 +82,13 @@ export default function CleanerJobDetailPricing({ formik, job }) {
         <div className="flex items-center justify-between bg-primary px-4 py-2 text-lg font-medium">
           <p className="bg-primary text-xl font-bold text-black">TOTAL</p>
           <p className="text-xl">
-            £
             {calcTotalCharge(
               formik.values.subtotal,
               formik.values.extra_services_charge,
               formik.values.total_vat,
             )}
+            {" "}
+            <small>{currency}</small>
           </p>
         </div>
       </div>

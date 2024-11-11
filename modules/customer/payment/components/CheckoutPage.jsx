@@ -9,6 +9,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import ApiKit from "@/common/ApiKit";
+import useStore from "@/store";
 
 const CheckoutPage = ({ amount, uid }) => {
   const stripe = useStripe();
@@ -30,6 +31,15 @@ const CheckoutPage = ({ amount, uid }) => {
       },
       enabled: false, // Disable auto-fetching
     });
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
 
   useEffect(() => {
     // Check if there's a stored client secret in sessionStorage
@@ -115,7 +125,7 @@ const CheckoutPage = ({ amount, uid }) => {
           disabled={!stripe || loading}
           className="mt-2 w-full rounded-md bg-primary p-5 font-bold text-black disabled:animate-pulse disabled:opacity-50"
         >
-          {!loading ? `Pay £${amount}` : "Processing..."}
+          {!loading ? `Pay ${amount} ` : "Processing..."} {currency}
         </button>
       </form>
     </div>
