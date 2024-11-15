@@ -7,6 +7,7 @@ import Removal from "@/public/image/removal.jpeg";
 import QuoteButton from "./QuoteButton";
 import Container from "@/components/shared/Container";
 
+
 export default function Banner() {
   return (
     <Container>

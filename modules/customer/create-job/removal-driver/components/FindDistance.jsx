@@ -8,7 +8,7 @@ import Container from "@/components/shared/Container";
 import FormikErrorBox from "@/components/form/FormikErrorBox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import useStore from "@/store";
 const labels = ["title"];
 
 export default function FindDistance({ formik, setCurrentStep }) {
@@ -19,18 +19,25 @@ export default function FindDistance({ formik, setCurrentStep }) {
   const [destinationCoords, setDestinationCoords] = useState(null);
   const originInputRef = useRef(null);
   const destinationInputRef = useRef(null);
+  const { user } = useStore();
+  const country = user?.country;
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.google) {
+    if (typeof window !== "undefined" && window.google && country) {
       setTimeout(() => {
+        const options = {
+          componentRestrictions: { country }, // Restrict suggestions to user's country
+        };
+  
         const originAutocomplete = new window.google.maps.places.Autocomplete(
           originInputRef.current,
+          options
         );
-        const destinationAutocomplete =
-          new window.google.maps.places.Autocomplete(
-            destinationInputRef.current,
-          );
-
+        const destinationAutocomplete = new window.google.maps.places.Autocomplete(
+          destinationInputRef.current,
+          options
+        );
+  
         originAutocomplete.addListener("place_changed", () => {
           const place = originAutocomplete.getPlace();
           formik.setFieldValue("moving_from", place.formatted_address);
@@ -39,9 +46,9 @@ export default function FindDistance({ formik, setCurrentStep }) {
             place.geometry.location.lat(),
           ];
           setOriginCoords(coords);
-          formik.setFieldValue("origin_coords", coords); // set formik value for origin coords
+          formik.setFieldValue("origin_coords", coords);
         });
-
+  
         destinationAutocomplete.addListener("place_changed", () => {
           const place = destinationAutocomplete.getPlace();
           formik.setFieldValue("moving_to", place.formatted_address);
@@ -50,13 +57,14 @@ export default function FindDistance({ formik, setCurrentStep }) {
             place.geometry.location.lat(),
           ];
           setDestinationCoords(coords);
-          formik.setFieldValue("destination_coords", coords); // set formik value for destination coords
+          formik.setFieldValue("destination_coords", coords);
         });
       }, 100);
     } else {
-      console.error("Google Maps API not loaded");
+      console.error("Google Maps API not loaded or country not defined");
     }
-  }, [formik]);
+  }, [formik, country]);
+  
 
   const getDistance = async () => {
     const { moving_from, moving_to } = formik.values;
