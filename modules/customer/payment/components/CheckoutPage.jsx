@@ -94,7 +94,9 @@ const CheckoutPage = ({ amount, uid }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/payment/success?uid=${uid}&clientSecret=${clientSecret}`,
+        //return_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/payment/success?uid=${uid}&clientSecret=${clientSecret}`,
+        return_url: `pk_test_51N1vtNHYlHkFMKo7k8hRgsZ2oAjE6pfllmeRZJfau9OVZHmPB5gF5xmAFBiAxUQ2zMguR9n86BnBhW3Sey6plAlO00QrEq8Rgm/payment/success?uid=${uid}&clientSecret=${clientSecret}`,
+
       },
     });
 
