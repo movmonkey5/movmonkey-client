@@ -16,32 +16,18 @@ import useStore from "@/store";
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
 }
-else {
-  console.log("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is defined");
-  console.log("NEXT_PUBLIC_STRIPE_PUBLIC_KEY:", process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
-
-}
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function Home({ params }) {
   const category = params.slugs[0];
   const uid = params.slugs[1];
   const [showCheckout, setShowCheckout] = useState(false); // State to show/hide checkout
-/*
+
   // Fetch quotation details (no conditional logic)
   const { data: quotationDetails, isLoading: isJobsLoading } = useQuery({
     queryKey: ["me/quotations", uid],
     queryFn: () => ApiKit.me.getQuotationDetails(uid).then(({ data }) => data),
   });
-  */
-  const { data: quotationDetails, isLoading: isJobsLoading } = useQuery({
-    queryKey: ["me/quotations", uid],
-    queryFn: () => ApiKit.me.getQuotationDetails(uid).then(({ data }) => {
-      console.log("Fetched Quotation Details:", data);
-      return data;
-    }),
-  });
-  
   const [currency, setCurrency] = useState("$"); // Default currency symbol
 
   // Get user from store using the hook directly
@@ -97,7 +83,7 @@ export default function Home({ params }) {
     <div className="min-h-[calc(100vh-60px)] bg-black/10 lg:min-h-[calc(100vh-80px)]">
       <div className="bg-primary text-2xl font-semibold text-black md:text-2xl lg:mt-10">
         <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 md:h-20">
-          <h3>PAYMENT</h3>
+          <h3>Payment</h3>
         </div>
       </div>
 
@@ -191,8 +177,6 @@ export default function Home({ params }) {
                   currency: user.currency,
                 }}
               >
-                 {console.log("Stripe Options:", { mode: "payment", amount, currency: user.currency })}
-
                 <CheckoutPage amount={amount} uid={uid} />
               </Elements>
             </div>
