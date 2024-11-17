@@ -22,6 +22,7 @@ const CheckoutPage = ({ amount, uid }) => {
   const [showPayment, setShowPayment] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
   const [cardholderName, setCardholderName] = useState("");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
   // Fetch the client secret using createPaymentIntent
   const { refetch: fetchClientSecret, isLoading: clientSecretLoading } =
@@ -61,7 +62,15 @@ const CheckoutPage = ({ amount, uid }) => {
       });
     }
   }, [fetchClientSecret]);
-
+  useEffect(() => {
+    if (elements) {
+      // Listen for payment method selection changes
+      const paymentElement = elements.getElement(PaymentElement);
+      paymentElement?.on("change", (event) => {
+        setSelectedPaymentMethod(event.value?.type); // E.g., "card", "cashapp", etc.
+      });
+    }
+  }, [elements]);
   // Handle payment submission
   /*
   const handleSubmit = async (event) => {
@@ -180,23 +189,23 @@ const handleSubmit = async (event) => {
   return (
     <div className="rounded-md bg-white p-2">
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-        <div className="mb-4">
-  <Label htmlFor="cardholder_name" className="flex justify-start mb-2">Cardholder Name:</Label>
-  <Input
-    id="cardholder_name"
-    name="cardholder_name"
-    type="text"
-    value={cardholderName}
-    className="w-full  focus-visible:ring-primary"
-    placeholder="Enter cardholder name"
-    onChange={(e) => setCardholderName(e.target.value)}
-    required
-  />
-</div>
-
-        </div>
-        {clientSecret && stripe && elements && <PaymentElement />}
+      {clientSecret && stripe && elements && <PaymentElement />}
+       {selectedPaymentMethod === "card" && (
+                <div className="mb-4">
+                  <label htmlFor="cardholder_name" className=" text-sm mt-1 mb-1 text-gray-700 flex justify-start">Cardholder Name</label>
+                <Input
+                  id="cardholder_name"
+                  name="cardholder_name"
+                  type="text"
+                  value={cardholderName}
+                  className="w-full  focus-visible:ring-primary"
+                  placeholder="Enter cardholder name"
+                  onChange={(e) => setCardholderName(e.target.value)}
+                  required
+                />
+              </div>
+              )}
+     
         {errorMessage && <div className="text-red-600">{errorMessage}</div>}
         <button
           disabled={!stripe || loading}
