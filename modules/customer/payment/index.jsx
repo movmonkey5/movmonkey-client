@@ -75,6 +75,7 @@ export default function Home({ params }) {
   const amount = parseFloat(quotationDetails.total_amount);
 
   const handleProceedToPayment = () => {
+    console.log("Proceeding to payment...");
     setShowCheckout(true); // Show the child CheckoutPage
   };
 
