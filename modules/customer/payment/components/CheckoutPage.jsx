@@ -41,7 +41,7 @@ const CheckoutPage = ({ amount, uid }) => {
       setCurrency(user.currencySymbol);
     }
   }, [user]);
-
+/*
   useEffect(() => {
     // Check if there's a stored client secret in sessionStorage
     const storedClientSecret = sessionStorage.getItem(
@@ -59,7 +59,32 @@ const CheckoutPage = ({ amount, uid }) => {
       });
     }
   }, [fetchClientSecret]);
+*/
+useEffect(() => {
+  console.log("Stripe instance:", stripe);
+  console.log("Elements instance:", elements);
+  console.log("User currency symbol:", user?.currencySymbol);
 
+  // Check if there's a stored client secret in sessionStorage
+  const storedClientSecret = sessionStorage.getItem(
+    "paymentIntentClientSecret",
+  );
+  console.log("Stored Client Secret:", storedClientSecret);
+
+  if (storedClientSecret) {
+    setClientSecret(storedClientSecret);
+  } else {
+    // If not, fetch a new one and store it
+    fetchClientSecret().then((result) => {
+      console.log("Fetched Client Secret:", result?.data);
+      if (result.data) {
+        setClientSecret(result.data);
+        sessionStorage.setItem("paymentIntentClientSecret", result.data);
+      }
+    });
+  }
+}, [fetchClientSecret]);
+/*
   useEffect(() => {
     if (elements) {
       // Listen for payment method selection changes
@@ -69,7 +94,17 @@ const CheckoutPage = ({ amount, uid }) => {
       });
     }
   }, [elements]);
-
+*/
+useEffect(() => {
+  if (elements) {
+    const paymentElement = elements.getElement(PaymentElement);
+    paymentElement?.on("change", (event) => {
+      console.log("Selected Payment Method:", event.value?.type);
+      setSelectedPaymentMethod(event.value?.type);
+    });
+  }
+}, [elements]);
+/*
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -106,6 +141,55 @@ const CheckoutPage = ({ amount, uid }) => {
 
     router.push(`/payment/success?uid=${uid}&clientSecret=${clientSecret}`);
   };
+*/
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  setLoading(true);
+  console.log("Submitting payment...");
+  console.log("Stripe instance:", stripe);
+  console.log("Elements instance:", elements);
+  console.log("Client Secret:", clientSecret);
+
+  if (!stripe || !elements || !clientSecret) {
+    setErrorMessage(
+      "Stripe has not initialized yet or client secret is missing.",
+    );
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const { error: submitError } = await elements.submit();
+    console.log("Submit Error:", submitError);
+
+    if (submitError) {
+      setErrorMessage(submitError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/payment/success?uid=${uid}&clientSecret=${clientSecret}`,
+      },
+    });
+    console.log("Stripe confirmPayment Response Error:", error);
+
+    if (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+      return;
+    }
+
+    router.push(`/payment/success?uid=${uid}&clientSecret=${clientSecret}`);
+  } catch (err) {
+    console.error("Payment submission error:", err);
+    setErrorMessage("An unexpected error occurred.");
+    setLoading(false);
+  }
+};
 
   if (clientSecretLoading) {
     return (
