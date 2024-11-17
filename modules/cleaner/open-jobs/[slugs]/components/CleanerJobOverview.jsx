@@ -200,7 +200,11 @@ export default function CleanerJobOverview({ job, isCustomer = false }) {
 
       return toast.promise(promise, {
         loading: "Loading...",
-        success: "Quotation created successfully!",
+        success: () => {
+          // Show success toast and reload the page
+          window.location.reload();
+          return "Quotation created successfully!";
+        },
         error: "Something went wrong!",
       });
     },

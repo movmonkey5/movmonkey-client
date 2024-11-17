@@ -43,7 +43,7 @@ export default function PaymentSuccess({ searchParams }) {
         <p>Job Id : {uid}</p>
 
         <div className="rounded-mdp-2 mt-5 text-xl text-primary">
-          {"<"} View Your Job
+          {"<"} View Your Job from My Jobs
         </div>
       </div>
     </main>
