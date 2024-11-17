@@ -34,10 +34,11 @@ export default function Home({ params }) {
   const user = useStore((state) => state.user);
 
   useEffect(() => {
-    if (user?.currencySymbol) {
-      setCurrency(user.currencySymbol);
+    if (user?.currency && user?.currencySymbol) {
+      setCurrency(`${user.currency.toUpperCase()}${user.currencySymbol}`);
     }
   }, [user]);
+  
 
   // Avoid rendering conditional hooks, handle jobDetails query safely
   const onlyCategory = category.split("_")[0];

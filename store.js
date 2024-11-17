@@ -10,10 +10,10 @@ if (typeof window !== "undefined") {
 
 // Enhanced currency map with both code and symbol
 const currencyMap = {
-  uk: { code: "gbp", symbol: "£" },
-  au: { code: "aud", symbol: "A$" },
-  ca: { code: "cad", symbol: "C$" },
-  us: { code: "usd", symbol: "$" },
+  uk: { code: "", symbol: "£" },
+  au: { code: "AUS", symbol: "$" },
+  ca: { code: "CAD", symbol: "$" },
+  us: { code: "US", symbol: "$" },
 };
 
 // Format currency helper
@@ -37,7 +37,7 @@ const useStore = create((set) => ({
 
       // Add currency info based on country code
       const currency = currencyMap[data.country] || {
-        code: "usd",
+        code: "USD",
         symbol: "$",
       }; // default to USD if not listed
 
