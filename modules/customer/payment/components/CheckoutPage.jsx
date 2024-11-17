@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import ApiKit from "@/common/ApiKit";
 import useStore from "@/store";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const CheckoutPage = ({ amount, uid }) => {
   const stripe = useStripe();
@@ -19,6 +21,7 @@ const CheckoutPage = ({ amount, uid }) => {
   const [loading, setLoading] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
+  const [cardholderName, setCardholderName] = useState("");
 
   // Fetch the client secret using createPaymentIntent
   const { refetch: fetchClientSecret, isLoading: clientSecretLoading } =
@@ -60,6 +63,7 @@ const CheckoutPage = ({ amount, uid }) => {
   }, [fetchClientSecret]);
 
   // Handle payment submission
+  /*
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -95,8 +99,50 @@ const CheckoutPage = ({ amount, uid }) => {
 
     router.push(`/payment/success?uid=${uid}&clientSecret=${clientSecret}`);
   };
+*/
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  setLoading(true);
 
-  const handleAccept = () => {
+  if (!stripe || !elements || !clientSecret) {
+    setErrorMessage(
+      "Stripe has not initialized yet or client secret is missing."
+    );
+    setLoading(false);
+    return;
+  }
+
+  const { error: submitError } = await elements.submit();
+
+  if (submitError) {
+    setErrorMessage(submitError.message);
+    setLoading(false);
+    return;
+  }
+
+  const { error } = await stripe.confirmPayment({
+    elements,
+    clientSecret,
+    confirmParams: {
+      return_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/payment/success?uid=${uid}&clientSecret=${clientSecret}`,
+      payment_method_data: {
+        billing_details: {
+          name: cardholderName,
+        },
+      },
+    },
+  });
+
+  if (error) {
+    setErrorMessage(error.message);
+    setLoading(false);
+    return;
+  }
+
+  router.push(`/payment/success?uid=${uid}&clientSecret=${clientSecret}`);
+};
+
+ const handleAccept = () => {
     setShowPayment(true);
   };
 
@@ -115,7 +161,7 @@ const CheckoutPage = ({ amount, uid }) => {
       </div>
     );
   }
-
+/*
   return (
     <div className="rounded-md bg-white p-2">
       <form onSubmit={handleSubmit}>
@@ -130,6 +176,38 @@ const CheckoutPage = ({ amount, uid }) => {
       </form>
     </div>
   );
+  */
+  return (
+    <div className="rounded-md bg-white p-2">
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+        <div className="mb-4">
+  <Label htmlFor="cardholder_name" className="flex justify-start mb-2">Cardholder Name:</Label>
+  <Input
+    id="cardholder_name"
+    name="cardholder_name"
+    type="text"
+    value={cardholderName}
+    className="w-full  focus-visible:ring-primary"
+    placeholder="Enter cardholder name"
+    onChange={(e) => setCardholderName(e.target.value)}
+    required
+  />
+</div>
+
+        </div>
+        {clientSecret && stripe && elements && <PaymentElement />}
+        {errorMessage && <div className="text-red-600">{errorMessage}</div>}
+        <button
+          disabled={!stripe || loading}
+          className="mt-2 w-full rounded-md bg-primary p-5 font-bold text-black disabled:animate-pulse disabled:opacity-50"
+        >
+          {!loading ? `Pay ${amount} ` : "Processing..."} {currency}
+        </button>
+      </form>
+    </div>
+  );
+
 };
 
 export default CheckoutPage;
