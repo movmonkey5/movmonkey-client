@@ -3,7 +3,6 @@ import { Star } from "lucide-react"; // Import icon for star rating
 import userPlaceHolder from "@/public/image/user-placeholder-green.png"; // Ensure placeholder is imported
 
 export default function ReviewList({ reviewList }) {
-  console.log("Review Data:", reviewList);
 
   return (
     <div className="mt-8">
