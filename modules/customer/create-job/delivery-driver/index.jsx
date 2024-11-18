@@ -93,6 +93,7 @@ const DeliveryDeriverPage = () => {
         });
         return filteredValues;
       };
+
       const payload = {
         ...cleanValues(values),
         moving_date: values.moving_date
@@ -101,6 +102,12 @@ const DeliveryDeriverPage = () => {
         dropoff: values.dropoff ? dateFormatter(values.dropoff) : "",
         images,
         videos,
+        origin_coords: values.origin_coords
+          ? values.origin_coords.join(",")
+          : "", // Convert to comma-separated string
+        destination_coords: values.destination_coords
+          ? values.destination_coords.join(",")
+          : "", // Convert to comma-separated string
       };
 
       const formData = new FormData();
@@ -114,16 +121,15 @@ const DeliveryDeriverPage = () => {
           );
         }
       });
+
       const promise = ApiKit.me.job.delivery
         .postJob(formData)
         .then((response) => {
-          // Assuming the API returns the job UID
           const jobUid = response.data.uid;
           router.push(
             `/review-jobs/${response.data.kind.toLowerCase()}/${jobUid}`,
           );
         })
-        // .then(() => router.push("/create-job/success"))
         .catch((error) => {
           console.log(error);
           throw error;
@@ -134,7 +140,7 @@ const DeliveryDeriverPage = () => {
         loading: "Job is being submitted for preview, please wait...",
         success: "Your job has been submitted successfully!",
         error: (error) => {
-          console.error("Error submitting job:", error); // Log the full error for debugging
+          console.error("Error submitting job:", error);
 
           if (error?.response?.data) {
             if (typeof error.response.data === "string") {

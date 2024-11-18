@@ -3,6 +3,8 @@ export const initialValues = {
   moving_from: "",
   moving_to: "",
   total_distance: '',
+  origin_coords: null,
+  destination_coords: null,
   unit: "",
   have_parking_space: null,
   is_parking_ulez_congestion_charges: null,

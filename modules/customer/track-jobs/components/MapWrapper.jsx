@@ -3,10 +3,16 @@ import Map, { Marker, Source, Layer } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MapWrapper = () => {
-  const origin = [90.399452, 23.777176]; // Dhaka University
-  const destination = [90.42654, 23.810331]; // Gulshan 1
+const MapWrapper = ({ coords }) => {
+  const origin = coords.origin_coords
+    ? coords.origin_coords.split(",").map(Number)
+    : [0, 0]; // Default if no origin coordinates provided
+  const destination = coords.destination_coords
+    ? coords.destination_coords.split(",").map(Number)
+    : [0, 0]; // Default if no destination coordinates provided
 
+  console.log("Origin:", origin);
+  console.log("Destination:", destination);
   const [viewport, setViewport] = useState({
     latitude: 23.777176, // Default center
     longitude: 90.399452,

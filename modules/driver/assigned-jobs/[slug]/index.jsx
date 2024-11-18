@@ -20,6 +20,7 @@ import CleanerJobVideos from "./components/CleanerJobVideos";
 import CleanerJobOverview from "./components/CleaningOverview";
 import DeliveryOverview from "./components/DeliveryOverView";
 import RemovalOverview from "./components/RemovalOverView";
+import MapWrapper from "./components/Location";
 
 export default function CleanerAssignedJobDetailsPage({ params }) {
   const [view, setView] = useState("overview");
@@ -67,6 +68,8 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
       </div>
 
       <Container>
+      <MapWrapper jobUid={uid} />
+
         {/* User Information Section */}
         <div className="mb-8 rounded-lg bg-gray-100 p-4">
           <h2 className="text-2xl font-semibold">Job from User</h2>

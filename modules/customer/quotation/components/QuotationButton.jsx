@@ -27,7 +27,7 @@ const QuotationButton = ({ job }) => {
           Your job is active now
         </p>
         <Link
-          href={`/track-jobs/${job.kind.toLowerCase()}/${job.uid}`}
+          href={`/track-jobs/${job.kind.toLowerCase()}/${job.delivery_job.uid}`}
           className="w-full max-w-[200px]"
         >
           <Button size="lg" className="w-full">

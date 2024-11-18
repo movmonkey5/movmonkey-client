@@ -249,6 +249,16 @@ const ApiKit = {
           return client.delete(url);
         },
       },
+      distance: {
+        patchDistance: (uid,payload,category) => {
+          const url = `/me/jobs/${category}/${uid}/distance`;
+          return client.patch(url, payload, defaultFileUploadConfig);
+        },
+        getDistance: (uid,category) => {
+          const url = `/me/jobs/${category}/${uid}/distance`;
+          return client.get(url);
+        },
+      },
       active: {
         getJobs: () => {
           const url = "/me/jobs/actives?job_count=10";
@@ -272,6 +282,11 @@ const ApiKit = {
           const url = "/me/jobs/assinged";
           return client.get(url);
         },
+        patchDriverDistance: (uid,payload) => {
+          const url = `/me/jobs/assinged/${uid}/distance`;
+          return client.patch(url, payload, defaultFileUploadConfig);
+        },
+
         getJobDeatails: (uid) => {
           const url = `/me/jobs/assinged/${uid}`;
           return client.get(url);
