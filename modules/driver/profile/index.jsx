@@ -51,7 +51,7 @@ export default function DriverProfilePage() {
       {jobs?.results?.length
         ? jobs.results.map((job) => (
             <Link
-              href={`/${job?.status === "ACCEPTED" ? "driver/assigned-jobs" : "driver/completed-jobs"}/${job?.kind.toLowerCase()}/${job?.uid}`}
+              href={`/${job?.status === "ACCEPTED" ? "driver/assigned-jobs" : "driver/completed-jobs"}/${job?.kind?.toLowerCase()}/${job?.uid}`}
               key={job?.uid}
               className="mb-3 block w-fit cursor-pointer rounded-lg bg-primary px-2 font-semibold max-lg:py-2 lg:rounded-full lg:px-4 lg:py-1"
             >
@@ -102,7 +102,7 @@ export default function DriverProfilePage() {
               <MessageCircleMore className="font-bold text-black" />
             </Link> */}
 
-            <Link href="/profile/edit" className="block">
+            <Link href="/driver/profile/edit" className="block">
               <Button variant="secondary" className="gap-2 max-xs:w-full">
                 <Pencil className="size-5" />
               </Button>
