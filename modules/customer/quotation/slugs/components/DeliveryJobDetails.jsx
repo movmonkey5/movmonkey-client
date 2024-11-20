@@ -105,21 +105,21 @@ export default function DeliveryJobDetails({ job }) {
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Subtotal</p>
                 <p>
-                  {job.subtotal} <small> {currency}</small>
+                 <small> {currency}</small> {job.subtotal} 
                 </p>
               </div>
               <hr />
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Total VAT</p>
                 <p>
-                  {job.total_vat} <small> {currency}</small>
+                  <small> {currency}</small> {job.total_vat} 
                 </p>
               </div>
               <hr />
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Total Amount</p>
                 <p>
-                  {job.total_amount} <small> {currency}</small>
+                  <small> {currency}</small> {job.total_amount}
                 </p>
               </div>
             </div>

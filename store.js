@@ -11,9 +11,9 @@ if (typeof window !== "undefined") {
 // Enhanced currency map with both code and symbol
 const currencyMap = {
   uk: { code: "gbp", symbol: "£" },
-  au: { code: "aud", symbol: "$" },
-  ca: { code: "cad", symbol: "$" },
-  us: { code: "usd", symbol: "$" },
+  au: { code: "aud", symbol: "AUS$" },
+  ca: { code: "cad", symbol: "CAD$ " },
+  us: { code: "usd", symbol: "US$" },
 };
 
 // Format currency helper

@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import ApiKit from "@/common/ApiKit";
+import useStore from "@/store";
+import { useEffect, useState } from "react";
 import CleanerJobOverview from "../../components/CleaningOverview";
 function JobDetailsSkeleton() {
   return (
@@ -42,7 +44,19 @@ function JobDetailsSkeleton() {
 }
 
 export default function CleaningJobDetails({ job }) {
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
+
   // Fetch job details using the `useQuery` hook instead of `useEffect`
+
   const {
     data: jobDetails,
     error,
@@ -79,37 +93,37 @@ export default function CleaningJobDetails({ job }) {
 
             {/* Detail Fee Section */}
             <div className="mt-10">
-              <div className="bg-primary px-5 py-2 text-base font-bold md:text-xl">
-                <div>Detail Fee</div>
+            <div className="my-4 bg-primary px-5 py-2 text-base font-bold md:text-xl">
+              <div>Detail Fee</div>
+            </div>
+            <div className="flex flex-col bg-primary-bg px-4 py-2">
+              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
+                <p>Quotation Validity</p>
+                <p>{job.quotation_validity} days</p>
               </div>
-              <div className="flex flex-col bg-primary-bg px-4 py-2">
-                <div className="flex flex-col gap-2 bg-primary-bg py-2 text-base md:flex-row md:items-center md:justify-between md:px-4 md:text-xl">
-                  <p>Job Title</p>
-                  <p>{job.title}</p>
-                </div>
-                <hr />
-                <hr />
-                <div className="flex flex-col gap-2 bg-primary-bg px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                  <p>Quotation Validity</p>
-                  <p>{job.quotation_validity} days</p>
-                </div>
-                <hr />
-                <div className="flex flex-col gap-2 bg-primary-bg px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                  <p>Subtotal</p>
-                  <p>£{job.subtotal}</p>
-                </div>
-                <hr />
-                <div className="flex flex-col gap-2 bg-primary-bg px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                  <p>Total VAT</p>
-                  <p>£{job.total_vat}</p>
-                </div>
-                <hr />
-                <div className="flex flex-col gap-2 bg-primary-bg px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                  <p>Total Amount</p>
-                  <p>£{job.total_amount}</p>
-                </div>
+              <hr />
+              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
+                <p>Subtotal</p>
+                <p>
+                 <small> {currency}</small> {job.subtotal} 
+                </p>
+              </div>
+              <hr />
+              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
+                <p>Total VAT</p>
+                <p>
+                  <small> {currency}</small> {job.total_vat} 
+                </p>
+              </div>
+              <hr />
+              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
+                <p>Total Amount</p>
+                <p>
+                  <small> {currency}</small> {job.total_amount}
+                </p>
               </div>
             </div>
+          </div>
 
             {/* Additional Information */}
           </Container>
