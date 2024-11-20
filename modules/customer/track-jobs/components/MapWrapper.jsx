@@ -142,7 +142,8 @@ const MapWrapper = ({ jobUid, category }) => {
       </div>
     );
   }
-
+console.log(coords)
+console.log(driverLocation)
   return (
     <div className="relative h-[450px] w-[80%] overflow-hidden rounded-lg">
       <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-md shadow-md">
@@ -161,11 +162,11 @@ const MapWrapper = ({ jobUid, category }) => {
         {/* Destination Marker */}
         <Marker latitude={destination[1]} longitude={destination[0]} color="red" />
 
-        {/* Driver Location Marker */}
+        Driver Location Marker
         {driverLocation && (
           <Marker
-            latitude={driverLocation[1]}
-            longitude={driverLocation[0]}
+            latitude={driverLocation[0]}
+            longitude={driverLocation[1]}
             color="green"
           >
             <div className="h-4 w-4 font-bold " >

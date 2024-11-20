@@ -3,6 +3,7 @@ import ApiKit from "@/common/ApiKit";
 import DeliveryOverview from "../../components/DeliveryOverview";
 import useStore from "@/store";
 import { useEffect, useState } from "react";
+import Container from "@/components/shared/Container";
 
 // Skeleton Loader Component
 function JobDetailsSkeleton() {
@@ -75,7 +76,7 @@ export default function DeliveryJobDetails({ job }) {
   }
 
   return (
-    <div>
+    <div className="w-full "> 
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
         <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-4 md:h-20">
           <h3>Service Details</h3>
@@ -87,7 +88,7 @@ export default function DeliveryJobDetails({ job }) {
 
       {/* Display actual content when data is available */}
       {!isLoading && jobDetails && (
-        <div className="mt-10">
+        <Container className="mt-10">
           <DeliveryOverview job={jobDetails} isCustomer={true} />
 
           {/* Detail Fee Section */}
@@ -123,7 +124,7 @@ export default function DeliveryJobDetails({ job }) {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       )}
     </div>
   );

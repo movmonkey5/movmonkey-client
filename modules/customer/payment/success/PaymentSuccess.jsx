@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import ApiKit from "@/common/ApiKit";
-
+import Link from "next/link";
 export default function PaymentSuccess({ searchParams }) {
   const { uid } = searchParams;
 
@@ -43,7 +43,9 @@ export default function PaymentSuccess({ searchParams }) {
         <p>Job Id : {uid}</p>
 
         <div className="rounded-mdp-2 mt-5 text-xl text-primary">
-          {"<"} View Your Job from My Jobs
+          <Link href="/profile" className="text-primary">
+          {"<"} View Your Job from active Jobs
+          </Link>
         </div>
       </div>
     </main>

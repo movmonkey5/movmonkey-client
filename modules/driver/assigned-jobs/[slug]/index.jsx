@@ -57,7 +57,7 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
   if (isLoading) {
     return <Loading className="h-screen" />;
   }
-
+console.log(job);
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       {/* Job Status Section */}
@@ -68,6 +68,7 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
       </div>
 
       <Container>
+
       <MapWrapper jobUid={uid} />
 
         {/* User Information Section */}

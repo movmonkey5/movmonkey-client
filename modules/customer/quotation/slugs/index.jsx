@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import JobActions from "./components/JobActions";
 import ReviewDialog from "./components/ReviewDialog";
 import { Star } from "lucide-react"; // Import icon for star rating
-
+import Link from "next/link";
 export default function UserJobDetailsPage({ params }) {
   const notificationUid = params.slugs[1];
   const searchParams = useSearchParams();
@@ -95,7 +95,7 @@ export default function UserJobDetailsPage({ params }) {
   return (
     <div>
       {isDispute ? (
-        <div className=" flex  flex-col items-center justify-center p-6 text-center">
+        <div className=" flex  w-full flex-col  items-center justify-center p-6 text-center">
           <h1 className="text-3xl font-bold text-red-600">
             Your Job in Dispute
           </h1>
@@ -107,7 +107,12 @@ export default function UserJobDetailsPage({ params }) {
             Please check your email for any updates regarding the dispute
             resolution, or contact support if you need further assistance.
           </p>
-          <div>
+          <Link href="/quotation" className="w-full max-w-[200px] my-4 ">
+            <Button size="lg" className="w-full">
+              Back to Quotations
+            </Button>
+          </Link>
+
             {jobCategory === "cleaning_job" && (
               <CleanerJobDetails job={quotation || job} />
             )}
@@ -117,7 +122,6 @@ export default function UserJobDetailsPage({ params }) {
             {jobCategory === "delivery_job" && (
               <DeliveryJobDetails job={quotation || job} />
             )}
-          </div>
         </div>
       ) : isCompleted ? (
         <div className=" flex flex-col gap-2 bg-gray-200 p-6 text-center ">

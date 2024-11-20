@@ -10,11 +10,10 @@ const MapWrapper = ({ coords, jobUid }) => {
     zoom: 12,
   });
   const [userLocation, setUserLocation] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [patchError, setPatchError] = useState(null);
 
-  // Fetch user's current location and set it as the center
-  useEffect(() => {
+  // Function to fetch and patch location
+  const updateDriverLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -24,10 +23,8 @@ const MapWrapper = ({ coords, jobUid }) => {
             longitude,
             zoom: 12,
           });
-          setUserLocation({ latitude, longitude }); // Store user location
-          setIsLoading(false);
+          setUserLocation({ latitude, longitude });
 
-          // Call patchDriverDistance API
           const payload = {
             current_location: `${latitude},${longitude}`,
           };
@@ -49,11 +46,19 @@ const MapWrapper = ({ coords, jobUid }) => {
     } else {
       setIsLoading(false);
     }
-  }, [coords, jobUid]);
+  };
 
-  if (isLoading) {
-    return <p>Loading map...</p>;
-  }
+  // Initial fetch and periodic update
+  useEffect(() => {
+    updateDriverLocation(); // Initial fetch
+
+    const interval = setInterval(() => {
+      updateDriverLocation();
+    }, 60000); // 60 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [jobUid]);
+
 
   if (patchError) {
     return <p>Error updating driver distance: {patchError.message}</p>;
@@ -61,7 +66,6 @@ const MapWrapper = ({ coords, jobUid }) => {
 
   return (
     <div>
-        tracking mode on 
     </div>
   );
 };
