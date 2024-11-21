@@ -70,13 +70,13 @@ export default function CleanerMessagePage() {
       <Container>
         <div className="mx-auto mt-6 flex h-[80vh] max-w-7xl flex-col overflow-hidden rounded-lg bg-white shadow-md lg:mt-10 lg:flex-row">
           {/* Sidebar (User List) */}
-          <div className="w-full p-4 lg:w-1/3 bg-green-800 flex-shrink-0">
+          <div className="w-full p-4 lg:w-1/3 bg-primary flex-shrink-0">
             <div className="mb-4">
               <Input
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-green-900 text-white"
+                className="bg-white text-gray-600"
               />
             </div>
             <ul className="h-[60vh] overflow-y-auto">

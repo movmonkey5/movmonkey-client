@@ -76,7 +76,7 @@ export default function CleanerMessagePage() {
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-green-600 text-white"
+                className="bg-white text-gray-600"
               />
             </div>
             <ul>
