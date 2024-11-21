@@ -18,13 +18,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ApiKit from "@/common/ApiKit";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const JobActions = ({ job, onJobCompleted }) => {
   const [isDisputeOpen, setIsDisputeOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [disputeType, setDisputeType] = useState("REFUND");
   const queryClient = useQueryClient();
-  console.log(job);
+  console.log("here", job);
   // Mutation for completing job
   const completeMutation = useMutation({
     mutationFn: () => ApiKit.me.updateStatus(job.uid, { status: "COMPLETED" }),
@@ -59,6 +60,13 @@ const JobActions = ({ job, onJobCompleted }) => {
 
     disputeMutation.mutate(disputeData);
   };
+  const router = useRouter();
+  const StartChatting = () => {
+    // router.push(`/chat/${job.uid}`);
+    //router.push(`/modules/customer/message/`);
+    router.push(`/message/${job.uid}`);
+    console.log("Chatting with service provider");
+  };
 
   return (
     <div className="flex w-full flex-col justify-between gap-8 md:flex-row">
@@ -69,11 +77,8 @@ const JobActions = ({ job, onJobCompleted }) => {
       >
         Mark as Completed
       </Button>
- {/* Work need  */}
-      <Button
-        size="lg"
-        className=" w-full md:w-4/12"
-      >
+      {/* Work need  */}
+      <Button size="lg" className=" w-full md:w-4/12" onClick={StartChatting}>
         Chat With Service provider
       </Button>
       <Button

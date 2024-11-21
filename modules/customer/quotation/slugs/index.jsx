@@ -86,6 +86,7 @@ export default function UserJobDetailsPage({ params }) {
   const jobCategory = !fromNotification
     ? quotation.kind.toLowerCase()
     : job.quotation.kind.toLowerCase();
+  console.log("jobCategory", quotation, job);//it is pending yet so used !isAccepted instead of isAccepted
   const isCompleted =
     jobCompleted || (quotation || job)?.status === "COMPLETED";
 
@@ -210,7 +211,7 @@ export default function UserJobDetailsPage({ params }) {
 
           <Container className="w-full">
             <div>
-              {isAccepted && (
+              {!isAccepted && (
                 <div className="flex flex-col justify-between bg-[#366935] p-6">
                   <h1 className="mb-8  text-2xl font-semibold text-white lg:text-3xl">
                     Your Job is Active now
