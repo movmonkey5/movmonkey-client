@@ -211,7 +211,7 @@ export default function UserJobDetailsPage({ params }) {
 
           <Container className="w-full">
             <div>
-              {!isAccepted && (
+              {isAccepted && (
                 <div className="flex flex-col justify-between bg-[#366935] p-6">
                   <h1 className="mb-8  text-2xl font-semibold text-white lg:text-3xl">
                     Your Job is Active now
