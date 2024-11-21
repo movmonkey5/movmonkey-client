@@ -70,7 +70,7 @@ export default function CleanerMessagePage() {
       <Container>
         <div className="mx-auto mt-10 flex h-[80vh] max-w-7xl flex-col overflow-hidden rounded-lg bg-white shadow-md lg:flex-row">
           {/* Sidebar (User List) */}
-          <div className="w-full bg-green-800 p-4 lg:w-1/3">
+          <div className="w-full bg-primary p-4 lg:w-1/3">
             <div className="mb-4">
               <Input
                 placeholder="Search..."
