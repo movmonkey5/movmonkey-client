@@ -64,7 +64,7 @@ const JobActions = ({ job, onJobCompleted }) => {
   const StartChatting = () => {
     // router.push(`/chat/${job.uid}`);
     //router.push(`/modules/customer/message/`);
-    router.push(`/message/${job.uid}`);
+    router.push(`/message`);
     console.log("Chatting with service provider");
   };
 
