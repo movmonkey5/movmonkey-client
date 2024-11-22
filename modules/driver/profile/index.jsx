@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,8 +12,19 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import userPlaceHolder from "@/public/image/user-placeholder-green.png";
 import ReviewList from "./components/ReviewList";
+import useStore from "@/store";
 export default function DriverProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+
+  // Get user from store using the hook directly
+  const user = useStore((state) => state.user);
+
+  useEffect(() => {
+    if (user?.currencySymbol) {
+      setCurrency(user.currencySymbol);
+    }
+  }, [user]);
 
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["me.getProfile"],
@@ -66,7 +77,7 @@ export default function DriverProfilePage() {
     <div className="min-h-[calc(100vh-80px)]">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-6">
         <Container>
-          <h3 className="px-4 text-3xl font-bold">Total Earned: $1370</h3>
+          <h3 className="px-4 text-3xl font-bold">Total Earned:  {currency}1370</h3>
         </Container>
       </div>
 

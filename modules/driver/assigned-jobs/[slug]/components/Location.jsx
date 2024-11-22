@@ -3,7 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import ApiKit from "@/common/ApiKit";
 
-const MapWrapper = ({ coords, jobUid }) => {
+const MapWrapper = ({ jobUid }) => {
   const [viewport, setViewport] = useState({
     latitude: 23.777176, // Default center
     longitude: 90.399452,
@@ -18,6 +18,7 @@ const MapWrapper = ({ coords, jobUid }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
+          console.log("Latitude:", latitude + "Longitude:", longitude);
           setViewport({
             latitude,
             longitude,
@@ -39,12 +40,9 @@ const MapWrapper = ({ coords, jobUid }) => {
         },
         (error) => {
           console.error("Error getting location:", error);
-          setIsLoading(false);
         },
         { enableHighAccuracy: true, timeout: 5000 },
       );
-    } else {
-      setIsLoading(false);
     }
   };
 
