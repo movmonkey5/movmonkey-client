@@ -74,7 +74,12 @@ export default function DeliveryJobDetails({ job }) {
   if (error) {
     return <div>Error fetching job details: {error.message}</div>;
   }
-
+ // Calculate the total amount dynamically
+ const calculateTotalAmount = (subtotal, extra, vatPercentage) => {
+  const baseAmount = +subtotal + +extra;
+  const vat = (baseAmount * +vatPercentage) / 100; // Calculate VAT as a percentage
+  return baseAmount + vat; // Add VAT to the base amount
+};
   return (
     <div className="w-full "> 
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
@@ -108,6 +113,12 @@ export default function DeliveryJobDetails({ job }) {
                  <small> {currency}</small> {job.subtotal} 
                 </p>
               </div>
+              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
+                <p>Extra Service Charge</p>
+                <p>
+                 <small> {currency}</small> {job.extra_services_charge} 
+                </p>
+              </div>
               <hr />
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Total VAT</p>
@@ -119,7 +130,11 @@ export default function DeliveryJobDetails({ job }) {
               <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
                 <p>Total Amount</p>
                 <p>
-                  <small> {currency}</small> {job.total_amount}
+                  <small> {currency}</small> {/*job.total_amount*/calculateTotalAmount(
+                    job.subtotal,
+                    job.extra_services_charge,
+                    job.total_vat
+                  ).toFixed(3)}
                 </p>
               </div>
             </div>
