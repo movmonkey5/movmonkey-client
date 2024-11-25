@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import parking_icon from "@/public/image/parking_icon.png";
 import lift_icon from "@/public/image/lift_icon.png";
+import OverviewItem from "./OverviewItem";
 
 const addressFields = [
   { accessKey: "full_address", title: "Address" },
@@ -114,45 +115,6 @@ const dynamicFields = {
   ],
 };
 
-const formatPreferredDay = (value) => {
-  if (!value) return "N/A";
-  const days = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ];
-  return days.filter((day) => value.toLowerCase().includes(day)).join(", ");
-};
-
-const OverviewItem = ({ title, value, extraValue }) => {
-  let content = value;
-
-  if (title === "Preferred Day") {
-    content = formatPreferredDay(value);
-  } else if (typeof value === "boolean") {
-    content = value ? "Yes" : "No";
-  } else if (typeof value === "string") {
-    content = value.split("_").join(" ").toUpperCase();
-  } else if (value === undefined || value === null) {
-    content = "";
-  }
-
-  if (extraValue) {
-    content += ` ${extraValue.toUpperCase()}`;
-  }
-
-  return (
-    <div className="flex justify-between border-b border-gray-200 py-2">
-      <div className="text-lg">{title}</div>
-      <div className="text-lg font-semibold">{content}</div>
-    </div>
-  );
-};
-
 export default function CleanerJobOverview({ job }) {
   const category = job.category[0].slug
     .replaceAll("_", "-")
@@ -161,29 +123,48 @@ export default function CleanerJobOverview({ job }) {
     .join("_");
 
   return (
-    <div className="overflow-hidden  bg-primary-bg  shadow-md">
-      <div className="space-y-2 p-4">
-        {addressFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job.address[0][field.accessKey]}
-          />
-        ))}
-        {commonFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job[field.accessKey]}
-          />
-        ))}
-        {dynamicFields[category]?.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job[field.accessKey]}
-          />
-        ))}
+    <div className="overflow-hidden">
+      <div className="flex flex-col gap-4 md:gap-8">
+        <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-8">
+          <div className="w-full md:w-[40%] bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+            <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Address Fields</h1>
+            <div className="p-4 rounded-b-lg">
+              {addressFields.map((field) => (
+                <OverviewItem
+                  key={field.title}
+                  title={field.title}
+                  value={job.address[0][field.accessKey]}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="w-full md:w-[60%] bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+            <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Dynamic Fields</h1>
+            <div className="p-4 rounded-b-lg">
+              {dynamicFields[category]?.map((field) => (
+                <OverviewItem
+                  key={field.title}
+                  title={field.title}
+                  value={job[field.accessKey]}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full hover:scale-95 bg-primary/10 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+          <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Common Fields</h1>
+          <div className="p-4 rounded-b-lg">
+            {commonFields.map((field) => (
+              <OverviewItem
+                key={field.title}
+                title={field.title}
+                value={job[field.accessKey]}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
