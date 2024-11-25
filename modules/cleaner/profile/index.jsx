@@ -17,6 +17,8 @@ import useStore from "@/store";
 export default function DriverProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
   const user = useStore((state) => state.user);
+  console.log('cleaner',user);
+  const [currency, setCurrency] = useState("$");
 
   useEffect(() => {
     if (user?.currencySymbol) {
