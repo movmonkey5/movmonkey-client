@@ -1,4 +1,5 @@
 import React from "react";
+import OverviewItem from "./OverviewItem";
 
 const commonFields = [
   { accessKey: "have_parking_space", title: "Have Parking space?" },
@@ -37,44 +38,20 @@ const commonFields = [
   { accessKey: "have_animal", title: "Do you have animals" },
 ];
 
-const OverviewItem = ({ title, value, extraValue }) => {
-  let content = value;
-
-  if (typeof value === "boolean") {
-    content = value ? "Yes" : "No";
-  } else if (typeof value === "string") {
-    content = value.split("_").join(" ").toUpperCase();
-  } else if (value === undefined || value === null) {
-    content = "";
-  }
-
-  if (extraValue) {
-    content += ` ${extraValue.toUpperCase()}`;
-  }
-
-  return (
-    <div className="flex justify-between border-b border-gray-200 py-2">
-      <div className="text-lg">{title}</div>
-      <div className="text-lg font-semibold">{content}</div>
-    </div>
-  );
-};
-
 export default function RemovalJobOverview({ job }) {
   return (
-    <div className="overflow-hidden  bg-primary-bg  shadow-md">
-      <div className="space-y-2 p-4">
-        <OverviewItem
-          title="What type of property are you moving"
-          value={job.category.title}
-        />
-        {commonFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job[field.accessKey]}
-          />
-        ))}
+    <div className="overflow-hidden">
+      <div className="w-full bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+        <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Common Fields</h1>
+        <div className="p-4 rounded-b-lg grid grid-cols-2 gap-x-12">
+          {commonFields.map((field) => (
+            <OverviewItem
+              key={field.title}
+              title={field.title}
+              value={job[field.accessKey]}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
