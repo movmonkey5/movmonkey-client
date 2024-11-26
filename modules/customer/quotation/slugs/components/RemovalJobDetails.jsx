@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ApiKit from "@/common/ApiKit";
 import RemovalJobOverview from "../../components/RemovalOverview";
+import useStore from "@/store";
 function JobDetailsSkeleton() {
   return (
     <div className="mt-10">
@@ -58,6 +59,9 @@ export default function RemovalJobDetails({ job }) {
   if (error) {
     return <div>Error fetching job details: {error.message}</div>;
   }
+ const { user } = useStore();
+ console.log("user", user);
+ const currency = user?.currencySymbol|| "usd";
   return (
     <>
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">

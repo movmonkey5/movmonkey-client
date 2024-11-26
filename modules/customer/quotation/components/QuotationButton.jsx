@@ -4,6 +4,7 @@ import Link from "next/link";
 import ApiKit from "@/common/ApiKit";
 
 const QuotationButton = ({ job }) => {
+  console.log("job", job);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleReject = async () => {
@@ -21,21 +22,40 @@ const QuotationButton = ({ job }) => {
   };
 
   if (job.status === "ACCEPTED") {
-    return (
-      <div className="mx-auto mt-10 flex max-w-[250px] flex-col items-center justify-center gap-6">
-        <p className="text-center text-xl font-medium">
-          Your job is active now
-        </p>
-        <Link
-          href={`/track-jobs/${job.kind.toLowerCase()}/${job.delivery_job.uid}`}
-          className="w-full max-w-[200px]"
-        >
-          <Button size="lg" className="w-full">
-            Track Your Job
-          </Button>
-        </Link>
-      </div>
-    );
+    if(job.delivery_job){
+      return (
+        <div className="mx-auto mt-10 flex max-w-[250px] flex-col items-center justify-center gap-6">
+          <p className="text-center text-xl font-medium">
+            Your job is active now
+          </p>
+          <Link
+            href={`/track-jobs/${job.kind.toLowerCase()}/${job.delivery_job.uid}`}
+            className="w-full max-w-[200px]"
+          >
+            <Button size="lg" className="w-full">
+              Track Your Job
+            </Button>
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div className="mx-auto mt-10 flex max-w-[250px] flex-col items-center justify-center gap-6">
+          <p className="text-center text-xl font-medium">
+            Your job is active now
+          </p>
+          <Link
+            href={`/track-jobs/${job.kind.toLowerCase()}/${job.removal_job.uid}`}
+            className="w-full max-w-[200px]"
+          >
+            <Button size="lg" className="w-full">
+              Track Your Job
+            </Button>
+          </Link>
+        </div>
+      );
+    }
+  
   }
 
   if (job.status === "DECLINED") {
