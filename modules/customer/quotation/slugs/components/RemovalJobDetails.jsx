@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import Container from "@/components/shared/Container";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import ApiKit from "@/common/ApiKit";
 import RemovalJobOverview from "../../components/RemovalOverview";
-import useStore from "@/store";
+import FeeDetails from "./FeeDetails";
+
 function JobDetailsSkeleton() {
   return (
     <div className="mt-10">
@@ -59,62 +58,29 @@ export default function RemovalJobDetails({ job }) {
   if (error) {
     return <div>Error fetching job details: {error.message}</div>;
   }
- const { user } = useStore();
- console.log("user", user);
- const currency = user?.currencySymbol|| "usd";
+
   return (
-    <>
-      <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
-        <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-4 md:h-20">
-          <h3>Service Details</h3>
-        </div>
-      </div>
+    <div className="w-full">
+      {isLoading && <JobDetailsSkeleton />}
 
-      <>
-        {isLoading && <JobDetailsSkeleton />}
+      {/* Display actual content when data is available */}
+      {!isLoading && jobDetails && (
+        <Container className="" extraClassName='px-0 py-0'>
+          <div className="pt-4 pb-8 flex flex-col gap-2">
+            <h3 className="text-xl md:text-2xl font-bold">Service Details</h3>
+            <div className="h-1 md:h-1.5 w-16 md:w-20 bg-primary rounded-2xl"></div>
+          </div>
 
-        {/* Display actual content when data is available */}
-        {!isLoading && jobDetails && (
-          <Container className="mt-10">
+          <div className="flex flex-col gap-4 md:gap-8">
             <RemovalJobOverview job={jobDetails} isCustomer={true} />
 
             {/* Detail Fee Section */}
-            <div className="mt-10">
-            <div className="my-4 bg-primary px-5 py-2 text-base font-bold md:text-xl">
-              <div>Detail Fee</div>
-            </div>
-            <div className="flex flex-col bg-primary-bg px-4 py-2">
-              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                <p>Quotation Validity</p>
-                <p>{job.quotation_validity} days</p>
-              </div>
-              <hr />
-              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                <p>Subtotal</p>
-                <p>
-                 <small> {currency}</small> {job.subtotal} 
-                </p>
-              </div>
-              <hr />
-              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                <p>Total VAT</p>
-                <p>
-                  <small> {currency}</small> {job.total_vat} 
-                </p>
-              </div>
-              <hr />
-              <div className="flex justify-between  gap-2 bg-primary-bg  py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-                <p>Total Amount</p>
-                <p>
-                  <small> {currency}</small> {job.total_amount}
-                </p>
-              </div>
-            </div>
+            <FeeDetails job={job} />
           </div>
 
-          </Container>
-        )}
-      </>
-    </>
+          {/* Additional Information */}
+        </Container>
+      )}
+    </div>
   );
 }
