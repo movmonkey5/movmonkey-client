@@ -31,6 +31,13 @@ const FeeDetails = ({ job }) => {
                 </div>
                 <hr />
                 <div className="flex justify-between py-2">
+                    <p className="text-[16px] md:text-lg max-w-[70%]">Extra Services Charge</p>
+                    <p className="text-lg font-medium md:font-semibold">
+                        <small> {currency}</small> {job.extra_services_charge}
+                    </p>
+                </div>
+                <hr />
+                <div className="flex justify-between py-2">
                     <p className="text-[16px] md:text-lg max-w-[70%]">Total VAT</p>
                     <p className="text-lg font-medium md:font-semibold">
                         <small> {currency}</small> {job.total_vat}
