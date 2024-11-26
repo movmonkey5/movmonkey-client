@@ -267,7 +267,7 @@ const ApiKit = {
       },
       completed: {
         getJobs: () => {
-          const url = "/me/jobs/completed?job_count=4";
+          const url = "/me/jobs/completed";
           return client.get(url);
         },
       },
