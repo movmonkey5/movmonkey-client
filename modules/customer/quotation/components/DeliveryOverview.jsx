@@ -1,4 +1,5 @@
 import React from "react";
+import OverviewItem from "./OverviewItem";
 
 const commonFields = [
   { accessKey: "have_parking_space", title: "Have Parking space" },
@@ -23,50 +24,38 @@ const dynamicFields = {
   // ... other categories remain the same
 };
 
-const OverviewItem = ({ title, value, extraValue }) => {
-  let content = value;
-
-  if (typeof value === "boolean") {
-    content = value ? "Yes" : "No";
-  } else if (typeof value === "string") {
-    content = value.split("_").join(" ").toUpperCase();
-  } else if (value === undefined || value === null) {
-    content = "";
-  }
-
-  if (extraValue) {
-    content += ` ${extraValue.toUpperCase()}`;
-  }
-
-  return (
-    <div className="flex justify-between border-b border-gray-200 py-2 text-base lg:text-xl">
-      <div className="">{title}</div>
-      <div className="font-semibold">{content}</div>
-    </div>
-  );
-};
-
 export default function DeliveryOverview({ job }) {
   const category = job.category[0].slug.replaceAll("_", "-").split("-")[0];
 
   return (
-    <div className="overflow-hidden  bg-primary-bg  shadow-md">
-      <div className="space-y-2 p-4">
-        {commonFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job[field.accessKey]}
-          />
-        ))}
-        {dynamicFields[category]?.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job.delivery_items[0][field.accessKey]}
-            extraValue={job.delivery_items[0][field.extraAccessKey]}
-          />
-        ))}
+    <div className="overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-8">
+        <div className="w-full md:w-[50%] bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+          <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Common Fields</h1>
+          <div className="p-4 rounded-b-lg">
+            {commonFields.map((field) => (
+              <OverviewItem
+                key={field.title}
+                title={field.title}
+                value={job[field.accessKey]}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="w-full md:w-[50%] bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+          <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Dynamic Fields</h1>
+          <div className="p-4 rounded-b-lg">
+            {dynamicFields[category]?.map((field) => (
+              <OverviewItem
+                key={field.title}
+                title={field.title}
+                value={job.delivery_items[0][field.accessKey]}
+                extraValue={job.delivery_items[0][field.extraAccessKey]}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
