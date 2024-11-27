@@ -17,10 +17,9 @@ import VideoIcon from "@/components/icon/VideoIcon";
 import PhotosIcon from "@/components/icon/PhotosIcon";
 import CleanerJobPhotos from "./components/CleanerJobPhotos";
 import CleanerJobVideos from "./components/CleanerJobVideos";
-import CleanerJobOverview from "./components/CleaningOverview";
-import DeliveryOverview from "./components/DeliveryOverView";
 import RemovalOverview from "./components/RemovalOverView";
 import MapWrapper from "./components/Location";
+import { useRouter } from "next/router";
 
 export default function CleanerAssignedJobDetailsPage({ params }) {
   const [view, setView] = useState("overview");
@@ -57,7 +56,6 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
   if (isLoading) {
     return <Loading className="h-screen" />;
   }
-console.log(job);
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       {/* Job Status Section */}
@@ -68,17 +66,30 @@ console.log(job);
       </div>
 
       <Container>
-
-      <MapWrapper jobUid={uid} />
+        <MapWrapper jobUid={uid} />
 
         {/* User Information Section */}
         <div className="mb-8 rounded-lg bg-gray-100 p-4">
           <h2 className="text-2xl font-semibold">Job from User</h2>
           {userDetails ? (
-            <div className="mt-4">
-              <h5 className="text-xl font-medium">{userDetails.full_name}</h5>
-              <p>Email: {userDetails.email}</p>
-              <p>Phone: {userDetails.phone}</p>
+            <div className="mt-4 flex items-center justify-between ">
+              <div>
+                <h5 className="text-xl font-medium">{userDetails.full_name}</h5>
+                <p>Email: {userDetails.email}</p>
+                <p>Phone: {userDetails.phone}</p>
+              </div>
+              <div>
+                <Link
+                  href={`/driver/message?name=${userDetails?.full_name?.split(" ").join("-")} `}
+                >
+                  <Button
+                    size="lg"
+                    className=" w-full md:w-8/12"
+                  >
+                    Chat With {userDetails?.full_name}
+                  </Button>
+                </Link>
+              </div>
             </div>
           ) : (
             <div>
@@ -156,7 +167,7 @@ console.log(job);
 
         {/* Conditional Rendering of Components Based on View */}
         <div className="mt-6">
-          {view === "overview" && <RemovalOverview  job={job} />}
+          {view === "overview" && <RemovalOverview job={job} />}
           {view === "photos" && <CleanerJobPhotos photos={photos} />}
           {view === "videos" && <CleanerJobVideos videos={videos} />}
         </div>

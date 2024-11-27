@@ -20,7 +20,7 @@ import {
 import ApiKit from "@/common/ApiKit";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const JobActions = ({ job, onJobCompleted }) => {
+const JobActions = ({ job, onJobCompleted, userDetails }) => {
   const [isDisputeOpen, setIsDisputeOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [disputeType, setDisputeType] = useState("REFUND");
@@ -62,9 +62,7 @@ const JobActions = ({ job, onJobCompleted }) => {
   };
   const router = useRouter();
   const StartChatting = () => {
-    // router.push(`/chat/${job.uid}`);
-    //router.push(`/modules/customer/message/`);
-    router.push(`/message`);
+    router.push(`/message?name=${userDetails.full_name.split(" ").join("-")}`);
     console.log("Chatting with service provider");
   };
 
@@ -79,7 +77,7 @@ const JobActions = ({ job, onJobCompleted }) => {
       </Button>
       {/* Work need  */}
       <Button size="lg" className=" w-full md:w-4/12" onClick={StartChatting}>
-        Chat With Service provider
+        Chat With {userDetails.full_name}
       </Button>
       <Button
         size="lg"

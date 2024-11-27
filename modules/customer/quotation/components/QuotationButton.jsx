@@ -22,7 +22,7 @@ const QuotationButton = ({ job }) => {
   };
 
   if (job.status === "ACCEPTED") {
-    if(job.delivery_job){
+    if (job.delivery_job) {
       return (
         <div className="mx-auto mt-10 flex max-w-[250px] flex-col items-center justify-center gap-6">
           <p className="text-center text-xl font-medium">
@@ -30,6 +30,23 @@ const QuotationButton = ({ job }) => {
           </p>
           <Link
             href={`/track-jobs/${job.kind.toLowerCase()}/${job.delivery_job.uid}`}
+            className="w-full max-w-[200px]"
+          >
+            <Button size="lg" className="w-full">
+              Track Your Job
+            </Button>
+          </Link>
+        </div>
+      );
+    }
+    if (job.cleaning_job) {
+      return (
+        <div className="mx-auto mt-10 flex max-w-[250px] flex-col items-center justify-center gap-6">
+          <p className="text-center text-xl font-medium">
+            Your job is active now
+          </p>
+          <Link
+            href={`/track-jobs/${job.kind.toLowerCase()}/${job.cleaning_job.uid}`}
             className="w-full max-w-[200px]"
           >
             <Button size="lg" className="w-full">
@@ -55,7 +72,6 @@ const QuotationButton = ({ job }) => {
         </div>
       );
     }
-  
   }
 
   if (job.status === "DECLINED") {

@@ -216,7 +216,7 @@ export default function UserJobDetailsPage({ params }) {
                   <h1 className="mb-8  text-2xl font-semibold text-white lg:text-3xl">
                     Your Job is Active now
                   </h1>
-                  <JobActions job={quotation || job} />
+                  <JobActions job={quotation || job} userDetails={userDetails} />
                 </div>
               )}
             </div>

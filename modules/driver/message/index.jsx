@@ -1,6 +1,7 @@
 "use client";
 
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Container from "@/components/shared/Container";
 import { Input } from "@/components/ui/input";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -8,6 +9,7 @@ import ApiKit from "@/common/ApiKit";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import useStore from "@/store";
+import { useSearchParams } from "next/navigation";
 
 export default function CleanerMessagePage() {
   const { user } = useStore();
@@ -17,7 +19,8 @@ export default function CleanerMessagePage() {
   const [messageContent, setMessageContent] = useState("");
   const [messageDetails, setMessageDetails] = useState([]);
   const currentUserUid = user.uid; // Replace with actual current user UID
-
+  const searchParams = useSearchParams();
+  const name = searchParams.get("name");
   const {
     data: messages,
     isLoading: isMessagingLoading,
@@ -26,7 +29,6 @@ export default function CleanerMessagePage() {
     queryKey: ["me/inbox"],
     queryFn: () => ApiKit.me.getMessages().then(({ data }) => data),
   });
-  const User = messages?.results.map((message) => message.user);
 
   const sendMessageMutation = useMutation({
     mutationFn: (payload) => {
@@ -46,8 +48,9 @@ export default function CleanerMessagePage() {
       .getMessageDetails(uid)
       .then(({ data }) => setMessageDetails(data.results.reverse()));
   };
-  console.log(messageDetails);
+
   const handleUserClick = (message) => {
+    console.log("clicked", message);
     setSelectedMessage(message);
     fetchMessageDetails(message.uid); // Fetch detailed messages when a message is selected
   };
@@ -56,30 +59,41 @@ export default function CleanerMessagePage() {
     sendMessageMutation.mutate({ content: messageContent });
   };
 
+  useEffect(() => {
+    if (name && messages?.results) {
+      const matchingMessage = messages.results.find(
+        (msg) => msg.target.full_name.split(" ").join("-") === name,
+      );
+      if (matchingMessage) {
+        handleUserClick(matchingMessage);
+      }
+    }
+  }, [name, messages]);
+
   const baseUrl = "https://backend.movmonkey.com/";
 
   return (
     <div className="min-h-[calc(100vh-60px)] bg-black/10 lg:min-h-[calc(100vh-80px)]">
       {/* Header */}
-      <div className="bg-primary text-2xl font-semibold text-black md:text-2xl lg:mt-10">
-        <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 md:h-20">
+      <div className="bg-primary py-4 text-lg font-semibold text-black lg:mt-10 lg:py-6 lg:text-2xl">
+        <div className="mx-auto max-w-7xl px-4 text-center lg:text-left">
           <h3>Message Box</h3>
         </div>
       </div>
 
       <Container>
-        <div className="mx-auto mt-10 flex h-[80vh] max-w-7xl flex-col overflow-hidden rounded-lg bg-white shadow-md lg:flex-row">
+        <div className="mx-auto mt-6 flex h-[80vh] max-w-7xl flex-col overflow-hidden rounded-lg bg-white shadow-md lg:mt-10 lg:flex-row">
           {/* Sidebar (User List) */}
-          <div className="w-full bg-green-800 p-4 lg:w-1/3">
+          <div className="w-full flex-shrink-0 bg-primary p-4 lg:w-1/3">
             <div className="mb-4">
               <Input
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-green-900 text-white"
+                className="bg-white text-gray-600"
               />
             </div>
-            <ul>
+            <ul className="h-[60vh] overflow-y-auto">
               {messages?.results
                 ?.filter((msg) =>
                   msg.target.full_name
@@ -90,10 +104,18 @@ export default function CleanerMessagePage() {
                   <li
                     key={msg.uid}
                     onClick={() => handleUserClick(msg)}
-                    className="mb-4 flex cursor-pointer items-center gap-3"
+                    className={`mb-4 flex cursor-pointer items-center gap-3 p-2 ${
+                      selectedMessage?.uid === msg.uid
+                        ? "rounded-xl bg-gray-700"
+                        : ""
+                    }`}
                   >
                     <img
-                      src={baseUrl + msg.target.avatar.at350x350}
+                      src={
+                        msg.target.avatar?.at350x350
+                          ? baseUrl + msg.target.avatar.at350x350
+                          : "https://frontend.movmonkey.com/image/user-placeholder-green.png"
+                      }
                       alt={msg.target.full_name}
                       className="h-10 w-10 rounded-full"
                     />
@@ -113,9 +135,13 @@ export default function CleanerMessagePage() {
             {selectedMessage ? (
               <>
                 {/* Chat Header */}
-                <div className="flex items-center gap-4 border-b pb-2">
+                <div className="mb-2 flex items-center gap-4 border-b pb-2 lg:pb-4">
                   <img
-                    src={baseUrl + selectedMessage.target.avatar.at350x350}
+                    src={
+                      selectedMessage.target.avatar?.at350x350
+                        ? baseUrl + selectedMessage.target.avatar.at350x350
+                        : "https://frontend.movmonkey.com/image/user-placeholder-green.png"
+                    }
                     alt={selectedMessage.user.full_name}
                     className="h-10 w-10 rounded-full"
                   />
@@ -127,7 +153,7 @@ export default function CleanerMessagePage() {
                 </div>
 
                 {/* Chat Messages */}
-                <div className="flex-grow overflow-y-auto p-4">
+                <div className="flex-grow space-y-4 overflow-y-auto p-4">
                   <h1 className="mb-6 rounded-lg bg-gray-600 p-4 text-center text-white">
                     {messageDetails[0]?.content}
                   </h1>
@@ -176,14 +202,14 @@ export default function CleanerMessagePage() {
                 </div>
               </>
             ) : (
-              <p className="text-center text-gray-500 my-12 text-xl">
+              <p className="my-12 text-center text-xl text-gray-500">
                 Select a message to start chatting
               </p>
             )}
           </div>
         </div>
-        <Link href="/driver/profile" className="mt-10">
-          <Button className="mt-10" size="lg" color="primary">
+        <Link href="/profile" className="mt-10 flex justify-center">
+          <Button size="lg" className="mt-10 w-full max-w-xs" color="primary">
             <span className="m-2">Back</span>
           </Button>
         </Link>

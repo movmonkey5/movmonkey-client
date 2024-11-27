@@ -62,7 +62,7 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
       {/* Job Status Section */}
       <div className="my-8 flex flex-col justify-between bg-[#366935] p-6 md:px-40">
         <h1 className="text-3xl font-semibold text-white">
-         This Job is Active Now
+          This Job is Active Now
         </h1>
       </div>
 
@@ -71,10 +71,21 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
         <div className="mb-8 rounded-lg bg-gray-100 p-4">
           <h2 className="text-2xl font-semibold">Job from User</h2>
           {userDetails ? (
-            <div className="mt-4">
-              <h5 className="text-xl font-medium">{userDetails.full_name}</h5>
-              <p>Email: {userDetails.email}</p>
-              <p>Phone: {userDetails.phone}</p>
+            <div className="mt-4 flex items-center justify-between ">
+              <div>
+                <h5 className="text-xl font-medium">{userDetails.full_name}</h5>
+                <p>Email: {userDetails.email}</p>
+                <p>Phone: {userDetails.phone}</p>
+              </div>
+              <div>
+                <Link
+                  href={`/cleaner/message?name=${userDetails?.full_name?.split(" ").join("-")} `}
+                >
+                  <Button size="lg" className=" w-full md:w-8/12">
+                    Chat With {userDetails?.full_name}
+                  </Button>
+                </Link>
+              </div>
             </div>
           ) : (
             <div>
