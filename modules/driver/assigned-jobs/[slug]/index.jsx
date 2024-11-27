@@ -82,10 +82,7 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
                 <Link
                   href={`/driver/message?name=${userDetails?.full_name?.split(" ").join("-")} `}
                 >
-                  <Button
-                    size="lg"
-                    className=" w-full md:w-8/12"
-                  >
+                  <Button size="lg" className=" w-full md:w-8/12">
                     Chat With {userDetails?.full_name}
                   </Button>
                 </Link>
@@ -110,6 +107,22 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
           </h2>
 
           <div>
+            <div className=" my-5 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+              <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
+                Moving From
+              </div>
+              <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
+                {job?.distance.moving_from}
+              </div>
+            </div>
+            <div className="flex flex-col gap-1  md:flex-row md:items-center md:justify-between">
+              <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
+                Moving To
+              </div>
+              <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
+                {job?.distance.moving_to}
+              </div>
+            </div>
             <h2 className="mt-4 text-lg font-bold md:text-2xl">
               Job Description:
             </h2>
