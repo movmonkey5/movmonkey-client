@@ -287,8 +287,8 @@ const ApiKit = {
           return client.patch(url, payload, defaultFileUploadConfig);
         },
 
-        getJobDeatails: (uid) => {
-          const url = `/me/jobs/assinged/${uid}`;
+        getJobDeatails: (uid,kind) => {
+          const url = `/me/jobs/assinged/${uid}/${kind}`;
           return client.get(url);
         },
         getFiles: (uid) => {
