@@ -63,7 +63,7 @@ export default function DriverOpenJobsPage() {
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       <div className=" bg-primary text-2xl font-semibold text-black md:text-2xl lg:mt-10">
         <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 md:h-20">
-          <h3>Cleaners  Job Board</h3>
+          <h3>Cleaners Job Board</h3>
         </div>
       </div>
 

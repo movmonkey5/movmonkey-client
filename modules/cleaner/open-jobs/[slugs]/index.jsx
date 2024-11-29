@@ -59,6 +59,11 @@ export default function CleanerOpenJobDetailsPage({ slug }) {
             </Button>
           </Link>
           <h3>{job?.title}</h3>
+          {isCompleted && (
+            <span className="rounded-fullpx-2 ml-auto py-1 text-white">
+              This Job has Completed
+            </span>
+          )}
         </div>
       </div>
 

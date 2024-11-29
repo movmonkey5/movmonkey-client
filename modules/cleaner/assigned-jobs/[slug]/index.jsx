@@ -22,11 +22,12 @@ import CleanerJobOverview from "./components/CleaningOverview";
 export default function CleanerAssignedJobDetailsPage({ params }) {
   const [view, setView] = useState("overview");
   const uid = params.slugs[1];
+  const kind = params.slugs[0].toUpperCase();
 
   const { data: job, isLoading: jobLoading } = useQuery({
-    queryKey: ["jobDetails", uid],
+    queryKey: ["jobDetails", uid,kind],
     queryFn: () =>
-      ApiKit.me.job.assigned.getJobDeatails(uid).then(({ data }) => data),
+      ApiKit.me.job.assigned.getJobDeatails(uid,kind).then(({ data }) => data),
   });
   const quotationId = job?.quotation?.uid;
 

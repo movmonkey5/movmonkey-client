@@ -49,26 +49,24 @@ export default function UserJobDetailsPage({ params }) {
             </Button>
             <h3>{data?.title}</h3>
           </Link>
-          {data.status === "IN_PROGRESS" ||
-            (data.status === "COMPLETED" && (
-              <div className="flex items-center gap-2">
-                {data.status === "COMPLETED" && (
-                  <p className="mx-12 text-white"> This Job has Completed</p>
-                )}
-                {data.status === "IN_PROGRESS" && (
-                  <p className="mx-12 text-white">Job is already assigned</p>
-                )}
-
-                {jobID && (
-                  <Link
-                    href={`/quotation/${jobKind}/${jobID}`}
-                    className={`flex rounded-xl border p-2 text-base text-white`}
-                  >
-                    Check Details here
-                  </Link>
-                )}
-              </div>
-            ))}
+          {(data.status === "IN_PROGRESS" || data.status === "COMPLETED") && (
+            <div className="flex items-center gap-2">
+              {data.status === "COMPLETED" && (
+                <p className="mx-12 text-white">This Job has Completed</p>
+              )}
+              {data.status === "IN_PROGRESS" && (
+                <p className="mx-12 text-white">Job is already assigned</p>
+              )}
+              {jobID && (
+                <Link
+                  href={`/quotation/${jobKind}/${jobID}`}
+                  className="flex rounded-xl border p-2 text-base text-white"
+                >
+                  Check Details here
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <Container>

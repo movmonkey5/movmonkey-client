@@ -62,7 +62,11 @@ export default function DriverProfilePage() {
       {jobs?.results?.length
         ? jobs.results.map((job) => (
             <Link
-              href={`/${job?.status === "IN_PROGRESS" ? "driver/assigned-jobs" : "driver/open-jobs"}/${job?.slug}?kind=${job?.kind?.split("_")[0].toLowerCase()}`}
+              href={`/${
+                job?.status === "IN_PROGRESS"
+                  ? `driver/assigned-jobs/${job?.kind?.toLowerCase()}/${job?.uid}`
+                  : `driver/open-jobs/${job?.slug}?kind=${job?.kind?.split("_")[0].toLowerCase()}`
+              }`}
               key={job?.uid}
               className="mb-3 block w-fit cursor-pointer rounded-lg bg-primary px-2 font-semibold max-lg:py-2 lg:rounded-full lg:px-4 lg:py-1"
             >
