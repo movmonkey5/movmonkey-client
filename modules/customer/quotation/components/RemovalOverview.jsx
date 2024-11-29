@@ -42,7 +42,7 @@ export default function RemovalJobOverview({ job }) {
   return (
     <div className="overflow-hidden">
       <div className="w-full bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
-        <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Common Fields</h1>
+        <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Basic Details</h1>
         <div className="p-4 rounded-b-lg grid grid-cols-2 gap-x-12">
           {commonFields.map((field) => (
             <OverviewItem
