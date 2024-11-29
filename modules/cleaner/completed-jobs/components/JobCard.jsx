@@ -17,7 +17,7 @@ export default function JobCard({ job }) {
 
   return (
     <Link
-      href={`/driver/open-jobs/${job?.slug}?kind=${job?.kind?.split("_")[0].toLowerCase()}`}
+      href={`/cleaner/open-jobs/${job?.slug}?kind=${job?.kind?.split("_")[0].toLowerCase()}`}
     >
       <div className={`flex rounded-md border bg-gray-500 text-sm text-black`}>
         <div

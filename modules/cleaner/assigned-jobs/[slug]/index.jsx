@@ -28,12 +28,15 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
     queryFn: () =>
       ApiKit.me.job.assigned.getJobDeatails(uid).then(({ data }) => data),
   });
+  const quotationId = job?.quotation?.uid;
 
   const { data: userDetails, isLoading: driverLoading } = useQuery({
     queryKey: ["userDetails", uid],
     queryFn: () =>
       uid &&
-      ApiKit.me.quotations.user.getUserDetails(uid).then(({ data }) => data),
+      ApiKit.me.quotations.user
+        .getUserDetails(quotationId)
+        .then(({ data }) => data),
   });
   const { data: files } = useQuery({
     queryKey: ["cleaning-job-files"],

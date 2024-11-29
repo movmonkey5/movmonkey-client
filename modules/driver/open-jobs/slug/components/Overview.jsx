@@ -91,6 +91,8 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function Overview({ job, isCustomer = false }) {
+  const isCompleted = job.status === "COMPLETED";
+
   const formik = useFormik({
     initialValues: {
       quotation_validity: 0,
@@ -145,7 +147,9 @@ export default function Overview({ job, isCustomer = false }) {
         ))}
       </div>
 
-      {!isCustomer && <DetailPricing formik={formik} job={job} />}
+      {!isCustomer && !isCompleted && (
+        <DetailPricing formik={formik} job={job} />
+      )}
     </div>
   );
 }

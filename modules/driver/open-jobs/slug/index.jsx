@@ -68,6 +68,7 @@ export default function DriverOpenJobDetailsPage({ params }) {
     photos = files.filter((file) => file?.kind === "IMAGE");
   }
   console.log(job);
+  const isCompleted = job?.status === "COMPLETED";
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-10">
@@ -78,6 +79,11 @@ export default function DriverOpenJobDetailsPage({ params }) {
             </Button>
           </Link>
           <h3>{job?.title}</h3>
+          {isCompleted && (
+            <span className="rounded-fullpx-2 ml-auto py-1 text-white">
+              This Job has Completed
+            </span>
+          )}
         </div>
       </div>
 
@@ -143,66 +149,72 @@ export default function DriverOpenJobDetailsPage({ params }) {
             />
             Information
           </div>
-          <div
-            onClick={() => {
-              setView("photos");
-            }}
-            className={cn(
-              "flex cursor-pointer items-center justify-center gap-3 rounded-full px-10 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
-              {
-                "bg- border-2 border-secondary bg-secondary text-white":
-                  view === "photos",
-                "border-2 border-secondary bg-white text-secondary":
-                  view !== "photos",
-              },
-            )}
-          >
-            <PhotosIcon
-              className={`h-6 w-6 ${
-                view === "photos" ? "fill-white" : "fill-secondary"
-              }`}
-            />
-            Photos
-          </div>
-          <div
-            onClick={() => {
-              setView("videos");
-            }}
-            className={cn(
-              "flex cursor-pointer items-center justify-center gap-3 rounded-full px-10 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
-              {
-                "bg- border-2 border-secondary bg-secondary text-white":
-                  view === "videos",
-                "border-2 border-secondary bg-white text-secondary":
-                  view !== "videos",
-              },
-            )}
-          >
-            <VideoIcon
-              className={`h-6 w-6 ${
-                view === "videos" ? "fill-white" : "fill-secondary"
-              }`}
-            />
-            Videos
-          </div>
+          {!isCompleted && (
+            <>
+              <div
+                onClick={() => {
+                  setView("photos");
+                }}
+                className={cn(
+                  "flex cursor-pointer items-center justify-center gap-3 rounded-full px-10 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
+                  {
+                    "bg- border-2 border-secondary bg-secondary text-white":
+                      view === "photos",
+                    "border-2 border-secondary bg-white text-secondary":
+                      view !== "photos",
+                  },
+                )}
+              >
+                <PhotosIcon
+                  className={`h-6 w-6 ${
+                    view === "photos" ? "fill-white" : "fill-secondary"
+                  }`}
+                />
+                Photos
+              </div>
+              <div
+                onClick={() => {
+                  setView("videos");
+                }}
+                className={cn(
+                  "flex cursor-pointer items-center justify-center gap-3 rounded-full px-10 py-2 text-sm font-semibold max-sm:w-full sm:text-base md:text-lg",
+                  {
+                    "bg- border-2 border-secondary bg-secondary text-white":
+                      view === "videos",
+                    "border-2 border-secondary bg-white text-secondary":
+                      view !== "videos",
+                  },
+                )}
+              >
+                <VideoIcon
+                  className={`h-6 w-6 ${
+                    view === "videos" ? "fill-white" : "fill-secondary"
+                  }`}
+                />
+                Videos
+              </div>
+            </>
+          )}
         </div>
 
         <div className="mt-5">
           {kind === "delivery" && view === "overview" && (
             <DeliveryOverview job={job} />
           )}
-          {kind === "delivery" && view === "videos" && (
+          {kind === "delivery" && view === "videos" && !isCompleted && (
             <DeliveryVideo videos={videos} />
           )}
-          {kind === "delivery" && view === "photos" && (
+          {kind === "delivery" && view === "photos" && !isCompleted && (
             <DeliveryPhotos photos={photos} />
           )}
         </div>
 
         <div className="mt-5">
           {kind === "removal" && view === "overview" && <Overview job={job} />}
-          {kind === "removal" && view === "videos" && <Video videos={videos} />}
-          {kind === "removal" && view === "photos" && (
+          {kind === "removal" && view === "videos" && !isCompleted && (
+            <Video videos={videos} />
+          )}
+          {kind === "removal" && view === "photos" && !isCompleted && (
             <Photos photos={photos} />
           )}
         </div>

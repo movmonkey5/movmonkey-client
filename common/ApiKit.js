@@ -250,11 +250,11 @@ const ApiKit = {
         },
       },
       distance: {
-        patchDistance: (uid,payload,category) => {
+        patchDistance: (uid, payload, category) => {
           const url = `/me/jobs/${category}/${uid}/distance`;
           return client.patch(url, payload, defaultFileUploadConfig);
         },
-        getDistance: (uid,category) => {
+        getDistance: (uid, category) => {
           const url = `/me/jobs/${category}/${uid}/distance`;
           return client.get(url);
         },
@@ -282,17 +282,17 @@ const ApiKit = {
           const url = "/me/jobs/assinged";
           return client.get(url);
         },
-        patchDriverDistance: (uid,payload) => {
-          const url = `/me/jobs/assinged/${uid}/distance`;
+        patchDriverDistance: (uid, kind, payload) => {
+          const url = `/me/jobs/assinged/${uid}/${kind}/distance`;
           return client.patch(url, payload, defaultFileUploadConfig);
         },
 
-        getJobDeatails: (uid,kind) => {
+        getJobDeatails: (uid, kind) => {
           const url = `/me/jobs/assinged/${uid}/${kind}`;
           return client.get(url);
         },
-        getFiles: (uid) => {
-          const url = `/me/jobs/assinged/${uid}/files`;
+        getFiles: (uid, kind) => {
+          const url = `/me/jobs/assinged/${uid}/${kind}/files`;
           return client.get(url);
         },
       },

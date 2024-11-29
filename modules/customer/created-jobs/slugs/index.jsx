@@ -37,7 +37,8 @@ export default function UserJobDetailsPage({ params }) {
   if (isLoading) {
     return <Loading className="h-screen" />;
   }
-  console.log(data);
+  const jobID = data?.quotation?.uid;
+  const jobKind = data?.quotation?.kind;
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-10">
@@ -48,12 +49,26 @@ export default function UserJobDetailsPage({ params }) {
             </Button>
             <h3>{data?.title}</h3>
           </Link>
-          {data.status === "IN_PROGRESS" && (
-            <p className="mx-12 text-white">Job is already assigned</p>
-          )}
-          {data.status === "COMPLETED" && (
-            <p className="mx-12 text-white"> This Job has Completed</p>
-          )}
+          {data.status === "IN_PROGRESS" ||
+            (data.status === "COMPLETED" && (
+              <div className="flex items-center gap-2">
+                {data.status === "COMPLETED" && (
+                  <p className="mx-12 text-white"> This Job has Completed</p>
+                )}
+                {data.status === "IN_PROGRESS" && (
+                  <p className="mx-12 text-white">Job is already assigned</p>
+                )}
+
+                {jobID && (
+                  <Link
+                    href={`/quotation/${jobKind}/${jobID}`}
+                    className={`flex rounded-xl border p-2 text-base text-white`}
+                  >
+                    Check Details here
+                  </Link>
+                )}
+              </div>
+            ))}
         </div>
       </div>
       <Container>

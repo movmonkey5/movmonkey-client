@@ -140,9 +140,17 @@ const dynamicFields = {
 };
 
 const formatPreferredDay = (value) => {
-  if (!value) return 'N/A';
-  const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-  return days.filter(day => value.toLowerCase().includes(day)).join(', ');
+  if (!value) return "N/A";
+  const days = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
+  return days.filter((day) => value.toLowerCase().includes(day)).join(", ");
 };
 
 const OverviewItem = ({ title, value, extraValue }) => {
@@ -181,6 +189,8 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function CleanerJobOverview({ job, isCustomer = false }) {
+  const isCompleted = job?.status === "COMPLETED";
+
   const formik = useFormik({
     initialValues: {
       quotation_validity: 0,
@@ -252,7 +262,9 @@ export default function CleanerJobOverview({ job, isCustomer = false }) {
         ))}
       </div>
 
-      {!isCustomer && <CleanerJobDetailPricing formik={formik} job={job} />}
+      {!isCustomer && !isCompleted && (
+        <CleanerJobDetailPricing formik={formik} job={job} />
+      )}
     </div>
   );
 }

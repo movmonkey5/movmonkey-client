@@ -24,23 +24,27 @@ import { useRouter } from "next/router";
 export default function CleanerAssignedJobDetailsPage({ params }) {
   const [view, setView] = useState("overview");
   const uid = params.slugs[1];
-const kind = params.slugs[0].toUpperCase();
+  const kind = params.slugs[0].toUpperCase();
   const { data: job, isLoading: jobLoading } = useQuery({
-    queryKey: ["jobDetails", uid,kind],
+    queryKey: ["jobDetails", uid, kind],
     queryFn: () =>
-      ApiKit.me.job.assigned.getJobDeatails(uid,kind).then(({ data }) => data),
+      ApiKit.me.job.assigned.getJobDeatails(uid, kind).then(({ data }) => data),
   });
-
+  const quotationId = job?.quotation?.uid;
   const { data: userDetails, isLoading: driverLoading } = useQuery({
     queryKey: ["userDetails", uid],
     queryFn: () =>
       uid &&
-      ApiKit.me.quotations.user.getUserDetails(uid).then(({ data }) => data),
+      ApiKit.me.quotations.user
+        .getUserDetails(quotationId)
+        .then(({ data }) => data),
   });
   const { data: files } = useQuery({
     queryKey: ["delivery-job-files"],
     queryFn: () =>
-      ApiKit.me.job.assigned.getFiles(uid).then(({ data }) => data.results),
+      ApiKit.me.job.assigned
+        .getFiles(uid, kind)
+        .then(({ data }) => data.results),
   });
 
   let videos;
@@ -66,7 +70,7 @@ const kind = params.slugs[0].toUpperCase();
       </div>
 
       <Container>
-        <MapWrapper jobUid={uid} />
+        <MapWrapper jobUid={uid} kind={kind} />
 
         {/* User Information Section */}
         <div className="mb-8 rounded-lg bg-gray-100 p-4">

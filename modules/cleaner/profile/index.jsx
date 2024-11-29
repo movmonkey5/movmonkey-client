@@ -17,7 +17,7 @@ import useStore from "@/store";
 export default function DriverProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
   const user = useStore((state) => state.user);
-  console.log('cleaner',user);
+  console.log("cleaner", user);
   const [currency, setCurrency] = useState("$");
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function DriverProfilePage() {
       {jobs?.results?.length
         ? jobs.results.map((job) => (
             <Link
-              href={`/${job?.status === "ACCEPTED" ? "cleaner/assigned-jobs" : "cleaner/completed-jobs"}/${job?.kind?.toLowerCase()}/${job?.uid}`}
+              href={`/${job?.status === "ACCEPTED" ? "cleaner/assigned-jobs" : "cleaner/assigned-jobs"}/${job?.kind?.toLowerCase()}/${job?.uid}`}
               key={job?.uid}
               className="mb-3 block w-fit cursor-pointer rounded-lg bg-primary px-2 font-semibold max-lg:py-2 lg:rounded-full lg:px-4 lg:py-1"
             >
@@ -78,7 +78,9 @@ export default function DriverProfilePage() {
     <div className="min-h-[calc(100vh-80px)]">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-6">
         <Container>
-        <h3 className="px-4 text-3xl font-bold">Total Earned:  {currency}1370</h3>
+          <h3 className="px-4 text-3xl font-bold">
+            Total Earned: {currency}1370
+          </h3>
         </Container>
       </div>
       <Container>
@@ -108,13 +110,6 @@ export default function DriverProfilePage() {
             </div>
           </div>
           <div className="flex flex-col gap-5 max-xs:mt-0 max-xs:w-full  sm:flex-row sm:items-center">
-            <Link
-              href="/cleaner/message"
-              className="block rounded-full bg-primary p-4"
-            >
-              <MessageCircleMore className="font-bold text-black" />
-            </Link>
-
             <Link href="/cleaner/profile/edit" className="block">
               <Button variant="secondary" className="gap-2 max-xs:w-full">
                 <Pencil className="size-5" />

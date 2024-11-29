@@ -3,7 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import ApiKit from "@/common/ApiKit";
 
-const MapWrapper = ({ jobUid }) => {
+const MapWrapper = ({ jobUid,kind }) => {
   const [viewport, setViewport] = useState({
     latitude: 23.777176, // Default center
     longitude: 90.399452,
@@ -31,7 +31,7 @@ const MapWrapper = ({ jobUid }) => {
           };
 
           ApiKit.me.job.assigned
-            .patchDriverDistance(jobUid, payload)
+            .patchDriverDistance(jobUid,kind, payload)
             .then(() => console.log("Distance updated successfully"))
             .catch((error) => {
               console.error("Error updating distance:", error);
