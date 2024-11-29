@@ -24,7 +24,7 @@ export default function Banner() {
 
         {/* Right Section: Image Grid */}
         <div className="mt-8 grid w-[90%] grid-cols-2 gap-4 lg:mt-0 lg:w-[60%]">
-          <div className="relative row-span-2 h-[250px] w-full md:h-full">
+          <div className="relative h-[250px] w-full md:h-full">
             <Image
               src={Delivery}
               alt="Delivery Service"
