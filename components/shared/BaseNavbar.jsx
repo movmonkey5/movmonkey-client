@@ -74,7 +74,7 @@ export default function BaseNavbar() {
   };
 
   return (
-    <nav className="sticky top-[-.5px] z-50 mb-6 mt-8 h-16 bg-white pb-16 sm:h-max md:py-8">
+    <nav className="sticky top-[-.5px] z-50 my-4 bg-white h-16 pb-16 sm:h-max md:py-5">
       <Container extraClassName={"!p-0"}>
         <div className="relative flex h-16 items-center justify-between px-4 sm:h-16">
           <div className="block px-2 sm:hidden">
@@ -101,19 +101,19 @@ export default function BaseNavbar() {
             ></div>
           )}
 
-          <menu className="hidden sm:block ">
-            <MenuBaseNavbar
-              showSignInSubmenu={showSignInSubmenu}
-              setShowSignInSubmenu={setShowSignInSubmenu}
-              showSignUpSubmenu={showSignUpSubmenu}
-              setShowSignUpSubmenu={setShowSignUpSubmenu}
-            />
-            {/* <UpdatedMenuBaseNavbar
+          <menu className="hidden sm:block">
+            {/* <MenuBaseNavbar
               showSignInSubmenu={showSignInSubmenu}
               setShowSignInSubmenu={setShowSignInSubmenu}
               showSignUpSubmenu={showSignUpSubmenu}
               setShowSignUpSubmenu={setShowSignUpSubmenu}
             /> */}
+            <UpdatedMenuBaseNavbar
+              showSignInSubmenu={showSignInSubmenu}
+              setShowSignInSubmenu={setShowSignInSubmenu}
+              showSignUpSubmenu={showSignUpSubmenu}
+              setShowSignUpSubmenu={setShowSignUpSubmenu}
+            />
           </menu>
 
           <div className="block sm:hidden">
