@@ -90,7 +90,7 @@ export default function BaseNavbar() {
               alt="logo"
               priority
               loading="eager"
-              className="h-10 w-full sm:h-14"
+              className="h-10 w-full sm:h-12"
             />
           </Link>
 
@@ -102,18 +102,18 @@ export default function BaseNavbar() {
           )}
 
           <menu className="hidden sm:block">
-            {/* <MenuBaseNavbar
-              showSignInSubmenu={showSignInSubmenu}
-              setShowSignInSubmenu={setShowSignInSubmenu}
-              showSignUpSubmenu={showSignUpSubmenu}
-              setShowSignUpSubmenu={setShowSignUpSubmenu}
-            /> */}
-            <UpdatedMenuBaseNavbar
+            <MenuBaseNavbar
               showSignInSubmenu={showSignInSubmenu}
               setShowSignInSubmenu={setShowSignInSubmenu}
               showSignUpSubmenu={showSignUpSubmenu}
               setShowSignUpSubmenu={setShowSignUpSubmenu}
             />
+            {/* <UpdatedMenuBaseNavbar
+              showSignInSubmenu={showSignInSubmenu}
+              setShowSignInSubmenu={setShowSignInSubmenu}
+              showSignUpSubmenu={showSignUpSubmenu}
+              setShowSignUpSubmenu={setShowSignUpSubmenu}
+            /> */}
           </menu>
 
           <div className="block sm:hidden">

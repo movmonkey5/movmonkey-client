@@ -7,8 +7,8 @@ export default function CleanerLayout({ children }) {
   return (
     <>
       <CleanerAuthGuardHoc>
-        {/* <AuthNavbar /> */}
-        <BaseNavbar />
+        <AuthNavbar />
+        {/* <BaseNavbar /> */}
         <div> {children}</div>
         <BaseFooter />
       </CleanerAuthGuardHoc>

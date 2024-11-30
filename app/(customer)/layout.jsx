@@ -7,8 +7,8 @@ export default function CustomerLayout({ children }) {
   return (
     <>
       <CustomerAuthGuardHoc>
-        {/* <AuthNavbar /> */}
-        <BaseNavbar />
+        <AuthNavbar />
+        {/* <BaseNavbar /> */}
         <div> {children}</div>
         <BaseFooter />
       </CustomerAuthGuardHoc>
