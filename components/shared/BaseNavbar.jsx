@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Container from "./Container";
-import logo from "@/public/logo/logo.png";
+import logo from "@/public/logo/logo.svg";
 import Link from "next/link";
 import MenuBaseNavbar from "./MenuBaseNavbar";
 import { Menu } from "lucide-react";
@@ -13,6 +13,7 @@ import useStore from "@/store";
 import userPlaceHolder from "@/public/image/user-placeholder.png";
 import ApiKit from "@/common/ApiKit";
 import NotificationComponent from "./Notification";
+import UpdatedMenuBaseNavbar from "./UpdatedMenuBaseNavbar";
 
 export default function BaseNavbar() {
   const [showSignInSubmenu, setShowSignInSubmenu] = useState(false);
@@ -107,6 +108,12 @@ export default function BaseNavbar() {
               showSignUpSubmenu={showSignUpSubmenu}
               setShowSignUpSubmenu={setShowSignUpSubmenu}
             />
+            {/* <UpdatedMenuBaseNavbar
+              showSignInSubmenu={showSignInSubmenu}
+              setShowSignInSubmenu={setShowSignInSubmenu}
+              showSignUpSubmenu={showSignUpSubmenu}
+              setShowSignUpSubmenu={setShowSignUpSubmenu}
+            /> */}
           </menu>
 
           <div className="block sm:hidden">
