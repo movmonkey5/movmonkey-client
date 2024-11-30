@@ -74,7 +74,7 @@ export default function BaseNavbar() {
   };
 
   return (
-    <nav className="sticky top-[-.5px] z-50 my-4 bg-white h-16 pb-16 sm:h-max md:py-5">
+    <nav className="sticky top-[-.5px] z-50 mb-6 mt-8 h-16 bg-white pb-16 sm:h-max md:py-8">
       <Container extraClassName={"!p-0"}>
         <div className="relative flex h-16 items-center justify-between px-4 sm:h-16">
           <div className="block px-2 sm:hidden">
@@ -90,7 +90,7 @@ export default function BaseNavbar() {
               alt="logo"
               priority
               loading="eager"
-              className="h-10 w-full sm:h-12"
+              className="h-10 w-full sm:h-14"
             />
           </Link>
 
