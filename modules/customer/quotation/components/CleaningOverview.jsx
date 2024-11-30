@@ -126,7 +126,7 @@ export default function CleanerJobOverview({ job }) {
     <div className="overflow-hidden">
       <div className="flex flex-col gap-4 md:gap-8">
         <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-8">
-          <div className="w-full md:w-[40%] bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+          <div className="w-full md:w-[40%] bg-primary/10 rounded-lg shadow-md">
             <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Address Details</h1>
             <div className="p-4 rounded-b-lg">
               {addressFields.map((field) => (
@@ -139,7 +139,7 @@ export default function CleanerJobOverview({ job }) {
             </div>
           </div>
 
-          <div className="w-full md:w-[60%] bg-primary/10 rounded-lg shadow-md hover:scale-95 transition-all duration-300 ease-in-out">
+          <div className="w-full md:w-[60%] bg-primary/10 rounded-lg shadow-md">
             <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Basic Details</h1>
             <div className="p-4 rounded-b-lg">
               {dynamicFields[category]?.map((field) => (
@@ -153,7 +153,7 @@ export default function CleanerJobOverview({ job }) {
           </div>
         </div>
 
-        <div className="w-full hover:scale-95 bg-primary/10 rounded-lg shadow-md transition-all duration-300 ease-in-out">
+        <div className="w-full bg-primary/10 rounded-lg shadow-md">
           <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Additional Details</h1>
           <div className="p-4 rounded-b-lg">
             {commonFields.map((field) => (

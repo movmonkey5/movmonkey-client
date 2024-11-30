@@ -278,7 +278,7 @@ export default function UserJobDetailsPage({ params }) {
               <DeliveryJobDetails job={quotation || job} />
             )}
             {/* Additional Information */}
-            <div className="w-full hover:scale-95 bg-primary/10 rounded-lg shadow-md transition-all duration-300 ease-in-out mt-4 md:mt-0">
+            <div className="w-full bg-primary/10 rounded-lg shadow-md mt-4 md:mt-0">
               <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Additional Information</h1>
               <p className="p-4 rounded-b-lg">
                 The content provided above serves as a reference for the removal
