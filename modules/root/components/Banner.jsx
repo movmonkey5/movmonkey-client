@@ -11,7 +11,7 @@ import Container from "@/components/shared/Container";
 export default function Banner() {
   return (
     <Container>
-      <div className="flex flex-col items-center bg-white lg:flex-row lg:justify-between lg:py-8">
+      <div className="flex flex-col items-center bg-white lg:flex-row lg:justify-between lg:p-8">
         {/* Left Section: Text and Button */}
         <div className="flex flex-col items-center px-4 text-center lg:w-[40%] lg:items-start lg:px-0 lg:text-left">
           <h1 className="text-2xl font-bold leading-8 text-gray-800 md:w-[400px] md:!leading-[54px] lg:text-4xl">
@@ -24,7 +24,7 @@ export default function Banner() {
 
         {/* Right Section: Image Grid */}
         <div className="mt-8 grid w-[90%] grid-cols-2 gap-4 lg:mt-0 lg:w-[60%]">
-          <div className="relative h-[250px] w-full md:h-full">
+          <div className="relative hover:scale-95 transition-all duration-300 ease-in-out h-[250px] w-full md:h-full">
             <Image
               src={Delivery}
               alt="Delivery Service"
@@ -34,7 +34,7 @@ export default function Banner() {
             />
           </div>
           <div className="flex flex-col items-center justify-center  gap-2 md:gap-4">
-            <div className="relative h-[120px] w-full md:h-56">
+            <div className="relative hover:scale-95 transition-all duration-300 ease-in-out h-[120px] w-full md:h-56">
               <Image
                 src={Cleaning}
                 alt="Cleaning Service"
@@ -44,7 +44,7 @@ export default function Banner() {
               />
             </div>
 
-            <div className="relative h-[120px] w-full md:h-56">
+            <div className="relative hover:scale-95 transition-all duration-300 ease-in-out h-[120px] w-full md:h-56">
               <Image
                 src={Removal}
                 alt="Removal Service"
