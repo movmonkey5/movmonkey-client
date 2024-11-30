@@ -95,8 +95,8 @@ export default function MenuBaseNavbar({
               setShowSignInSubmenu(false);
               setShowSignUpSubmenu(false);
             }}
-            className={cn("text-white", {
-              "underline underline-offset-2": pathname === "/",
+            className={cn("text-white hover:bg-green-700 px-3 py-2.5 rounded-lg", {
+              "bg-green-700": pathname === "/",
               "": pathname !== "/",
             })}
           >
@@ -104,7 +104,10 @@ export default function MenuBaseNavbar({
           </Link>
         </li>
         <li>
-          <Link href="/about-us" className="text-white">
+          <Link href="/about-us" className={cn("text-white hover:bg-green-700 px-3 py-2.5 rounded-lg", {
+            "bg-green-700": pathname === "/about-us",
+            "": pathname !== "/",
+          })}>
             About Us
           </Link>
         </li>
@@ -116,9 +119,9 @@ export default function MenuBaseNavbar({
               setShowSignInSubmenu(false);
               setShowSignUpSubmenu(false);
             }}
-            className={cn("text-white", {
-              "underline underline-offset-2": pathname === "/blog",
-              "": pathname !== "/blog",
+            className={cn("text-white hover:bg-green-700 px-3 py-2.5 rounded-lg", {
+              "bg-green-700": pathname === "/blog",
+              "": pathname !== "/",
             })}
           >
             Blog
@@ -132,7 +135,7 @@ export default function MenuBaseNavbar({
 
         {user ? (
           <Menu as="div" className="relative hidden sm:block">
-            <Menu.Button className="flex cursor-pointer items-center gap-2 rounded-full border border-white p-1 pl-3.5">
+            <Menu.Button className="flex cursor-pointer items-center border-2 border-green-700 gap-2 rounded-full px-4 py-2">
               <div>
                 <p className="text-start text-xs font-medium text-white">
                   {user?.full_name}
@@ -202,9 +205,8 @@ export default function MenuBaseNavbar({
                 <div>{showSignInSubmenu ? <ChevronUp /> : <ChevronDown />}</div>
               </span>
               <ul
-                className={`absolute right-0 top-10 w-60 rounded-md shadow-lg ${
-                  showSignInSubmenu ? "block" : "hidden"
-                }`}
+                className={`absolute right-0 top-10 w-60 rounded-md shadow-lg ${showSignInSubmenu ? "block" : "hidden"
+                  }`}
               >
                 <Link
                   onClick={() => setShowSignInSubmenu(false)}
@@ -243,9 +245,8 @@ export default function MenuBaseNavbar({
                 <div>{showSignUpSubmenu ? <ChevronUp /> : <ChevronDown />}</div>
               </span>
               <ul
-                className={`absolute right-0 top-10 w-60 rounded-md shadow-lg ${
-                  showSignUpSubmenu ? "block" : "hidden"
-                }`}
+                className={`absolute right-0 top-10 w-60 rounded-md shadow-lg ${showSignUpSubmenu ? "block" : "hidden"
+                  }`}
               >
                 <Link
                   onClick={() => setShowSignUpSubmenu(false)}
