@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Container from "./Container";
 import logo from "@/public/logo/logo.svg";
+import mobileLogo from "@/public/logo/logo.png";
 import Link from "next/link";
 import MenuBaseNavbar from "./MenuBaseNavbar";
 import { Menu } from "lucide-react";
@@ -156,7 +157,13 @@ export default function BaseNavbar() {
                 </div>
               ) : (
                 <Link href="/" className="focus:outline-none">
-                  <Image src={logo} alt="logo" className="h-10 w-full " />
+                  <Image
+                    src={mobileLogo}
+                    alt="logo"
+                    priority
+                    loading="eager"
+                    className="h-10 w-full sm:h-14"
+                  />
                 </Link>
               )
             }
