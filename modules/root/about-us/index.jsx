@@ -1,91 +1,134 @@
-import Container from "@/components/shared/Container";
-import Image from "next/image";
-import Light from "@/public/image/light.jpeg";
+import React from 'react';
+import Image from 'next/image';
+import Container from '@/components/shared/Container';
+import Light from '@/public/image/light.jpeg';
+import { Move, Truck, Sparkles, CheckCircle } from 'lucide-react';
 
-import Link from "next/link";
-import DarkFacebook from "@/components/icon/DarkFacebook";
-import DarkTwitter from "@/components/icon/DarkTwitter";
-import DarkInstagram from "@/components/icon/DarkInstagram";
-import DarkYoutube from "@/components/icon/DarkYoutube";
+const ABOUT_US_DATA = {
+  hero: {
+    title: 'Who We Are',
+    content: `Think of MovMonkey as a helpful neighbour. A caring neighbour who helps you move, delivers your stuff, or cleans up your lawn whenever you are away, all without any surprise costs. We make moving, delivery, and cleaning easier, affordable, and worry-free. Tired of the "oops, we lost your stuff" stories, the "will they, won't they" arrive on time saga, and the surprise fee trap? MovMonkey ensures your things get where they're going safely and on time, just like a caring neighbour would.`
+  },
+  story: {
+    title: 'Our Story',
+    highlights: [
+      {
+        icon: Truck,
+        text: `Imagine a world where about 65% of removal, delivery, and cleaning companies lost customers because they couldn't get the cleaning or removal right. That was what MovMonkey's founder, Moses, saw in December 2024.`
+      },
+      {
+        icon: Sparkles,
+        text: `As a result, he started MovMonkey with one big goal: to make sure cleaning, moving, and delivery are done the right way and at the right price.`
+      },
+      {
+        icon: CheckCircle,
+        text: `With MovMonkey, your only surprise would be how easy life just got. Watch yourself go from "Oh no" to "Oh wow" in minutes. Think we can't do that? Try us and watch us prove you wrong.`
+      }
+    ]
+  },
+  mission: {
+    title: 'Our Mission',
+    description: `MovMonkey's mission is to match our customers with reliable, top-rated service providers. We are your personal service provider shopper, offering you a variety of quotes from pre-checked service providers. While we have done the heavy lifting, it's still your job to pick the one that fits your needs and wallet. Feeling stuck on choosing the right service provider for your specific needs? Oh, we know the feeling. But guess what? You are not alone.`,
+    benefits: [
+      'Quicker quote offers',
+      'Zero hidden fees',
+      'Access to top-rated service providers',
+      'Track your removal, delivery and cleaning job in one pot'
+    ]
+  }
+};
 
-export default function AboutUsPage() {
+const AboutUsPage = () => {
   return (
-    <div className="mt-5 ">
-      <Container>
-        <div className="relative rounded text-black">
-          <div className="mx-auto mt-4 px-5 pt-5 2xl:max-w-5xl">
-            <h3 className="text-2xl bg-primary font-semibold text-center lg:p-5 md:p-4 p-3.5 text-white rounded-md lg:text-3xl">Who We Are</h3>
-            <p className="md:text-lg mt-3">
-              {`Think of MovMonkey as a helpful neighbour. A caring neighbour who
-              helps you move, delivers your stuff, or cleans up your lawn
-              whenever you are away, all without any surprise costs. That's
-              precisely what we do. We make moving, delivery, and cleaning
-              easier, affordable, and worry-free. Tired of the “oops, we lost
-              your stuff” stories, the “will they, won't they” arrive on time
-              saga, and the surprise fee trap? MovMonkey ensures your things get
-              where they're going safely and on time, just like a caring
-              neighbour would.`}
-            </p>
+    <div className="bg-white">
+      {/* Integrated Hero and Who We Are Section */}
+      <div className="bg-gray-50 py-16">
+        <Container>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary">
+                {ABOUT_US_DATA.hero.title}
+                <div className='h-1 w-20 bg-secondary rounded-3xl mt-3'></div>
+              </h1>
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {ABOUT_US_DATA.hero.content}
+              </p>
+            </div>
+            <div>
+              <Image
+                src={Light}
+                alt="MovMonkey Services"
+                className="w-full h-auto rounded-2xl shadow-lg object-cover"
+              />
+            </div>
           </div>
-
-          <div className="absolute -left-20 top-1/2 hidden h-40 w-40 -translate-y-1/2 items-center justify-center rounded-full border border-white bg-secondary text-2xl font-semibold text-white lg:text-3xl 2xl:flex">
-            About Us
-          </div>
-        </div>
-      </Container>
-
-      <Container extraClassName="grid grid-cols-1 md:grid-cols-2">
-      <Container>
-      <div className="mb-5 flex min-h-16 items-center justify-center bg-[#49b74b28] px-5 pb-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-3xl lg:mt-5 rounded-2xl">
-        Our Story
+        </Container>
       </div>
-        <div className="border rounded-2xl p-5 ">
-        <p className="md:text-lg">
-          {`Imagine a world where about 65% of removal, delivery, and cleaning companies lost customers because they couldn’t get the cleaning or removal right. That was what MovMonkey's founder, Moses, saw in December 2024. `}
-        </p>
-        <p className="md:text-lg my-3">
-          {`As a result, he started MovMonkey with one big goal: to make sure cleaning, moving, and delivery are done the right way and at the right price.  `}
-        </p>
-        <p className="md:text-lg">
-          {`With MovMonkey, your only surprise would be how easy life just got `}
-        </p>
-        <p className="md:text-lg mt-3">
-          {`Watch yourself go from "Oh no" to "Oh wow" in minutes. Think we can't do that? Try us and watch us prove you wrong.`}
-        </p>
-        </div>
-      </Container>
-       
-      <Container>
-      <div className="mb-5 flex min-h-16 items-center justify-center bg-[#49b74b28] px-5 py-2 text-center text-2xl font-semibold text-primary md:h-20 md:text-3xl lg:mt-5 rounded-2xl">
-        Our Mission
-      </div>
-       <div className="border rounded-2xl ">
-       <p className="md:text-lg  px-5 pt-5">
-          {`MovMonkey’s mission is to match our customers with reliable, top-rated service providers. We are your personal service provider shopper, offering you a variety of quotes from pre-checked service providers. While we have done the heavy lifting, it's still your job to pick the one that fits your needs and wallet. Feeling stuck on choosing the right service provider for your specific needs? Oh, we know the feeling. But guess what? You are not alone.`}
-        </p>
-        <p className="my-3 px-5 font-semibold md:text-lg">
-          {`The good news is that MovMonkey is on a mission to change the game! Simply choose MovMonkey and enjoy a triple win:`}
-        </p>
-        <ul className=" pt-5 md:text-lg">
-          <li className=" block bg-[#49b74b28] rounded-xl pl-5 p-1"> Quicker quote offers</li>
-          <li  className="block bg-[#49b74b28] rounded-xl pl-5 p-1 my-1">Zero hidden fees</li>
-          <li className=" block bg-[#49b74b28] rounded-xl pl-5 p-1 mb-1">
-             Access to top-rated service providers
-          </li>
-          <li className="block bg-[#49b74b28] rounded-xl pl-5 p-1">
-            Track your removal, delivery and cleaning job in one pot
-          </li>
-        </ul>
-       </div>
-      
-      </Container>
-      </Container>
 
       <Container>
-          <div className="w-full mt-4">
-            <Image src={Light} alt="About Us" className="h-auto w-full rounded-2xl mb-10" />
+        {/* Story Highlights */}
+        <section className="py-16 bg-white">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary text-center mb-12">
+            {ABOUT_US_DATA.story.title}
+            <div className='h-1 w-20 bg-secondary mx-auto rounded-3xl mt-3'></div>
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {ABOUT_US_DATA.story.highlights.map((highlight, index) => {
+              const IconComponent = highlight.icon;
+              return (
+                <div
+                  key={index}
+                  className="bg-gray-50 p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-all"
+                >
+                  <div className="flex justify-center mb-4">
+                    <IconComponent
+                      className="text-secondary w-16 h-16 stroke-[1.5]"
+                    />
+                  </div>
+                  <p className="text-gray-700">
+                    {highlight.text}
+                  </p>
+                </div>
+              );
+            })}
           </div>
+        </section>
+
+        {/* Mission Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-primary">
+                  {ABOUT_US_DATA.mission.title}
+                  <div className='h-1 w-20 bg-secondary rounded-3xl mt-3'></div>
+                </h2>
+                <p className="text-gray-700 leading-relaxed">
+                  {ABOUT_US_DATA.mission.description}
+                </p>
+                <p className="font-semibold text-primary">
+                  The good news is that MovMonkey is on a mission to change the game! Simply choose MovMonkey and enjoy a triple win:
+                </p>
+              </div>
+              <div className="space-y-4">
+                {ABOUT_US_DATA.mission.benefits.map((benefit, index) => (
+                  <div
+                    key={index}
+                    className="bg-secondary/15 p-4 rounded-lg flex items-center space-x-4"
+                  >
+                    <Move className="text-primary w-6 h-6" />
+                    <span className="text-gray-800 font-semibold">
+                      {benefit}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       </Container>
     </div>
   );
-}
+};
+
+export default AboutUsPage;
