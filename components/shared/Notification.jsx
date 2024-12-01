@@ -60,7 +60,7 @@ export default function NotificationComponent({ handleNotificationClick }) {
 
       {showNotifications && (
         <div
-          className={`absolute right-0 top-6 z-50 mt-2 max-h-96 w-72  overflow-y-auto rounded-md bg-[#FFA620] text-black shadow-lg`}
+          className={`absolute right-0 top-12 z-50 mt-2 max-h-96 w-72  overflow-y-auto rounded-md bg-secondary/50 text-white shadow-lg`}
         >
           {/* Show loading state */}
           {loading ? (
@@ -78,17 +78,17 @@ export default function NotificationComponent({ handleNotificationClick }) {
               </div>
             </div>
           ) : notifications.length > 0 ? (
-            <div>
+            <div className="flex flex-col gap-2.5 p-2">
               {displayedNotifications.map((notification) => (
                 <div
                   key={notification.uid}
                   onClick={() => handleNotificationClick(notification)}
-                  className={`cursor-pointer rounded-md p-2 hover:bg-[#f6c884] ${
-                    notification.is_unread ? "" : "bg-[#f6c884]"
+                  className={`cursor-pointer rounded-md p-2 hover:bg-green-700 ${
+                    notification.is_unread ? "bg-green-800" : "bg-green-600"
                   }`}
                 >
                   <p className="my-2 text-xs">{notification.message}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-200">
                     {new Date(notification.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default function NotificationComponent({ handleNotificationClick }) {
                 <div className="text-center">
                   <button
                     onClick={() => setShowAll(true)}
-                    className="w-full p-2 text-xs  hover:underline"
+                    className="w-full p-2 text-xs bg-green-600 rounded-lg hover:bg-green-700"
                   >
                     See more
                   </button>
@@ -111,7 +111,7 @@ export default function NotificationComponent({ handleNotificationClick }) {
                 <div className="text-center">
                   <button
                     onClick={() => setShowAll(false)}
-                    className="w-full p-2 text-xs hover:underline"
+                    className="w-full p-2 text-xs bg-green-600 rounded-lg hover:bg-green-700"
                   >
                     See less
                   </button>
@@ -120,7 +120,7 @@ export default function NotificationComponent({ handleNotificationClick }) {
             </div>
           ) : (
             // No notifications available
-            <div className="p-4 text-center text-xs text-gray-600">
+            <div className="p-4 text-center text-xs text-gray-700">
               No notifications available.
             </div>
           )}
