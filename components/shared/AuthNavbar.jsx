@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import logo from "@/public/logo/logo.png";
+import logo from "@/public/logo/logo.svg";
 import Link from "next/link";
 import Container from "@/components/shared/Container";
 import { LogOut, Menu as MenuIcon } from "lucide-react";
@@ -106,8 +106,8 @@ export default function AuthNavbar() {
             </div>
           )}
 
-          <div className="flex items-center gap-4 sm:gap-20">
-            <div className="hidden items-center gap-4 rounded-[12px] bg-secondary px-4 py-9 text-white sm:flex lg:gap-8 lg:px-8">
+          <div className="flex items-center gap-12">
+            <div className="hidden items-center max-h-20 gap-4 rounded-[12px] bg-secondary px-4 py-8 text-white sm:flex lg:gap-8 lg:px-8">
               <Link href={""}>
                 <Facebook />
               </Link>
@@ -122,20 +122,29 @@ export default function AuthNavbar() {
               </Link>
             </div>
 
-            <div className="hidden items-center rounded-[12px] bg-secondary px-4  py-5 text-white sm:flex sm:gap-4 lg:px-8">
+            <div className="hidden items-center max-h-20 rounded-[12px] bg-secondary px-4 py-7 text-white sm:flex sm:gap-4 lg:px-8">
               <ul className="flex items-center gap-4 text-white lg:gap-8">
                 <li>
-                  <Link href="/" className="text-white">
+                  <Link href="/" className={cn("text-white hover:bg-green-700 px-3 py-1.5 rounded-lg", {
+                    "bg-green-700": pathname === "/",
+                    "": pathname !== "/",
+                  })}>
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about-us" className="text-white">
+                  <Link href="/about-us" className={cn("text-white hover:bg-green-700 px-3 py-1.5 rounded-lg", {
+                    "bg-green-700": pathname === "/about-us",
+                    "": pathname !== "/",
+                  })}>
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link className="text-white" href="/blog">
+                  <Link className={cn("text-white hover:bg-green-700 px-3 py-1.5 rounded-lg", {
+                    "bg-green-700": pathname === "/blog",
+                    "": pathname !== "/",
+                  })} href="/blog">
                     Blog
                   </Link>
                 </li>
@@ -146,17 +155,17 @@ export default function AuthNavbar() {
                 )}
               </ul>
 
-              <Menu as="div" className="relative hidden sm:block">
-                <Menu.Button className="flex cursor-pointer items-center gap-2 rounded-full border border-white p-1 pl-3.5">
+              <Menu as="div" className="relative hidden sm:block ml-4">
+                <Menu.Button className="flex cursor-pointer items-center gap-2 rounded-full border-2 border-white px-4 py-1.5">
                   <div>
-                    <p className="text-start text-sm font-medium text-white">
+                    <p className="text-start text-xs font-medium text-white">
                       {user?.full_name}
                     </p>
-                    <p className="text-start text-xs text-white">
+                    <p className="text-start text-[10px] text-white">
                       {user?.role.split("_").join(" ")}
                     </p>
                   </div>
-                  <div className="size-10">
+                  <div className="size-7">
                     <Image
                       src={
                         Object.keys(user?.avatar)?.length
@@ -165,7 +174,7 @@ export default function AuthNavbar() {
                       }
                       width={100}
                       height={100}
-                      className="size-10 rounded-full"
+                      className="size-7 rounded-full"
                       alt="user avatar"
                     />
                   </div>
