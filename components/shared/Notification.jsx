@@ -60,7 +60,7 @@ export default function NotificationComponent({ handleNotificationClick }) {
 
       {showNotifications && (
         <div
-          className={`absolute right-0 top-12 z-50 mt-2 max-h-96 w-72  overflow-y-auto rounded-md bg-secondary/50 text-white shadow-lg`}
+          className={`absolute right-0 top-12 z-50 mt-2 max-h-96 w-72  overflow-y-auto rounded-md bg-gray-200 text-white shadow-xl`}
         >
           {/* Show loading state */}
           {loading ? (
@@ -83,12 +83,12 @@ export default function NotificationComponent({ handleNotificationClick }) {
                 <div
                   key={notification.uid}
                   onClick={() => handleNotificationClick(notification)}
-                  className={`cursor-pointer rounded-md p-2 hover:bg-green-700 ${
-                    notification.is_unread ? "bg-green-800" : "bg-green-600"
+                  className={`cursor-pointer rounded-md p-2 hover:scale-95 transition-all duration-300 ease-in-out ${
+                    notification.is_unread ? "bg-gray-500" : "bg-white text-secondary"
                   }`}
                 >
                   <p className="my-2 text-xs">{notification.message}</p>
-                  <p className="text-xs text-gray-200">
+                  <p className="text-xs text-gray-400">
                     {new Date(notification.created_at).toLocaleString()}
                   </p>
                 </div>
