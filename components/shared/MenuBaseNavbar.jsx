@@ -72,8 +72,8 @@ export default function MenuBaseNavbar({
     }
   };
   return (
-    <div className="relative z-50 flex items-center gap-24 ">
-      <div className="flex items-center gap-4 rounded-[12px] bg-secondary px-4 py-8 text-white lg:gap-8 lg:px-8">
+    <div className="relative z-50 flex items-center gap-12">
+      <div className="flex items-center max-h-20 gap-4 rounded-[12px] bg-secondary px-4 py-8 text-white lg:gap-8 lg:px-8">
         <Link href={""}>
           <Facebook />
         </Link>
@@ -87,7 +87,8 @@ export default function MenuBaseNavbar({
           <Youtube />
         </Link>
       </div>
-      <ul className=" flex items-center gap-4 rounded-[12px] bg-secondary px-4 py-7 text-white lg:gap-8 lg:px-8">
+
+      <ul className=" flex items-center max-h-20 gap-4 rounded-[12px] bg-secondary px-4 py-7 text-white lg:gap-8 lg:px-8">
         <li>
           <Link
             href="/"
@@ -95,7 +96,7 @@ export default function MenuBaseNavbar({
               setShowSignInSubmenu(false);
               setShowSignUpSubmenu(false);
             }}
-            className={cn("text-white hover:bg-green-700 px-3 py-2.5 rounded-lg", {
+            className={cn("text-white hover:bg-green-700 px-3 py-1.5 rounded-lg", {
               "bg-green-700": pathname === "/",
               "": pathname !== "/",
             })}
@@ -104,7 +105,7 @@ export default function MenuBaseNavbar({
           </Link>
         </li>
         <li>
-          <Link href="/about-us" className={cn("text-white hover:bg-green-700 px-3 py-2.5 rounded-lg", {
+          <Link href="/about-us" className={cn("text-white hover:bg-green-700 px-3 py-1.5 rounded-lg", {
             "bg-green-700": pathname === "/about-us",
             "": pathname !== "/",
           })}>
@@ -119,7 +120,7 @@ export default function MenuBaseNavbar({
               setShowSignInSubmenu(false);
               setShowSignUpSubmenu(false);
             }}
-            className={cn("text-white hover:bg-green-700 px-3 py-2.5 rounded-lg", {
+            className={cn("text-white hover:bg-green-700 px-3 py-1.5 rounded-lg", {
               "bg-green-700": pathname === "/blog",
               "": pathname !== "/",
             })}
@@ -127,6 +128,7 @@ export default function MenuBaseNavbar({
             Blog
           </Link>
         </li>
+
         {user && (
           <NotificationComponent
             handleNotificationClick={handleNotificationClick}
@@ -135,12 +137,12 @@ export default function MenuBaseNavbar({
 
         {user ? (
           <Menu as="div" className="relative hidden sm:block">
-            <Menu.Button className="flex cursor-pointer items-center border-2 border-green-700 gap-2 rounded-full px-4 py-2">
+            <Menu.Button className="flex cursor-pointer items-center gap-2 rounded-full border-2 border-white px-4 py-1.5">
               <div>
                 <p className="text-start text-xs font-medium text-white">
                   {user?.full_name}
                 </p>
-                <p className="text-start text-xs text-white">
+                <p className="text-start text-[10px] text-white">
                   {user?.role?.split("_")?.join(" ")}
                 </p>
               </div>
@@ -276,6 +278,7 @@ export default function MenuBaseNavbar({
           </>
         )}
       </ul>
+
     </div>
   );
 }
