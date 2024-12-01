@@ -7,7 +7,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Minus, Plus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const faqData = [
   {
@@ -115,42 +115,65 @@ const faqData = [
 ];
 
 export default function FAQPage() {
-  const [showFaq, setShowFaq] = useState(Array(faqData.length).fill(false));
+  const [showFaq, setShowFaq] = useState(null);
 
   const toggleFaq = (index) => {
-    const newShowFaq = [...showFaq];
-    newShowFaq[index] = !newShowFaq[index];
-    setShowFaq(newShowFaq);
+    setShowFaq((prev) => (prev === index ? null : index));
   };
 
   return (
     <div className="mb-2 lg:mb-10">
-      <Container>
-        <div className="mb-16 flex min-h-16 items-center justify-center rounded-xl bg-primary px-5 py-8 text-center text-2xl font-semibold text-white md:h-30 md:text-4xl">
-          Frequently Asked Questions
+      <Container extraClassName="max-w-5xl">
+        <div className="mb-8 flex min-h-16 items-center justify-center gap-8 text-center text-2xl md:text-3xl font-semibold text-secondary md:h-30">
+          <div className="h-1 w-32 hidden md:block bg-secondary rounded-3xl"></div>
+          <div className="flex flex-col items-center justify-center gap-3">
+            Frequently Asked Questions
+            <div className="h-1 w-32 md:hidden block bg-secondary rounded-3xl"></div>
+          </div>
+          <div className="h-1 w-32 hidden md:block bg-secondary rounded-3xl"></div>
         </div>
 
         {faqData.map((faq, index) => (
           <React.Fragment key={index}>
-            <Collapsible
-              className="my-4 cursor-pointer space-y-4 rounded-lg border border-green-200 bg-green-50 px-6 py-4 shadow-sm"
-              open={showFaq[index]}
-              onOpenChange={() => toggleFaq(index)}
+            <div
+              className="my-4 cursor-pointer rounded-lg border border-green-200 bg-green-50 px-6 py-4 shadow-sm"
+              onClick={() => toggleFaq(index)}
             >
-              <CollapsibleTrigger className="flex w-full items-center justify-between">
-                <p className="flex items-center gap-2 text-xl font-semibold text-gray-800">
-                  <span className="text-green-600">≡</span> {/* Icon */}
+              {/* Trigger */}
+              <div className="flex items-center justify-between">
+                <p className="flex items-start md:items-center gap-x-4 text-[16px] md:text-xl font-semibold text-gray-800">
+                  <span className="flex items-center justify-center text-green-600">≡</span> {/* Icon */}
                   {faq.question}
                 </p>
-              </CollapsibleTrigger>
+              </div>
 
-              <CollapsibleContent className="mt-2 space-y-2 text-base font-normal text-gray-600">
-                {faq.answer}
-              </CollapsibleContent>
-            </Collapsible>
+              {/* Smooth Transition Content */}
+              <ContentWrapper isOpen={showFaq === index}>
+                <div className="space-y-2 text-base font-normal text-gray-600 pt-4">
+                  {faq.answer}
+                </div>
+              </ContentWrapper>
+            </div>
           </React.Fragment>
         ))}
       </Container>
     </div>
   );
 }
+
+// ContentWrapper Component to handle animations
+const ContentWrapper = ({ children, isOpen }) => {
+  const contentRef = useRef(null);
+
+  return (
+    <div
+      ref={contentRef}
+      className={`overflow-hidden transition-[max-height] duration-300 ease-in-out`}
+      style={{
+        maxHeight: isOpen ? `${contentRef.current?.scrollHeight}px` : "0px",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
