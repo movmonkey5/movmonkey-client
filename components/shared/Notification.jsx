@@ -84,11 +84,11 @@ export default function NotificationComponent({ handleNotificationClick }) {
                   key={notification.uid}
                   onClick={() => handleNotificationClick(notification)}
                   className={`cursor-pointer rounded-md p-2 hover:scale-95 transition-all duration-300 ease-in-out ${
-                    notification.is_unread ? "bg-gray-500" : "bg-white text-secondary"
+                    notification.is_unread ? "bg-gray-500" : "bg-white text-black font-medium"
                   }`}
                 >
                   <p className="my-2 text-xs">{notification.message}</p>
-                  <p className="text-xs text-gray-400">
+                  <p className={`text-xs text-gray-500  ${notification.is_unread ? "text-gray-200" : ""}`}>
                     {new Date(notification.created_at).toLocaleString()}
                   </p>
                 </div>
