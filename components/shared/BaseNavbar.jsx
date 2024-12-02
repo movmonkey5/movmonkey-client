@@ -135,7 +135,7 @@ export default function BaseNavbar() {
                 <div className="flex items-center gap-2 rounded-full border border-white p-1 pl-3.5">
                   <div>
                     <p className="text-sm font-medium text-white">
-                      {user?.full_name}
+                      {user?.full_name.length > 10 ? user?.full_name.slice(0, 10) : user?.full_name}
                     </p>
                     <p className="text-start text-xs text-white">
                       {user?.role.split("_").join(" ")}
