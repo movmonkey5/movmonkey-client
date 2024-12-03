@@ -15,6 +15,7 @@ import Google from "../icon/Google";
 import Instagram from "../icon/Insta";
 import Twitter from "../icon/Twitter";
 import Youtube from "../icon/Youtube";
+import { fetchNotificationDetails } from "@/lib/hooks/notificationService";
 
 export default function MenuBaseNavbar({
   showSignInSubmenu,
@@ -25,13 +26,19 @@ export default function MenuBaseNavbar({
   const { user } = useStore();
   const pathname = usePathname();
 
-  const handleNotificationClick = (notification) => {
+  const handleNotificationClick = async (notification) => {
     let link = "";
-    const { model_kind, notification_kind, uid } = notification;
     const userRole = user?.role; // Assuming the user object has the role
 
-    if (model_kind === "QUOTATION") {
-      const kind = notification.quotation.kind.toLowerCase();
+    const fullNotificationDetails = await fetchNotificationDetails(notification?.uid);
+    const { model_kind, notification_kind, uid, removal_job, delivery_job, quotation, cleaning_job } = fullNotificationDetails;
+
+    if (model_kind === "QUOTATION" || model_kind === 'DELIVERY_JOB' || model_kind === 'REMOVAL_JOB' || model_kind === 'CLEANING_JOB') {
+      const kind = quotation?.kind.toLowerCase() || delivery_job?.kind.toLowerCase() || removal_job?.kind.toLowerCase() || cleaning_job?.kind.toLowerCase();
+
+      const modifiedKind = kind.split('_')[0];
+
+      const slug = quotation?.slug || delivery_job?.slug || removal_job?.slug || cleaning_job?.slug;
 
       // Role-specific URL structure
       if (userRole === "CUSTOMER") {
@@ -52,6 +59,8 @@ export default function MenuBaseNavbar({
           link = `/driver/quoted-jobs/${kind}/${uid}?from=notifications`;
         } else if (notification_kind === "QUOTATION_DECLINED") {
           link = `/driver/quoted-jobs/${kind}/${uid}?from=notifications`;
+        } else if (notification_kind === "NEW_JOB") {
+          link = `/driver/open-jobs/${slug}?kind=${modifiedKind}`;
         }
       } else if (userRole === "CLEANING_PROVIDER") {
         if (notification_kind === "NEW_QUOTATION") {
@@ -62,6 +71,8 @@ export default function MenuBaseNavbar({
           link = `/cleaner/quoted-jobs/${kind}/${uid}?from=notifications`;
         } else if (notification_kind === "QUOTATION_DECLINED") {
           link = `/cleaner/quoted-jobs/${kind}/${uid}?from=notifications`;
+        } else if (notification_kind === "NEW_JOB") {
+          link = `/cleaner/open-jobs/${slug}`;
         }
       }
     }
@@ -140,7 +151,7 @@ export default function MenuBaseNavbar({
             <Menu.Button className="flex cursor-pointer items-center gap-2 rounded-full border-2 border-white px-4 py-1.5">
               <div>
                 <p className="text-start text-xs font-medium text-white">
-                  {user?.full_name.length > 10 ? user?.full_name.slice(0,10) : user?.full_name}
+                  {user?.full_name.length > 10 ? user?.full_name.slice(0, 10) : user?.full_name}
                 </p>
                 <p className="text-start text-[10px] text-white">
                   {user?.role?.split("_")?.join(" ")}

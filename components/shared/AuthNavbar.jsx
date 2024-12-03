@@ -21,6 +21,7 @@ import Google from "../icon/Google";
 import Instagram from "../icon/Insta";
 import Twitter from "../icon/Twitter";
 import Youtube from "../icon/Youtube";
+import { fetchNotificationDetails } from "@/lib/hooks/notificationService";
 
 export default function AuthNavbar() {
   const { user } = useStore();
@@ -30,13 +31,23 @@ export default function AuthNavbar() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const handleNotificationClick = (notification) => {
+  const handleNotificationClick = async(notification) => {
     let link = "";
-    const { model_kind, notification_kind, uid } = notification;
-    const userRole = user?.role; // Assuming the user object has the role
+    
+    const userRole = user?.role;
 
-    if (model_kind === "QUOTATION") {
-      const kind = notification.quotation.kind.toLowerCase();
+    const fullNotificationDetails = await fetchNotificationDetails(notification?.uid);
+
+    console.log(fullNotificationDetails);
+
+    const { model_kind, notification_kind, uid, removal_job, delivery_job, quotation, cleaning_job } = fullNotificationDetails;
+
+    if (model_kind === "QUOTATION" || model_kind === 'DELIVERY_JOB' || model_kind === 'REMOVAL_JOB' || model_kind === 'CLEANING_JOB') {
+      const kind = quotation?.kind.toLowerCase() || delivery_job?.kind.toLowerCase() || removal_job?.kind.toLowerCase() || cleaning_job?.kind.toLowerCase();
+      
+      const modifiedKind = kind.split('_')[0];
+
+      const slug = quotation?.slug || delivery_job?.slug || removal_job?.slug || cleaning_job?.slug;
 
       // Role-specific URL structure
       if (userRole === "CUSTOMER") {
@@ -57,6 +68,8 @@ export default function AuthNavbar() {
           link = `/driver/quoted-jobs/${kind}/${uid}?from=notifications`;
         } else if (notification_kind === "QUOTATION_DECLINED") {
           link = `/driver/quoted-jobs/${kind}/${uid}?from=notifications`;
+        } else if (notification_kind === "NEW_JOB") {
+          link = `/driver/open-jobs/${slug}?kind=${modifiedKind}`;
         }
       } else if (userRole === "CLEANING_PROVIDER") {
         if (notification_kind === "NEW_QUOTATION") {
@@ -67,6 +80,8 @@ export default function AuthNavbar() {
           link = `/cleaner/quoted-jobs/${kind}/${uid}?from=notifications`;
         } else if (notification_kind === "QUOTATION_DECLINED") {
           link = `/cleaner/quoted-jobs/${kind}/${uid}?from=notifications`;
+        } else if (notification_kind === "NEW_JOB") {
+          link = `/cleaner/open-jobs/${slug}`;
         }
       }
     }
