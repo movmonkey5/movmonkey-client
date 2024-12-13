@@ -22,7 +22,7 @@ export const initialValues = {
   kitchen_count: null,
   level_count: null,
   kitchen_cleaning_preference: null,
-  have_animal: null,
+  have_animal: false,//null
   animal_type: null,
   item_description: "",
   additional_cleaning_information: "",

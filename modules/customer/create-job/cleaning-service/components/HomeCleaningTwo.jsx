@@ -178,6 +178,7 @@ export default function HomeCleaningTwo({
 
           <div>
             <h3 className="mb-4 text-xl font-bold">DO YOU HAVE ANY PETS?</h3>
+
             <DayAndTimePreference
               data={["Yes", "No"]}
               handleClick={handlePetPreference}
