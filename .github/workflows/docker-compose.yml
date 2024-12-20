@@ -1,0 +1,21 @@
+name: Docker Compose Deployment
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker images
+        run: |
+          sudo docker compose -f docker-compose.yml build
+        
+        
+      - name: Deploy services with Docker Compose
+        run: |
+          sudo docker compose -f docker-compose.yml up -d
