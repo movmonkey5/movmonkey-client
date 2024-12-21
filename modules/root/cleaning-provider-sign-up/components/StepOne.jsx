@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Password } from "@/components/ui/password";
 import { useEffect } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const desiredFields = [
   "first_name",
@@ -16,13 +18,14 @@ const desiredFields = [
   "driver_count",
   "country",
   "city",
+  "phone", // Added phone to desired fields
 ];
 
 export default function StepOne({
   setCurrentStep,
   formik,
   currentValidationSchema,
-  countryOptions, // Pass country options here
+  countryOptions,
 }) {
   useEffect(() => {
     window.scrollTo({
@@ -39,7 +42,17 @@ export default function StepOne({
   }
 
   const handleNext = async () => {
+    // Safely format phone number if it exists
+    if (formik.values.phone) {
+      const formattedPhone = String(formik.values.phone).startsWith("+") 
+        ? formik.values.phone 
+        : `+${formik.values.phone}`;
+      formik.setFieldValue("phone", formattedPhone);
+    }
+
     console.log("Filtered Object:", filteredObject);
+    
+    // Mark all fields as touched to show validation errors
     Object.keys(filteredObject).forEach((field) => {
       formik.setFieldTouched(field, true);
     });
@@ -57,6 +70,7 @@ export default function StepOne({
       formik.setErrors(errors);
     }
   };
+
   // Reusable Input Field Component
   const renderInputField = (name, label, placeholder) => (
     <div className="mb-6 space-y-1 lg:w-1/2">
@@ -66,7 +80,7 @@ export default function StepOne({
       <Input
         id={name}
         name={name}
-        value={formik.values[name]}
+        value={formik.values[name] || ""}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         placeholder={placeholder}
@@ -83,14 +97,35 @@ export default function StepOne({
       {renderInputField(
         "address",
         "Address",
-        "E.g. 1234 Main St, City, Country",
+        "E.g. 1234 Main St, City, Country"
       )}
       {renderInputField(
         "vehicle_registration_number",
         "Vehicle Registration Number",
-        "Enter your vehicle registration number",
+        "Enter your vehicle registration number"
       )}
-      {renderInputField("email", "Email", "E.g. johndoe@gmail.com")}{" "}
+      {renderInputField("email", "Email", "E.g. johndoe@gmail.com")}
+
+      <div className="mb-6 space-y-1 lg:w-1/2">
+        <Label className="sm:text-base lg:text-lg" htmlFor="phone">
+          Phone Number
+        </Label>
+        <PhoneInput
+          country={"gb"}
+          type="tel"
+          id="phone"
+          placeholder="Enter your phone number"
+          onChange={(formattedValue) => {
+            formik.setFieldValue("phone", formattedValue);
+          }}
+          onBlur={formik.handleBlur}
+          value={formik.values.phone || ""}
+          inputClass="!w-full !h-10 !text-base"
+          containerClass="!w-full"
+        />
+        <FormikErrorBox formik={formik} field="phone" />
+      </div>
+
       <div className="mb-6 space-y-1 lg:w-1/2">
         <Label className="sm:text-base lg:text-lg" htmlFor="country">
           Country
@@ -98,10 +133,10 @@ export default function StepOne({
         <select
           id="country"
           name="country"
-          value={formik.values.country}
+          value={formik.values.country || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          className="block w-full rounded-3xl border  border-gray-300 p-2"
+          className="block w-full rounded-3xl border border-gray-300 p-2"
         >
           <option value="">Select Country</option>
           {countryOptions.map((country) => (
@@ -112,6 +147,7 @@ export default function StepOne({
         </select>
         <FormikErrorBox formik={formik} field="country" />
       </div>
+
       <div className="mb-6 space-y-1 lg:w-1/2">
         <Label className="sm:text-base lg:text-lg" htmlFor="city">
           City
@@ -119,14 +155,14 @@ export default function StepOne({
         <Input
           id="city"
           name="city"
-          value={formik.values.city}
+          value={formik.values.city || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="Enter your city"
         />
         <FormikErrorBox formik={formik} field="city" />
       </div>
-      {/* Password Field */}
+
       <div className="mb-6 space-y-1 lg:w-1/2">
         <Label className="sm:text-base lg:text-lg" htmlFor="password">
           Password
@@ -134,17 +170,17 @@ export default function StepOne({
         <Password
           id="password"
           name="password"
-          value={formik.values.password}
+          value={formik.values.password || ""}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="Enter your password"
         />
         <FormikErrorBox formik={formik} field="password" />
       </div>
-      {/* Driver Count Selection */}
+
       <div className="mb-6 space-y-5 lg:w-1/2">
         <Label className="sm:text-base lg:text-lg" htmlFor="driver_count">
-          How many people will drive this Van/Truck?
+          How many people in the Team?
         </Label>
         <div className="mt-6 flex flex-wrap items-center gap-2 lg:gap-8">
           {[1, 2, 3, 4, "5+"].map((count) => (
@@ -165,11 +201,12 @@ export default function StepOne({
         </div>
         <FormikErrorBox formik={formik} field="driver_count" />
       </div>
+
       <div className="mt-6 flex items-center justify-center gap-5">
         <Button
           onClick={handleNext}
           type="button"
-          className="w-full sm:w-fit  sm:px-20"
+          className="w-full sm:w-fit sm:px-20"
         >
           Next
         </Button>

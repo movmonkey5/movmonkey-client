@@ -34,11 +34,11 @@ export default function FurnitureShipment({ formik, setCurrentStep }) {
       </div>
 
       <Container>
-        <p className="mb-4 text-xl font-semibold">Add Furniture details</p>
+        <p className="mb-4 text-xl font-semibold">Add Item details</p>
 
         <div className="space-y-8">
           <div className="w-full space-y-1">
-            <Label htmlFor="furniture">Furniture Type</Label>
+            <Label htmlFor="furniture">Item Type</Label>
             <Input
               type="text"
               id="furniture"
