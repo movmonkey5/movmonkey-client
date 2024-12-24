@@ -15,7 +15,7 @@ const desiredFields = [
   "vehicle_registration_number",
   "email",
   "password",
-  "driver_count",
+  "driver_count", 
   "country",
   "city",
   "phone",

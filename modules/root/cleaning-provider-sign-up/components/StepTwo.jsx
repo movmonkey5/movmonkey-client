@@ -2,7 +2,7 @@ import FormikErrorBox from "@/components/form/FormikErrorBox";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useEffect } from "react";
-
+import { toast } from "sonner";
 const desiredFields = [
   "is_individual",
   "is_company",
@@ -35,18 +35,32 @@ export default function StepTwo({
     Object.keys(filteredObject).forEach((field) => {
       formik.setFieldTouched(field, true);
     });
-
+  
     try {
       await currentValidationSchema.validate(formik.values, {
         abortEarly: false,
       });
+  
+      // Check if insurance is false
+      if (formik.values.have_insurance === false) {
+        toast.error("Insurance is required to continue");
+        return;
+      }
+  
       setCurrentStep((prevStep) => prevStep + 1);
     } catch (validationErrors) {
       const errors = {};
-      validationErrors.inner.forEach((error) => {
-        errors[error.path] = error.message;
-      });
+      
+      if (validationErrors?.inner) {
+        validationErrors.inner.forEach((error) => {
+          errors[error.path] = error.message;
+        });
+      } else if (validationErrors.path && validationErrors.message) {
+        errors[validationErrors.path] = validationErrors.message;
+      }
+      
       formik.setErrors(errors);
+      toast.error("Please check all required fields");
     }
   };
 

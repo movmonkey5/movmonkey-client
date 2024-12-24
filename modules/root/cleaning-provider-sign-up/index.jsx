@@ -41,6 +41,7 @@ const initialValues = {
   card_number: "",
   expiry_date: "",
   cvv: "",
+  phone: "",
 };
 
 const stepOneValidationSchema = Yup.object().shape({
@@ -57,6 +58,19 @@ const stepOneValidationSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
+    phone: Yup.string()
+    .required("Phone number is required")
+    .min(10, "Phone number must be at least 10 digits")
+    .test("is-phone", "Please enter a valid phone number", (value) => {
+      if (!value) return false;
+      return value.length >= 10;
+    }),
+  country: Yup.string()
+    .required("Country is required")
+    .oneOf(['uk', 'au', 'ca', 'us'], "Please select a valid country"),
+  city: Yup.string()
+    .required("City is required")
+    .min(2, "City name must be at least 2 characters"),
   driver_count: Yup.number().nullable().required("Driver count is required"),
 });
 
@@ -111,6 +125,7 @@ export default function CleaningProviderSignUpPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [files, setFiles] = useState([]);
+  const [insuranceFiles, setInsuranceFiles] = useState([]); // Add insurance files state
   const [loading, setLoading] = useState(false);
   const [currentValidationSchema, setCurrentValidationSchema] = useState(
     validationSchemas[0],
@@ -129,10 +144,16 @@ export default function CleaningProviderSignUpPage() {
         ...values,
         front_image: files[0],
         back_image: files[1],
+        insurance_document_image: insuranceFiles[0], // Add insurance document
       };
+
       const formData = new FormData();
       Object.keys(payload).forEach((key) => {
-        if (key === "front_image" || key === "back_image") {
+        if (
+          key === "front_image" ||
+          key === "back_image" ||
+          key === "insurance_document_image"
+        ) {
           formData.append(key, payload[key]);
         } else if (key === "document_type") {
           formData.append(key, payload[key].value);
@@ -146,6 +167,8 @@ export default function CleaningProviderSignUpPage() {
         .then(() => {
           router.push("/cleaning-provider-sign-in");
           formik.resetForm();
+          setFiles([]);
+          setInsuranceFiles([]); // Reset insurance files
         })
         .catch((error) => {
           console.log(error);
@@ -175,14 +198,12 @@ export default function CleaningProviderSignUpPage() {
       </h2>
 
       <div className="mt-5 h-4 rounded-lg bg-[#D9D9D9]">
-        {
-          <div
-            className="h-full rounded-lg bg-secondary"
-            style={{
-              width: `${(currentStep / 4) * 100}%`,
-            }}
-          ></div>
-        }
+        <div
+          className="h-full rounded-lg bg-secondary"
+          style={{
+            width: `${(currentStep / 4) * 100}%`,
+          }}
+        ></div>
       </div>
 
       <form className="my-10">
@@ -207,6 +228,8 @@ export default function CleaningProviderSignUpPage() {
             formik={formik}
             files={files}
             setFiles={setFiles}
+            insuranceFiles={insuranceFiles}
+            setInsuranceFiles={setInsuranceFiles}
             currentValidationSchema={currentValidationSchema}
           />
         )}

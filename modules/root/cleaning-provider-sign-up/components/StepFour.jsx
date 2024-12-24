@@ -5,6 +5,7 @@ import paypal from "@/public/logo/paypal.png";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const desiredFields = [
   "payment_method",
@@ -44,6 +45,24 @@ export default function StepFour({
     } else if (value.length > 2) {
       value = value.slice(0, 2) + "/" + value.slice(2, 4);
     }
+
+    // Validate expiration date
+    if (value.length === 5) { // Only check when full date is entered (MM/YY format)
+      const [month, year] = value.split('/');
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits of year
+      const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
+
+      const expYear = parseInt(year);
+      const expMonth = parseInt(month);
+
+      if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+        toast.error("Card has expired. Please enter a valid expiration date.");
+        formik.setFieldError('expiry_date', 'Card has expired');
+        return;
+      }
+    }
+
     formik.setFieldValue("expiry_date", value);
   };
 
@@ -66,6 +85,7 @@ export default function StepFour({
       formik.setErrors(errors);
     }
   };
+
 
   return (
     <div>

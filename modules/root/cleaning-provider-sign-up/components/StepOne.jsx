@@ -125,6 +125,7 @@ export default function StepOne({
         />
         <FormikErrorBox formik={formik} field="phone" />
       </div>
+      
 
       <div className="mb-6 space-y-1 lg:w-1/2">
         <Label className="sm:text-base lg:text-lg" htmlFor="country">
