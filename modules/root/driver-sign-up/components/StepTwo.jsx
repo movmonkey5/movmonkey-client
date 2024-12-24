@@ -2,7 +2,7 @@ import FormikErrorBox from "@/components/form/FormikErrorBox";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useEffect } from "react";
-
+import { toast } from "sonner";
 const desiredFields = [
   "is_individual",
   "is_company",
@@ -40,6 +40,11 @@ export default function StepTwo({
       await currentValidationSchema.validate(formik.values, {
         abortEarly: false,
       });
+       // Check if insurance is false
+       if (formik.values.have_insurance === false) {
+        toast.error("Insurance is required to continue");
+        return;
+      }
       setCurrentStep((prevStep) => prevStep + 1);
     } catch (validationErrors) {
       const errors = {};

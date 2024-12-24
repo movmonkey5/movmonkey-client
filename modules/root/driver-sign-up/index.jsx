@@ -42,6 +42,7 @@ const initialValues = {
   card_number: "",
   expiry_date: "",
   cvv: "",
+  phone: "",
 };
 
 const stepOneValidationSchema = Yup.object().shape({
@@ -61,6 +62,13 @@ const stepOneValidationSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
   driver_count: Yup.number().nullable().required("Driver count is required"),
+    phone: Yup.string()
+      .required("Phone number is required")
+      .min(10, "Phone number must be at least 10 digits")
+      .test("is-phone", "Please enter a valid phone number", (value) => {
+        if (!value) return false;
+        return value.length >= 10;
+      }),
 });
 
 const stepTwoValidationSchema = Yup.object().shape({
@@ -121,6 +129,7 @@ export default function DriverSignUpPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [insuranceFiles, setInsuranceFiles] = useState([]); // Add insurance files state
   const [currentValidationSchema, setCurrentValidationSchema] = useState(
     validationSchemas[0],
   );
@@ -138,6 +147,7 @@ export default function DriverSignUpPage() {
         ...values,
         front_image: files[0],
         back_image: files[1],
+        insurance_document_image: insuranceFiles[0], // Add insurance document image
       };
       const formData = new FormData();
       Object.keys(payload).forEach((key) => {
@@ -155,6 +165,8 @@ export default function DriverSignUpPage() {
         .then(() => {
           router.push("/driver-sign-in");
           formik.resetForm();
+          
+          setInsuranceFiles([]); // Reset insurance files
         })
         .catch((error) => {
           console.log(error);
@@ -211,13 +223,15 @@ export default function DriverSignUpPage() {
           />
         )}
         {currentStep === 3 && (
-          <StepThree
-            setCurrentStep={setCurrentStep}
-            formik={formik}
-            files={files}
-            setFiles={setFiles}
-            currentValidationSchema={currentValidationSchema}
-          />
+            <StepThree
+                     setCurrentStep={setCurrentStep}
+                     formik={formik}
+                     files={files}
+                     setFiles={setFiles}
+                     insuranceFiles={insuranceFiles}
+                     setInsuranceFiles={setInsuranceFiles}
+                     currentValidationSchema={currentValidationSchema}
+                   />
         )}
         {currentStep === 4 && (
           <StepFour
