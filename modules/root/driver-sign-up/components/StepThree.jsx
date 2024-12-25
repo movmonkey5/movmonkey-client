@@ -13,6 +13,8 @@ export default function StepThree({
   formik,
   files,
   setFiles,
+  insuranceFiles,
+  setInsuranceFiles,
   currentValidationSchema,
 }) {
   useEffect(() => {
@@ -44,6 +46,11 @@ export default function StepThree({
       } else if (files.length === 1) {
         toast.error("Please upload one more file");
       }
+      if (insuranceFiles.length === 0) {
+        toast.error("Please upload insurance documents");
+        return;
+      }
+      
       files.length === 2 && setCurrentStep((prevStep) => prevStep + 1);
     } catch (validationErrors) {
       const errors = {};
@@ -117,6 +124,22 @@ export default function StepThree({
 
           <ImageUploader files={files} setFiles={setFiles} maxFiles={2} />
         </div>
+           {/* Insurance Document Section */}
+                <div className="mb-5 space-y-3">
+                  <div>
+                    <h3 className="text-lg font-semibold lg:text-2xl">
+                      Insurance Document Photo
+                    </h3>
+                    <p className="text-[#8C8C8C] max-sm:text-sm">
+                      Upload your insurance documentation photo (1 file required)
+                    </p>
+                  </div>
+                  <ImageUploader
+                    files={insuranceFiles}
+                    setFiles={setInsuranceFiles}
+                    maxFiles={1}
+                  />
+                </div>
       </div>
 
       <div className="mt-6 flex items-center justify-between gap-5">
