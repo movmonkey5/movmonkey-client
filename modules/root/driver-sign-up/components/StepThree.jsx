@@ -1,10 +1,11 @@
+
+import { useEffect } from "react";
+import { toast } from "sonner";
 import ImageUploader from "@/components/form/ImageUploader";
 import SelectField from "@/components/form/SelectField";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { documentType, driverRole } from "@/lib/keyChain";
-import { useEffect } from "react";
-import { toast } from "sonner";
 
 const desiredFields = ["role", "document_type"];
 
@@ -36,23 +37,42 @@ export default function StepThree({
     Object.keys(filteredObject).forEach((field) => {
       formik.setFieldTouched(field, true);
     });
-
+  
     try {
+      // Validate all Formik values using the current validation schema
       await currentValidationSchema.validate(formik.values, {
         abortEarly: false,
       });
-      if (files.length === 0) {
-        toast.error("Please upload two files");
-      } else if (files.length === 1) {
-        toast.error("Please upload one more file");
+  
+      // Adjust the validation for the file count
+      if (formik.values.document_type === "OTHER") {
+        if (files.length === 0) {
+          toast.error("Please upload at least one file");
+          return; // Stop execution if validation fails
+        } else if (files.length > 5) {
+          toast.error("You can upload a maximum of 5 files");
+          return; // Stop execution if validation fails
+        }
+      } else {
+        if (files.length === 0) {
+          toast.error("Please upload two files");
+          return; // Stop execution if validation fails
+        } else if (files.length === 1) {
+          toast.error("Please upload one more file");
+          return; // Stop execution if validation fails
+        }
       }
+  
+      // Validate insurance document image
       if (insuranceFiles.length === 0) {
-        toast.error("Please upload insurance documents");
-        return;
+        toast.error("Insurance document is required. Please upload one.");
+        return; // Stop execution if validation fails
       }
-      
-      files.length === 2 && setCurrentStep((prevStep) => prevStep + 1);
+  
+      // Proceed to the next step if all validations pass
+      setCurrentStep((prevStep) => prevStep + 1);
     } catch (validationErrors) {
+      // Handle Formik validation errors
       const errors = {};
       validationErrors.inner.forEach((error) => {
         errors[error.path] = error.message;
@@ -60,7 +80,7 @@ export default function StepThree({
       formik.setErrors(errors);
     }
   };
-
+  
   return (
     <div>
       <div>
@@ -78,13 +98,9 @@ export default function StepThree({
             value={formik.values.role}
           />
           {formik.touched.role && formik.errors.role ? (
-            <>
-              <div>
-                <div className="mt-2 rounded-full border border-danger/30 bg-danger/5 px-2 py-1 text-xs text-danger">
-                  {formik.errors.role}
-                </div>
-              </div>
-            </>
+            <div className="mt-2 rounded-full border border-danger/30 bg-danger/5 px-2 py-1 text-xs text-danger">
+              {formik.errors.role}
+            </div>
           ) : null}
         </div>
 
@@ -102,13 +118,9 @@ export default function StepThree({
             value={formik.values.document_type}
           />
           {formik.touched.document_type && formik.errors.document_type ? (
-            <>
-              <div>
-                <div className="mt-2 rounded-full border border-danger/30 bg-danger/5 px-2 py-1 text-xs text-danger">
-                  {formik.errors.document_type}
-                </div>
-              </div>
-            </>
+            <div className="mt-2 rounded-full border border-danger/30 bg-danger/5 px-2 py-1 text-xs text-danger">
+              {formik.errors.document_type}
+            </div>
           ) : null}
         </div>
 
@@ -118,28 +130,28 @@ export default function StepThree({
               Proofs of your photo identification
             </h3>
             <p className="text-[#8C8C8C] max-sm:text-sm">
-              You can add multiple files at once (max 2 files)
+              You can add multiple files at once (max 5 files)
             </p>
           </div>
 
-          <ImageUploader files={files} setFiles={setFiles} maxFiles={2} />
+          <ImageUploader files={files} setFiles={setFiles} maxFiles={5} />
         </div>
-           {/* Insurance Document Section */}
-                <div className="mb-5 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-semibold lg:text-2xl">
-                      Insurance Document Photo
-                    </h3>
-                    <p className="text-[#8C8C8C] max-sm:text-sm">
-                      Upload your insurance documentation photo (1 file required)
-                    </p>
-                  </div>
-                  <ImageUploader
-                    files={insuranceFiles}
-                    setFiles={setInsuranceFiles}
-                    maxFiles={1}
-                  />
-                </div>
+
+        <div className="mb-5 space-y-3">
+          <div>
+            <h3 className="text-lg font-semibold lg:text-2xl">
+              Insurance Document Photo
+            </h3>
+            <p className="text-[#8C8C8C] max-sm:text-sm">
+              Upload your insurance documentation photo (1 file required)
+            </p>
+          </div>
+          <ImageUploader
+            files={insuranceFiles}
+            setFiles={setInsuranceFiles}
+            maxFiles={1}
+          />
+        </div>
       </div>
 
       <div className="mt-6 flex items-center justify-between gap-5">

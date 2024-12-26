@@ -33,7 +33,7 @@ export default function DeliveryDetails({ job }) {
   if (files?.length) {
     videos = files.filter((file) => file?.kind === "VIDEO");
     photos = files.filter((file) => file?.kind === "IMAGE");
-  }
+  } 
 
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
@@ -42,7 +42,7 @@ export default function DeliveryDetails({ job }) {
           <Link href="/created-jobs">
             <Button size="icon" variant="ghost">
               <CircleChevronLeft size={24} />
-            </Button>
+            </Button> 
           </Link>
           <h3>{job?.title}</h3>
         </div>

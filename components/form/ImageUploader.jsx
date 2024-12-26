@@ -1,4 +1,3 @@
-"use client";
 
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
@@ -11,47 +10,48 @@ import ApiKit from "@/common/ApiKit";
 export default function ImageUploader({
   files,
   setFiles,
-  maxFiles = 1,
+  maxFiles = 5,
   jobUid = "",
   jobType = "",
 }) {
   const onDrop = useCallback(
     (acceptedFiles) => {
       setFiles((prevFiles) => {
+        // Calculate how many files can be added based on maxFiles
         const remainingSlots = maxFiles - prevFiles.length;
         const newFiles = acceptedFiles.slice(0, remainingSlots).map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
-          }),
+          })
         );
         return [...prevFiles, ...newFiles];
       });
     },
-    [maxFiles, setFiles],
+    [maxFiles, setFiles]
   );
 
   const removeFile = (fileIndex, file) => {
     if (file instanceof File) {
       setFiles((prevFiles) =>
-        prevFiles.filter((_, index) => index !== fileIndex),
+        prevFiles.filter((_, index) => index !== fileIndex)
       );
     } else {
       if (jobType === "cleaning") {
         ApiKit.me.job.cleaning.deleteFile(jobUid, file.uid).then(() => {
           setFiles((prevFiles) =>
-            prevFiles.filter((_, index) => index !== fileIndex),
+            prevFiles.filter((_, index) => index !== fileIndex)
           );
         });
       } else if (jobType === "removal") {
         ApiKit.me.job.removal.deleteFile(jobUid, file.uid).then(() => {
           setFiles((prevFiles) =>
-            prevFiles.filter((_, index) => index !== fileIndex),
+            prevFiles.filter((_, index) => index !== fileIndex)
           );
         });
       } else if (jobType === "delivery") {
         ApiKit.me.job.delivery.deleteFile(jobUid, file.uid).then(() => {
           setFiles((prevFiles) =>
-            prevFiles.filter((_, index) => index !== fileIndex),
+            prevFiles.filter((_, index) => index !== fileIndex)
           );
         });
       }
@@ -63,11 +63,13 @@ export default function ImageUploader({
     accept: {
       "image/*": [".jpeg", ".jpg", ".png"],
     },
-    maxFiles: maxFiles,
+    maxFiles: maxFiles, // Set dynamic maxFiles
+    multiple: true, // Allow multiple files
   });
 
   return (
     <>
+      {/* Drag and drop area */}
       {files.length !== maxFiles && (
         <div
           {...getRootProps()}
@@ -102,6 +104,7 @@ export default function ImageUploader({
         </div>
       )}
 
+      {/* Files preview */}
       <div className="mt-4 flex flex-wrap">
         {files.map((file, index) => (
           <div

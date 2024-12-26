@@ -16,7 +16,7 @@ const addressFields = [
   { accessKey: "postal_area", title: "State/Province/Region" },
   // { accessKey: "country", title: "Country" },
 ];
-
+console.log("addressFields", addressFields);
 const commonFields = [
   {
     accessKey: "cleaning_duration",
@@ -202,8 +202,8 @@ export default function CleanerJobOverview({ job, isCustomer = false }) {
     onSubmit: (values) => {
       const payload = {
         ...values,
-        title: job.title,
-        cleaning_job: job.slug,
+        title: job?.title,
+        cleaning_job: job?.slug,
       };
 
       const promise = ApiKit.me.quotations.cleaning.postQuotation(payload);
@@ -220,12 +220,12 @@ export default function CleanerJobOverview({ job, isCustomer = false }) {
     },
   });
 
-  const category = job.category[0].slug
+  const category = job?.category[0]?.slug
     .replaceAll("_", "-")
     .split("-")
     .slice(0, 3)
     .join("_");
-
+console.log(job,"jobccccccccc")
   return (
     <div>
       <div className="space-y-4">
@@ -237,23 +237,24 @@ export default function CleanerJobOverview({ job, isCustomer = false }) {
           </div>
         </div>
 
-        {addressFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job.address[field.accessKey]}
-          />
-        ))}
+        {addressFields?.map((field) => (
+  <OverviewItem
+    key={field.title}
+    title={field.title}
+    value={job?.address[0]?.[field.accessKey]} // Access the first address object
+  />
+))}
 
-        {commonFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job[field.accessKey]}
-          />
-        ))}
 
-        {dynamicFields[category].map((field) => (
+      {commonFields?.map((field) => (
+        <OverviewItem
+          key={field.title}
+          title={field.title}
+          value={job?.[field.accessKey]}
+        />
+      ))}
+
+        {dynamicFields[category]?.map((field) => (
           <OverviewItem
             key={field.title}
             title={field.title}

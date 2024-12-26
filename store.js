@@ -12,7 +12,7 @@ if (typeof window !== "undefined") {
 const currencyMap = {
   uk: { code: "gbp", symbol: "£" },
   au: { code: "aud", symbol: "AUS$" },
-  ca: { code: "cad", symbol: "CAD$ " },
+  ca: { code: "cad", symbol: "CAD$" },
   us: { code: "usd", symbol: "US$" },
 };
 

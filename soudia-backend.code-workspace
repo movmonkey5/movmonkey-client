@@ -5,12 +5,6 @@
 		},
 		{
 			"path": "C:/xampp/htdocs/bus-ticket-booking"
-		},
-		{
-			"path": "../../movmonkey-backend-v1-branch"
-		},
-		{
-			"path": "."
 		}
 	],
 	"settings": {}
