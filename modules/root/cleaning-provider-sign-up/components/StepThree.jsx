@@ -37,29 +37,46 @@ export default function StepThree({
     Object.keys(filteredObject).forEach((field) => {
       formik.setFieldTouched(field, true);
     });
-
+  
     try {
+      // Validate all Formik values using the current validation schema
       await currentValidationSchema.validate(formik.values, {
         abortEarly: false,
       });
-
-      if (files.length === 0) {
-        toast.error("Please upload ID proof documents");
-        return;
+  
+      // Adjust the validation for the file count
+      if (formik.values.document_type === "OTHER") {
+        if (files.length === 0) {
+          toast.error("Please upload at least one file");
+          return; // Stop execution if validation fails
+        } else if (files.length > 5) {
+          toast.error("You can upload a maximum of 5 files");
+          return; // Stop execution if validation fails
+        }
+      } else {
+        if (files.length === 0) {
+          toast.error("Please upload least two files");
+          return; // Stop execution if validation fails
+        } else if (files.length === 1) {
+          toast.error("Please upload one more file");
+          return; // Stop execution if validation fails
+        }
       }
-      if (files.length === 1) {
-        toast.error("Please upload both front and back ID documents");
-        return;
-      }
+  
+      // Validate insurance document image
       if (insuranceFiles.length === 0) {
-        toast.error("Please upload insurance documents");
-        return;
+        toast.error("Insurance document is required. Please upload one.");
+        return; // Stop execution if validation fails
       }
-
-      if (files.length === 2 && insuranceFiles.length > 0) {
-        setCurrentStep((prevStep) => prevStep + 1);
-      }
+  
+      // Set undefined file fields to null before submitting
+      formik.setFieldValue("verification_image_2", formik.values.verification_image_2 || null);
+      formik.setFieldValue("verification_image_3", formik.values.verification_image_3 || null);
+  
+      // Proceed to the next step if all validations pass
+      setCurrentStep((prevStep) => prevStep + 1);
     } catch (validationErrors) {
+      // Handle Formik validation errors
       const errors = {};
       validationErrors.inner.forEach((error) => {
         errors[error.path] = error.message;
@@ -67,7 +84,9 @@ export default function StepThree({
       formik.setErrors(errors);
     }
   };
-
+  
+  
+  
   return (
     <div>
       <div>
@@ -98,10 +117,10 @@ export default function StepThree({
               Proofs of your photo identification
             </h3>
             <p className="text-[#8C8C8C] max-sm:text-sm">
-              Upload front and back of your ID (2 files required)
+            You can add multiple files at once (max 5 files)
             </p>
           </div>
-          <ImageUploader files={files} setFiles={setFiles} maxFiles={2} />
+          <ImageUploader files={files} setFiles={setFiles} maxFiles={5} />
         </div>
 
         {/* Insurance Document Section */}

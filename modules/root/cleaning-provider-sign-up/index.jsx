@@ -42,6 +42,9 @@ const initialValues = {
   expiry_date: "",
   cvv: "",
   phone: "",
+  verification_image_1: null,
+  verification_image_2: null,
+  verification_image_3: null,
 };
 
 const stepOneValidationSchema = Yup.object().shape({
@@ -93,6 +96,17 @@ const stepThreeValidationSchema = Yup.object().shape({
       value: Yup.string(),
     })
     .required("Document type is required"),
+    verification_image_1: Yup.mixed()
+    .nullable()
+    .test("fileSize", "The file is too large", (value) => !value || value.size <= 5 * 1024 * 1024), // Optional file size validation
+
+  verification_image_2: Yup.mixed()
+    .nullable()
+    .test("fileSize", "The file is too large", (value) => !value || value.size <= 5 * 1024 * 1024), // Optional file size validation
+
+  verification_image_3: Yup.mixed()
+    .nullable()
+    .test("fileSize", "The file is too large", (value) => !value || value.size <= 5 * 1024 * 1024), // Optional file size validation
 });
 
 const stepFourValidationSchema = Yup.object().shape({
@@ -144,6 +158,9 @@ export default function CleaningProviderSignUpPage() {
         ...values,
         front_image: files[0],
         back_image: files[1],
+        verification_image_1: files[2] || null, // If file is not selected, set to null
+        verification_image_2: files[3] || null, // If file is not selected, set to null
+        verification_image_3: files[4] || null, // If file is not selected, set to null
         insurance_document_image: insuranceFiles[0], // Add insurance document
       };
 
@@ -152,9 +169,15 @@ export default function CleaningProviderSignUpPage() {
         if (
           key === "front_image" ||
           key === "back_image" ||
+          key === "verification_image_1" ||
+          key === "verification_image_2" ||
+          key === "verification_image_3" ||
           key === "insurance_document_image"
         ) {
-          formData.append(key, payload[key]);
+          // Only append files if they exist, otherwise skip
+          if (payload[key]) {
+            formData.append(key, payload[key]);
+          }
         } else if (key === "document_type") {
           formData.append(key, payload[key].value);
         } else {

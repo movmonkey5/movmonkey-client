@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as Yup from "yup";
@@ -43,6 +44,11 @@ const initialValues = {
   expiry_date: "",
   cvv: "",
   phone: "",
+  // New fields for verification images
+  verification_image_1: null,
+  verification_image_2: null,
+  verification_image_3: null,
+
 };
 
 const stepOneValidationSchema = Yup.object().shape({
@@ -53,7 +59,7 @@ const stepOneValidationSchema = Yup.object().shape({
   address: Yup.string().required("Address is required"),
   city: Yup.string().required("City is required"),
   vehicle_registration_number: Yup.string().required(
-    "Vehicle registration number is required",
+    "Vehicle registration number is required"
   ),
   email: Yup.string()
     .email("Invalid email format")
@@ -62,13 +68,13 @@ const stepOneValidationSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
   driver_count: Yup.number().nullable().required("Driver count is required"),
-    phone: Yup.string()
-      .required("Phone number is required")
-      .min(10, "Phone number must be at least 10 digits")
-      .test("is-phone", "Please enter a valid phone number", (value) => {
-        if (!value) return false;
-        return value.length >= 10;
-      }),
+  phone: Yup.string()
+    .required("Phone number is required")
+    .min(10, "Phone number must be at least 10 digits")
+    .test("is-phone", "Please enter a valid phone number", (value) => {
+      if (!value) return false;
+      return value.length >= 10;
+    }),
 });
 
 const stepTwoValidationSchema = Yup.object().shape({
@@ -76,10 +82,10 @@ const stepTwoValidationSchema = Yup.object().shape({
   is_company: Yup.boolean().required("Is company is required"),
   have_insurance: Yup.boolean().required("Have insurance is required"),
   have_criminal_conviction: Yup.boolean().required(
-    "Have criminal conviction is required",
+    "Have criminal conviction is required"
   ),
   is_background_check_passed: Yup.boolean().required(
-    "Is background check passed is required",
+    "Is background check passed is required"
   ),
 });
 
@@ -96,6 +102,10 @@ const stepThreeValidationSchema = Yup.object().shape({
       value: Yup.string(),
     })
     .required("Document type is required"),
+  verification_image_1: Yup.mixed().nullable(),
+  verification_image_2: Yup.mixed().nullable(),
+  verification_image_3: Yup.mixed().nullable(),
+  // insurance_document_image: Yup.mixed().required(" insurace documet is required"), // Added validation for insurance document image
 });
 
 const stepFourValidationSchema = Yup.object().shape({
@@ -109,7 +119,7 @@ const stepFourValidationSchema = Yup.object().shape({
   expiry_date: Yup.string()
     .matches(
       /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/,
-      "Expiry date must be in MM/YY or MM/YYYY format",
+      "Expiry date must be in MM/YY or MM/YYYY format"
     )
     .required("Expiry date is required"),
   cvv: Yup.string()
@@ -131,7 +141,7 @@ export default function DriverSignUpPage() {
   const [loading, setLoading] = useState(false);
   const [insuranceFiles, setInsuranceFiles] = useState([]); // Add insurance files state
   const [currentValidationSchema, setCurrentValidationSchema] = useState(
-    validationSchemas[0],
+    validationSchemas[0]
   );
 
   useEffect(() => {
@@ -147,16 +157,30 @@ export default function DriverSignUpPage() {
         ...values,
         front_image: files[0],
         back_image: files[1],
-        insurance_document_image: insuranceFiles[0], // Add insurance document image
+        verification_image_1: files[2] || null, // If file is not selected, set to null
+        verification_image_2: files[3] || null, // If file is not selected, set to null
+        verification_image_3: files[4] || null, // If file is not selected, set to null
+        insurance_document_image: insuranceFiles[0], // Add insurance document image to payload
       };
+
       const formData = new FormData();
       Object.keys(payload).forEach((key) => {
-        if (key === "front_image" || key === "back_image") {
-          formData.append(key, payload[key]);
+        if (
+          key === "front_image" ||
+          key === "back_image" ||
+          key === "verification_image_1" ||
+          key === "verification_image_2" ||
+          key === "verification_image_3" ||
+          key === "insurance_document_image"
+        ) {
+          // Check if the file exists before appending
+          if (payload[key]) {
+            formData.append(key, payload[key]); // Append images
+          }
         } else if (key === "role" || key === "document_type") {
-          formData.append(key, payload[key].value);
+          formData.append(key, payload[key].value); // Append role and document type values
         } else {
-          formData.append(key, payload[key]);
+          formData.append(key, payload[key]); // Append other fields
         }
       });
 
@@ -165,7 +189,6 @@ export default function DriverSignUpPage() {
         .then(() => {
           router.push("/driver-sign-in");
           formik.resetForm();
-          
           setInsuranceFiles([]); // Reset insurance files
         })
         .catch((error) => {
@@ -196,14 +219,12 @@ export default function DriverSignUpPage() {
       </h2>
 
       <div className="mt-5 h-4 rounded-lg bg-[#D9D9D9]">
-        {
-          <div
-            className="h-full rounded-lg bg-secondary"
-            style={{
-              width: `${(currentStep / 4) * 100}%`,
-            }}
-          ></div>
-        }
+        <div
+          className="h-full rounded-lg bg-secondary"
+          style={{
+            width: `${(currentStep / 4) * 100}%`,
+          }}
+        ></div>
       </div>
 
       <form className="my-10">
@@ -223,21 +244,21 @@ export default function DriverSignUpPage() {
           />
         )}
         {currentStep === 3 && (
-            <StepThree
-                     setCurrentStep={setCurrentStep}
-                     formik={formik}
-                     files={files}
-                     setFiles={setFiles}
-                     insuranceFiles={insuranceFiles}
-                     setInsuranceFiles={setInsuranceFiles}
-                     currentValidationSchema={currentValidationSchema}
-                   />
+          <StepThree
+            setCurrentStep={setCurrentStep}
+            formik={formik}
+            files={files}
+            setFiles={setFiles}
+            insuranceFiles={insuranceFiles}
+            setInsuranceFiles={setInsuranceFiles}
+            currentValidationSchema={currentValidationSchema}
+          />
         )}
         {currentStep === 4 && (
           <StepFour
             setCurrentStep={setCurrentStep}
-            currentValidationSchema={currentValidationSchema}
             formik={formik}
+            currentValidationSchema={currentValidationSchema}
             loading={loading}
           />
         )}

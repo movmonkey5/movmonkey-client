@@ -58,62 +58,80 @@ export default function DeliveryJobEdit() {
         ApiKit.me.job.delivery.getJob(uid).then(({ data }) => data),
     });
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    onSubmit: (values) => {
-      // setLoading(true);
-      console.log(values);
 
-      const payload = {
-        ...values,
-        moving_date: values.moving_date
-          ? dateFormatter(values.moving_date)
-          : "",
-        dropoff: values.dropoff ? dateFormatter(values.dropoff) : "",
-        images,
-        videos,
-      };
-      console.log(payload)
-
-      const formData = new FormData();
-
-      Object.entries(payload).forEach(([key, value]) => {
-        if (key === "images" || key === "videos") {
-          value.forEach((file) => formData.append(key, file));
-        } else if (payload[key] !== null) {
-          formData.append(key, payload[key]);
-        } else if (typeof value === "object" && value !== null) {
-          formData.append(
-            key,
-            typeof value === "object" && value !== null ? value.value : value,
-          );
+    const formik = useFormik({
+      initialValues: initialValues,
+      onSubmit: (values) => {
+        const payload = {
+          ...values,
+          moving_date: values.moving_date ? dateFormatter(values.moving_date) : "",
+          dropoff: values.dropoff ? dateFormatter(values.dropoff) : "",
+        };
+    
+        const formData = new FormData();
+    
+        // Handle images - only process once
+        if (images && images.length > 0) {
+          images.forEach((image) => {
+            if (image instanceof File) {
+              // New image file
+              formData.append('images', image);
+            } else if (image.id) {
+              // Existing image with ID
+              formData.append('existing_images', image.id);
+            }
+          });
         }
-      });
+    
+        // Handle videos
+        if (videos && videos.length > 0) {
+          videos.forEach((video) => {
+            if (video instanceof File) {
+              // New video file
+              formData.append('videos', video);
+            } else if (video.id) {
+              // Existing video with ID
+              formData.append('existing_videos', video.id);
+            }
+          });
+        }
 
-      const promise = ApiKit.me.job.delivery
-        .updateJob(uid, formData)
-        .then(() => router.push(pathName.replace("/edit", "")))
-        .catch((error) => {
-          console.log(error);
-          throw error;
-        })
-        .finally(() => setLoading(false));
 
-      toast.promise(promise, {
-        loading: "Job is being updated, please wait...",
-        success: "Your job has been updated successfully!",
-        error: (error) => {
-          const errorKeys = Object.keys(error?.response?.data);
-          return (
-            error.response.data?.detail ||
-            error.response?.data[errorKeys[0]][0] ||
-            "Failed to update job"
-          );
-        },
-      });
-    },
-  });
+     
+    // Handle other form fields
+    Object.entries(payload).forEach(([key, value]) => {
+      if (key !== 'images' && key !== 'videos' && value !== null) {
+        if (typeof value === 'object' && value !== null) {
+          formData.append(key, value.value || '');
+        } else {
+          formData.append(key, value);
+        }
+      }
+    });
 
+    const promise = ApiKit.me.job.delivery
+      .updateJob(uid, formData)
+      .then(() => router.push(pathName.replace("/edit", "")))
+      .catch((error) => {
+        console.log(error);
+        throw error;
+      })
+      .finally(() => setLoading(false));
+
+    toast.promise(promise, {
+      loading: "Job is being updated, please wait...",
+      success: "Your job has been updated successfully!",
+      error: (error) => {
+        const errorKeys = Object.keys(error?.response?.data);
+        return (
+          error.response.data?.detail ||
+          error.response?.data[errorKeys[0]][0] ||
+          "Failed to update job"
+        );
+      },
+    });
+  },
+});
   const setFormikInitialValue = (field, value) => {
     formik.setFieldValue(field, value);
   };
@@ -266,11 +284,11 @@ export default function DeliveryJobEdit() {
 
   useEffect(() => {
     if (files?.length) {
-      const videos = files.filter((file) => file?.kind === "VIDEO");
-      const images = files.filter((file) => file?.kind === "IMAGE");
+      const videoFiles = files.filter((file) => file?.kind === "VIDEO");
+      const imageFiles = files.filter((file) => file?.kind === "IMAGE");
 
-      setImages(images);
-      setVideos(videos);
+      setImages(imageFiles);
+      setVideos(videoFiles);
     }
   }, [files]);
 
