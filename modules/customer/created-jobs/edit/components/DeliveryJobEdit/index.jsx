@@ -25,6 +25,10 @@ import { dateFormatter } from "@/lib/utils";
 import { format } from "date-fns";
 
 export default function DeliveryJobEdit() {
+  const [mediaErrors, setMediaErrors] = useState({
+    images: false,
+    videos: false
+  });
   const [currentStep, setCurrentStep] = useState(1);
   const pathName = usePathname();
   const [_, uid] = useParams().slugs;
@@ -60,8 +64,17 @@ export default function DeliveryJobEdit() {
 
 
     const formik = useFormik({
+      
       initialValues: initialValues,
       onSubmit: (values) => {
+        if (images.length === 0 || videos.length === 0) {
+          setMediaErrors({
+            images: images.length === 0,
+            videos: videos.length === 0
+          });
+          toast.error("Please upload at least one image and one video");
+          return;
+        }
         const payload = {
           ...values,
           moving_date: values.moving_date ? dateFormatter(values.moving_date) : "",
@@ -99,16 +112,26 @@ export default function DeliveryJobEdit() {
 
      
     // Handle other form fields
-    Object.entries(payload).forEach(([key, value]) => {
-      if (key !== 'images' && key !== 'videos' && value !== null) {
-        if (typeof value === 'object' && value !== null) {
-          formData.append(key, value.value || '');
-        } else {
-          formData.append(key, value);
+    // Object.entries(payload).forEach(([key, value]) => {
+    //   if (key !== 'images' && key !== 'videos' && value !== null) {
+    //     if (typeof value === 'object' && value !== null) {
+    //       formData.append(key, value.value || '');
+    //     } else {
+    //       formData.append(key, value);
+    //     }
+    //   }
+    // });
+// Adding payload fields to FormData
+      Object.entries(payload).forEach(([key, value]) => {
+        if (key !== 'images' && key !== 'videos' && value !== null) {
+          if (typeof value === 'object' && value !== null) {
+            formData.append(key, value.value || '');
+          } else {
+            formData.append(key, value); // This ensures sub_category_slug is included
+          }
         }
-      }
-    });
-
+      });
+      console.log("sub_category_slug:", payload.sub_category_slug);
     const promise = ApiKit.me.job.delivery
       .updateJob(uid, formData)
       .then(() => router.push(pathName.replace("/edit", "")))
@@ -342,6 +365,8 @@ export default function DeliveryJobEdit() {
         setVideos={setVideos}
         loading={loading}
         jobUid={uid}
+        mediaErrors={mediaErrors}
+        setMediaErrors={setMediaErrors}
       />
     ),
   };

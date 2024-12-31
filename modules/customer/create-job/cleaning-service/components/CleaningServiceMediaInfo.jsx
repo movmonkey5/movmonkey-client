@@ -18,6 +18,8 @@ export default function CleaningServiceMediaInfo({
   setVideos,
   loading,
   jobUid = "",
+  mediaErrors,
+  setMediaErrors
 }) {
   useScrollToTop();
 
@@ -46,13 +48,18 @@ export default function CleaningServiceMediaInfo({
             <p className="mb-4 text-[#8C8C8C] max-sm:text-sm">
               Maximum Upload: 5 Pictures
             </p>
-            <ImageUploader
-              files={images}
-              setFiles={setImages}
+            <ImageUploader 
+              files={images} 
+              setFiles={(newImages) => {
+                setImages(newImages);
+                setMediaErrors(prev => ({...prev, images: false}));
+              }}
               maxFiles={5}
               jobUid={jobUid}
-              jobType="cleaning"
             />
+            {mediaErrors?.images && (
+              <p className="mt-2 text-red-500 text-sm">At least one image is required</p>
+            )}
           </div>
 
           <div>

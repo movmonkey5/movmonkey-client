@@ -64,6 +64,10 @@ const getValidationSchema = (category) => {
 let validationSchema;
 
 const DeliveryDeriverPage = () => {
+  const [mediaErrors, setMediaErrors] = useState({
+    images: false,
+
+  });
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [categories, setCategories] = useState([]);
@@ -84,6 +88,14 @@ const DeliveryDeriverPage = () => {
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      if (images.length === 0) {
+        setMediaErrors({
+          images: images.length === 0
+        });
+        toast.error("Please upload at least one image");
+        return;
+      }
+
       setLoading(true);
 
       const cleanValues = ({ category_slug, sub_category_slug, ...rest }) => {
@@ -207,6 +219,8 @@ const DeliveryDeriverPage = () => {
         videos={videos}
         setVideos={setVideos}
         loading={loading}
+        mediaErrors={mediaErrors}
+        setMediaErrors={setMediaErrors}
       />
     ),
   };

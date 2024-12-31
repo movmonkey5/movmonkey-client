@@ -226,7 +226,7 @@ export default function StepFour({
                 <Label className="ml-0 sm:text-base lg:text-lg" htmlFor="cvv">
                   CVV
                 </Label>
-                {/* <Input
+                <Input
                   id="cvv"
                   type="text"
                   placeholder="Enter CVV"
@@ -234,20 +234,7 @@ export default function StepFour({
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.cvv}
-                /> */}
-                  <Input
-                    id="cvv"
-                    type="text"
-                    placeholder="Enter CVV"
-                    className="rounded-none border-b-2 border-l-0 border-r-0 border-t-0 px-0 ring-offset-0 focus:border-secondary focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
-                    maxLength={3} // Enforce maximum of 3 characters
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, ""); // Allow only digits
-                      formik.setFieldValue("cvv", value.slice(0, 3)); // Restrict length to 3
-                    }}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.cvv}
-                  />
+                />
                 {formik.touched.cvv && formik.errors.cvv ? (
                   <>
                     <div>

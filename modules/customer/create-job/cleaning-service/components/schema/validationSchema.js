@@ -17,6 +17,15 @@ const generalValidationSchema = Yup.object().shape({
   preferred_day: Yup.array().min(1, "Preferred day is required"),
   preferred_meridiem: Yup.string().required("Preferred time is required"),
   moving_date: Yup.string().required("Cleaning date is required"),
+   // New parking and charges validation
+   have_parking_space: Yup.boolean()
+   .required("Please select if you have parking space"),
+ is_parking_ulez_congestion_charges: Yup.boolean()
+   .required("Please select if you are paying for charges"),
+ is_included_all_charges: Yup.boolean()
+   .required("Please select if charges are included"),
+ 
+
 });
 
 const homeCleaningValidationSchema = Yup.object().shape({

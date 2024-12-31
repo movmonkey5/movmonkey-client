@@ -26,6 +26,9 @@ export default function RemovalJobEdit() {
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mediaErrors, setMediaErrors] = useState({
+    images: false,
+  });
 
   const category = pathName.split("/")[3];
   const uid = pathName.split("/")[4];
@@ -52,6 +55,14 @@ export default function RemovalJobEdit() {
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values) => {
+      if (images.length === 0) {
+        setMediaErrors({
+          images: images.length === 0
+        });
+        toast.error("Please upload at least one image");
+        return;
+      }
+
       setLoading(true);
 
       const payload = {
@@ -184,6 +195,8 @@ export default function RemovalJobEdit() {
         setVideos={setVideos}
         loading={loading}
         jobUid={uid}
+        mediaErrors={mediaErrors}
+        setMediaErrors={setMediaErrors}
       />
     ),
   };
