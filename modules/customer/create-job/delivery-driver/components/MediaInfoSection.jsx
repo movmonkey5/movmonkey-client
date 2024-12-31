@@ -16,6 +16,8 @@ export default function MediaInfoSection({
   setVideos,
   loading,
   jobUid,
+  mediaErrors,
+  setMediaErrors
 }) {
   useEffect(() => {
     window.scrollTo({
@@ -52,13 +54,28 @@ export default function MediaInfoSection({
             <p className="mb-4 text-[#8C8C8C] max-sm:text-sm">
               Maximum Upload: 5 Pictures
             </p>
-            <ImageUploader
+            {/* <ImageUploader
               files={images}
               setFiles={setImages}
+              
+              maxFiles={5}
+              jobUid={jobUid}
+              jobType="delivery"
+              
+            /> */}
+              <ImageUploader
+              files={images}
+              setFiles={(newImages) => {
+                setImages(newImages);
+                setMediaErrors(prev => ({...prev, images: false}));
+              }}
               maxFiles={5}
               jobUid={jobUid}
               jobType="delivery"
             />
+             {mediaErrors?.images && (
+              <p className="mt-2 text-red-500 text-sm">At least one image is required</p>
+            )}
           </div>
 
           <div>
@@ -73,6 +90,7 @@ export default function MediaInfoSection({
               jobUid={jobUid}
               jobType="delivery"
             />
+           
           </div>
 
           <div>

@@ -1,4 +1,6 @@
 import { countries } from "@/lib/keyChain";
+import { useEffect, useRef } from "react";
+
 import { handleGoToNextStep } from "@/lib/utils";
 import useScrollToTop from "@/lib/hooks/useScrollToTop";
 
@@ -9,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SelectField from "@/components/form/SelectField";
 import { Textarea } from "@/components/ui/textarea";
-
+import useStore from "@/store";
 const labels = [
   "title",
   "full_address",
@@ -21,7 +23,29 @@ const labels = [
 
 export default function CleaningAddress({ formik, setCurrentStep, moveBack }) {
   useScrollToTop();
-
+  const cityInputRef = useRef(null);
+  const { user } = useStore();
+  const country = user?.country;
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.google && country) {
+      setTimeout(() => {
+        const options = {
+          componentRestrictions: { country },
+          types: ['(cities)'] // Restrict to cities only
+        };
+  
+        const cityAutocomplete = new window.google.maps.places.Autocomplete(
+          cityInputRef.current,
+          options
+        );
+  
+        cityAutocomplete.addListener("place_changed", () => {
+          const place = cityAutocomplete.getPlace();
+          formik.setFieldValue("city", place.name);
+        });
+      }, 100);
+    }
+  }, [formik, country]);
   return (
     <div>
       <div className="flex min-h-16 items-center bg-primary text-2xl font-semibold text-black md:h-20 md:text-2xl lg:mt-10">
@@ -48,7 +72,7 @@ export default function CleaningAddress({ formik, setCurrentStep, moveBack }) {
               <FormikErrorBox formik={formik} field="title" />
             </div>
             <div className="w-full space-y-1">
-              <Label htmlFor="full_address">Address</Label>
+              <Label htmlFor="full_address">Address</Label> 
               <Textarea
                 id="full_address"
                 name="full_address"
@@ -60,19 +84,20 @@ export default function CleaningAddress({ formik, setCurrentStep, moveBack }) {
               <FormikErrorBox formik={formik} field="full_address" />
             </div>
             <div className="flex flex-col gap-4 md:flex-row">
-              <div className="w-full space-y-1">
-                <Label htmlFor="city">City</Label>
-                <Input
-                  type="text"
-                  id="city"
-                  name="city"
-                  placeholder="Enter your city..."
-                  value={formik.values.city}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                <FormikErrorBox formik={formik} field="city" />
-              </div>
+            <div className="w-full space-y-1">
+              <Label htmlFor="city">City</Label>
+              <Input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="Enter your city..."
+                value={formik.values.city}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                ref={cityInputRef}
+              />
+              <FormikErrorBox formik={formik} field="city" />
+            </div>
 
               <div className="w-full space-y-1">
                 <Label htmlFor="postal_area">State/Province/Region</Label>

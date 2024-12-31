@@ -20,6 +20,9 @@ import validationSchema from "./components/schema/validationSchema";
 
 export default function RemovalDriverPage() {
   const router = useRouter();
+  const [mediaErrors, setMediaErrors] = useState({
+    images: false,
+  });
   const [currentStep, setCurrentStep] = useState(1);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -29,6 +32,14 @@ export default function RemovalDriverPage() {
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      if (images.length === 0) {
+        setMediaErrors({
+          images: images.length === 0
+        });
+        toast.error("Please upload at least one image");
+        return;
+      }
+
       setLoading(true);
 
       const payload = {
@@ -113,6 +124,8 @@ export default function RemovalDriverPage() {
         videos={videos}
         setVideos={setVideos}
         loading={loading}
+        mediaErrors={mediaErrors}
+        setMediaErrors={setMediaErrors}
       />
     ),
   };

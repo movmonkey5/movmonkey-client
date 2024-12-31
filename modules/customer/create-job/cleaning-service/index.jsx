@@ -54,11 +54,16 @@ const getValidationSchema = (category) => {
 let validationSchema;
 
 export default function CleaningServicePage() {
+  
   const [currentStep, setCurrentStep] = useState(1);
+  const [mediaErrors, setMediaErrors] = useState({
+    images: false,
+  });
   const [subStep, setSubStep] = useState(0);
   const [images, setImages] = useState([]);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  
   const router = useRouter();
 
   const formik = useFormik({
@@ -66,6 +71,13 @@ export default function CleaningServicePage() {
     validationSchema: validationSchema,
     validateOnMount: true,
     onSubmit: (values) => {
+      if (images.length === 0) {
+        setMediaErrors({
+          images: images.length === 0
+        });
+        toast.error("Please upload at least one image");
+        return;
+      }
       setLoading(true);
 
       const payload = {
@@ -186,6 +198,8 @@ export default function CleaningServicePage() {
         videos={videos}
         setVideos={setVideos}
         loading={loading}
+        mediaErrors={mediaErrors}
+        setMediaErrors={setMediaErrors}
       />
     ),
   };

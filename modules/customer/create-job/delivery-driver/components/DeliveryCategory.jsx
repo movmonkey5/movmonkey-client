@@ -17,6 +17,7 @@ export default function DeliveryCategory({
       behavior: "smooth",
     });
   }, []);
+
   return (
     <div>
       <div className="flex min-h-16 items-center bg-primary text-2xl font-semibold text-black md:h-20 md:text-2xl lg:mt-10">

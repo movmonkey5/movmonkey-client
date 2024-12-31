@@ -26,7 +26,7 @@ const labels = [
 
 export default function FurnitureShipment({ formik, setCurrentStep }) {
   useScrollToTop();
-  console.log("formik", formik.values);
+  console.log("formik hiiiiiiiiiiiiiiiiiiiiiiiii", formik.values);
   return (
     <div>
       <div className="flex min-h-16 items-center bg-primary text-2xl font-semibold text-black md:h-20 md:text-2xl lg:mt-10">

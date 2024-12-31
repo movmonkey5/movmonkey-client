@@ -16,6 +16,8 @@ export default function MediaInfoSection({
   videos,
   setVideos,
   loading,
+  mediaErrors,
+  setMediaErrors
 }) {
   useEffect(() => {
     window.scrollTo({
@@ -23,7 +25,17 @@ export default function MediaInfoSection({
       behavior: "smooth",
     });
   }, []);
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (images.length === 0 || videos.length === 0) {
+      setMediaErrors({
+        images: images.length === 0,
+        videos: videos.length === 0
+      });
+      return;
+    }
+    formik.handleSubmit();
+  };
   return (
     <Container>
       <div className="h-4 rounded-lg bg-[#D9D9D9]">
@@ -56,7 +68,18 @@ export default function MediaInfoSection({
           <p className="mb-4 text-[#8C8C8C] max-sm:text-sm">
             Maximum Upload: 5 Pictures
           </p>
-          <ImageUploader files={images} setFiles={setImages} maxFiles={5} />
+          {/* <ImageUploader files={images} setFiles={setImages} maxFiles={5} /> */}
+          <ImageUploader 
+            files={images} 
+            setFiles={(newImages) => {
+              setImages(newImages);
+              setMediaErrors(prev => ({...prev, images: false}));
+            }} 
+            maxFiles={5} 
+          />
+          {mediaErrors?.images && (
+            <p className="mt-2 text-red-500 text-sm">At least one image is required</p>
+          )}
         </div>
 
         <div>
@@ -64,6 +87,7 @@ export default function MediaInfoSection({
           <p className="mb-4 text-[#8C8C8C] max-sm:text-sm">
             Maximum Upload: 5 Videos
           </p>
+        
           <VideoUploader files={videos} setFiles={setVideos} maxFiles={5} />
         </div>
 
