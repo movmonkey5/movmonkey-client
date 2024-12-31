@@ -378,7 +378,16 @@ export default function TenancyInfoOne({
         <FormikErrorBox formik={formik} field="is_company" />
       </div>
 
-
+      <div>
+          <p className="text-xl font-semibold">Note</p>
+          <p className="text-lg font-medium">
+            Protecting your privacy is our top priority. We share your details
+            only with your chosen provider. We do not support transactions
+            outside our platform. Payments are securely handled, held until both
+            parties are satisfied. Respect for providers is crucial, and abuse
+            will not be tolerated.
+          </p>
+        </div>
         <div className="mt-8 flex items-center justify-between gap-5">
           <Button
             onClick={() => setCurrentStep(3)}
