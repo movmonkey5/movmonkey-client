@@ -1,10 +1,10 @@
 {
 	"folders": [
 		{
-			"path": "C:/xampp/htdocs/soudia laravel backend 10/soudia-backend"
+			"path": "C:/xampp/htdocs/soudia-backend"
 		},
 		{
-			"path": "C:/xampp/htdocs/bus-ticket-booking"
+			"path": "../../../soudia 2025 fr backoup/soudia-frontend-website"
 		}
 	],
 	"settings": {}

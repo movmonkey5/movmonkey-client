@@ -174,7 +174,7 @@ export default function AuthNavbar() {
                 <Menu.Button className="flex cursor-pointer items-center gap-2 rounded-full border-2 border-white px-4 py-1.5">
                   <div>
                     <p className="text-start text-xs font-medium text-white">
-                      {user?.full_name.length > 10 ? user?.full_name.slice(0, 10) : user?.full_name}
+                      {user?.full_name.length > 10 ? user?.full_name.slice(0, 25) : user?.full_name}
                     </p>
                     <p className="text-start text-[10px] text-white">
                       {user?.role.split("_").join(" ")}

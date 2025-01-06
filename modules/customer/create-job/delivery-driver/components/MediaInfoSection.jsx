@@ -6,7 +6,10 @@ import Container from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
-
+MediaInfoSection.defaultProps = {
+  setMediaErrors: () => {},
+  mediaErrors: { images: false }
+};
 export default function MediaInfoSection({
   formik,
   setCurrentStep,
@@ -25,7 +28,12 @@ export default function MediaInfoSection({
       behavior: "smooth",
     });
   }, []);
-
+  const handleImageChange = (newImages) => {
+    setImages(newImages);
+    if (typeof setMediaErrors === 'function') {
+      setMediaErrors(prev => ({...prev, images: false}));
+    }
+  };
   return (
     <div>
       <div className="flex min-h-16 items-center bg-primary text-2xl font-semibold text-black md:h-20 md:text-2xl lg:mt-10">
@@ -63,7 +71,7 @@ export default function MediaInfoSection({
               jobType="delivery"
               
             /> */}
-              <ImageUploader
+              {/* <ImageUploader
               files={images}
               setFiles={(newImages) => {
                 setImages(newImages);
@@ -72,7 +80,14 @@ export default function MediaInfoSection({
               maxFiles={5}
               jobUid={jobUid}
               jobType="delivery"
-            />
+            /> */}
+              <ImageUploader
+      files={images}
+      setFiles={handleImageChange}
+      maxFiles={5}
+      jobUid={jobUid}
+      jobType="delivery"
+    />
              {mediaErrors?.images && (
               <p className="mt-2 text-red-500 text-sm">At least one image is required</p>
             )}
