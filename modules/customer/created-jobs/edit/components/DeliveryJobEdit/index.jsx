@@ -67,16 +67,17 @@ export default function DeliveryJobEdit() {
       
       initialValues: initialValues,
       onSubmit: (values) => {
-        if (images.length === 0 || videos.length === 0) {
+        if (images.length === 0) {  // Remove videos length check
           setMediaErrors({
             images: images.length === 0,
-            videos: videos.length === 0
+            videos: false  // Set videos error to false since it's optional
           });
-          toast.error("Please upload at least one image and one video");
+          toast.error("Please upload at least one image");  // Updated error message
           return;
         }
         const payload = {
           ...values,
+          category_slug: values.sub_category_slug, // Use sub_category_slug value for category_slug
           moving_date: values.moving_date ? dateFormatter(values.moving_date) : "",
           dropoff: values.dropoff ? dateFormatter(values.dropoff) : "",
         };

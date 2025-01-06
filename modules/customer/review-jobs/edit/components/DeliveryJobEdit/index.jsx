@@ -5,9 +5,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, usePathname, useRouter } from "next/navigation";
-
 import ApiKit from "@/common/ApiKit";
-
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/shared/Loading";
 import FindDistance from "@/modules/customer/create-job/delivery-driver/components/FindDistance";
@@ -40,6 +38,7 @@ export default function DeliveryJobEdit() {
     queryFn: () =>
       ApiKit.public.category.getDelivery().then(({ data }) => {
         setCategories(data?.results);
+        console.log(data?.results,"data result");
         return data?.results;
       }),
   });
@@ -51,43 +50,54 @@ export default function DeliveryJobEdit() {
     enabled: !!uid,
   });
 
-  const { data: deliveryJobDetails, isLoading: isDeliveryJobLoading } =
-    useQuery({
-      queryKey: [`delivery_job/${uid}`],
-      queryFn: () =>
-        ApiKit.me.job.delivery.getJob(uid).then(({ data }) => data),
-    });
-console.log(deliveryJobDetails)
+  const { data: deliveryJobDetails, isLoading: isDeliveryJobLoading } = useQuery({
+    queryKey: [`delivery_job/${uid}`],
+    queryFn: () => ApiKit.me.job.delivery.getJob(uid).then(({ data }) => data),
+  });
+
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values) => {
-      // setLoading(true);
-      console.log(values);
-
-      const payload = {
+      setLoading(true);
+      
+      // Update category_slug to match sub_category_slug
+      const updatedValues = {
         ...values,
-        moving_date: values.moving_date
-          ? dateFormatter(values.moving_date)
-          : "",
-        dropoff: values.dropoff ? dateFormatter(values.dropoff) : "",
-        images,
-        videos,
+        category_slug: values.sub_category_slug
       };
 
       const formData = new FormData();
 
-      Object.entries(payload).forEach(([key, value]) => {
-        if (key === "images" || key === "videos") {
-          value.forEach((file) => formData.append(key, file));
-        } else if (payload[key] !== null) {
-          formData.append(key, payload[key]);
-        } else if (typeof value === "object" && value !== null) {
-          formData.append(
-            key,
-            typeof value === "object" && value !== null ? value.value : value,
-          );
+      // Handle regular form fields
+      Object.entries(updatedValues).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && key !== 'images' && key !== 'videos') {
+          if (key === 'moving_date' || key === 'dropoff') {
+            formData.append(key, value ? dateFormatter(value) : '');
+          } else if (typeof value === 'object') {
+            formData.append(key, value.value || value);
+          } else {
+            formData.append(key, value);
+          }
         }
       });
+
+      // Handle images
+      if (images?.length) {
+        images.forEach(image => {
+          if (image instanceof File) {
+            formData.append('images', image);
+          }
+        });
+      }
+
+      // Handle videos
+      if (videos?.length) {
+        videos.forEach(video => {
+          if (video instanceof File) {
+            formData.append('videos', video);
+          }
+        });
+      }
 
       const promise = ApiKit.me.job.delivery
         .updateJob(uid, formData)
@@ -175,7 +185,7 @@ console.log(deliveryJobDetails)
       setFormikInitialValue("moving_date", deliveryJobDetails.moving_date);
       setFormikInitialValue(
         "dropoff",
-        format(deliveryJobDetails.dropoff, "P").split("/").join("-"),
+        format(new Date(deliveryJobDetails.dropoff), "P").split("/").join("-"),
       );
       setFormikInitialValue(
         "service_type",
@@ -255,21 +265,22 @@ console.log(deliveryJobDetails)
         "specific_need",
         deliveryJobDetails.delivery_items[0].specific_need,
       );
-      setFormikInitialValue(
-        "specific_need",
-        deliveryJobDetails.delivery_items[0].specific_need,
-      );
       setFormikInitialValue("status", deliveryJobDetails.status);
     }
   }, [deliveryJobDetails]);
 
   useEffect(() => {
     if (files?.length) {
-      const videos = files.filter((file) => file?.kind === "VIDEO");
-      const images = files.filter((file) => file?.kind === "IMAGE");
+      const videoFiles = files.filter((file) => file?.kind === "VIDEO");
+      const imageFiles = files.filter((file) => file?.kind === "IMAGE");
 
-      setImages(images);
-      setVideos(videos);
+      // Only set initial files if images/videos state is empty
+      if (images.length === 0) {
+        setImages(imageFiles);
+      }
+      if (videos.length === 0) {
+        setVideos(videoFiles);
+      }
     }
   }, [files]);
 
@@ -279,7 +290,6 @@ console.log(deliveryJobDetails)
 
   const stepComponents = {
     1: <FindDistance formik={formik} setCurrentStep={setCurrentStep} />,
-
     2: <ItemDeliveryInfo formik={formik} setCurrentStep={setCurrentStep} />,
     3: (
       <DeliveryCategory
