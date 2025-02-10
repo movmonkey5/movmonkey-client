@@ -1,8 +1,14 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import GlobalProvider from "@/components/hoc/GlobalProvider";
+import dynamic from 'next/dynamic';
 import Head from "next/head";
 import Script from "next/script";
+
+// Dynamically import the PendingStatusModal with no SSR
+const PendingStatusModal = dynamic(() => import('@/components/PendingStatusModal'), {
+  ssr: false,
+});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,7 +34,10 @@ export default function RootLayout({ children }) {
           src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAdepi4YsrlSYhTp8NeWrCKTRVOF2N6naA&libraries=places`}
           strategy="beforeInteractive"
         />
-        <GlobalProvider>{children}</GlobalProvider>
+        <GlobalProvider>
+          {children}
+          <PendingStatusModal />
+        </GlobalProvider>
       </body>
     </html>
   );

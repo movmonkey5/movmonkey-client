@@ -29,17 +29,22 @@ const formatCurrency = (amount, currency) => {
 const useStore = create((set) => ({
   user: null,
   userLoading: false,
+  showPendingModal: false, // Add new state for modal
 
   fetchUser: async () => {
     try {
       set({ userLoading: true });
       const { data } = await ApiKit.me.getMe();
+      console.log("User data:", data);
 
-      // Add currency info based on country code
       const currency = currencyMap[data.country] || {
         code: "usd",
         symbol: "$",
-      }; // default to USD if not listed
+      };
+
+      // Explicitly check status
+      const isPending = data.status && data.status.toUpperCase() === "PENDING";
+      console.log("Is pending:", isPending, "Status:", data.status);
 
       set({
         user: {
@@ -48,6 +53,7 @@ const useStore = create((set) => ({
           currencySymbol: currency.symbol,
           formatPrice: (amount) => formatCurrency(amount, currency),
         },
+        showPendingModal: isPending, // Set modal visibility based on status
       });
       set({ userLoading: false });
     } catch (error) {
@@ -56,6 +62,9 @@ const useStore = create((set) => ({
       window.location.reload();
     }
   },
+
+  // Add function to close modal
+  closePendingModal: () => set({ showPendingModal: false }),
 
   logOut: async () => {
     set({ user: null });
