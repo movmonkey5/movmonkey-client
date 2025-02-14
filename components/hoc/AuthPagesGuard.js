@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import useStore from '@/store';
 
@@ -14,18 +13,14 @@ const AuthPagesGuard = ({ children }) => {
     '/sign-up',
     '/cleaning-provider-sign-in',
     '/driver-sign-up',
-    '/cleaning-provider-sign-up'
+    '/cleaning-provider-sign-up',
+    '/driver-sign-in'
   ];
 
-  useEffect(() => {
-    if (user?.status && restrictedRoutes.includes(pathname)) {
-      router.replace('/');
-    }
-  }, [user, pathname, router]);
-
-  // Don't render restricted pages if user has a status
+  // Immediate check and redirect without useEffect
   if (user?.status && restrictedRoutes.includes(pathname)) {
-    return null;
+    router.replace('/');
+    return null; // Return null immediately to prevent any flash of content
   }
 
   return children;

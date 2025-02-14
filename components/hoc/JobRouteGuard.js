@@ -27,7 +27,8 @@ const JobRouteGuard = ({ children }) => {
     '/driver-sign-up',
     '/cleaning-provider-sign-up',
     '/logout',
-    '/driver-sign-in'  // Added driver sign in route
+    '/driver-sign-in',  // Added driver sign in route
+   
   ];
   
   const isPublicRoute = publicRoutes.includes(pathname) || pathname === '';
