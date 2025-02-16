@@ -14,24 +14,29 @@ if (typeof window !== "undefined") {
 }
 
 export default function PublicAuthGuardHoc({ children }) {
-  const { userLoading, fetchUser } = useStore();
+  const { userLoading, fetchUser, setInitialized } = useStore();
 
   useEffect(() => {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
     if (token) {
       setTokenAndRedirect(token).then(() => {
         fetchUser()
-          .then(() => {})
+          .then(() => {
+            setInitialized(true);
+          })
           .catch(() => {
             localStorage.removeItem(AUTH_TOKEN_KEY);
             HttpKit.client.defaults.headers.common["Authorization"] = "";
+            setInitialized(true);
             window.location.reload();
           });
       });
+    } else {
+      setInitialized(true);
     }
   }, []);
 
-  if (userLoading) {
+  if (!useStore.getState().initialized) {
     return <Loading className="h-screen" />;
   }
 

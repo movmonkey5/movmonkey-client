@@ -76,6 +76,11 @@ const DeliveryDeriverPage = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Make setState functions globally available
+  window.setImagesState = setImages;
+  window.setVideosState = setVideos;
+  window.setMediaErrorsState = setMediaErrors;
+
   const { data, isLoading } = useQuery({
     queryKey: ["categories", "delivery"],
     queryFn: () =>

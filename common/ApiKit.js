@@ -103,6 +103,17 @@ const ApiKit = {
         },
       },
     },
+
+    blog: {
+      getPosts: (params) => {
+        const url = "blog/posts/";  // Fixed URL path (only one api/v1)
+        return client.get(url, { params });
+      },
+      getPost: (slug) => {
+        const url = `blog/posts/${slug}/`;
+        return client.get(url);
+      },
+    },
   },
 
   me: {

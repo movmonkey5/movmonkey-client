@@ -20,7 +20,7 @@ export default function BaseNavbar() {
   const [showSignInSubmenu, setShowSignInSubmenu] = useState(false);
   const [showSignUpSubmenu, setShowSignUpSubmenu] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const { user } = useStore();
+  const { user, initialized } = useStore();
 
   const handleOverlayClick = () => {
     setShowSignInSubmenu(false);
@@ -74,6 +74,12 @@ export default function BaseNavbar() {
     }
   };
 
+  // Don't render anything until we know the auth state
+  if (!initialized) {
+    return null;
+  }
+
+  // Now we can safely render the appropriate navbar
   return (
     <nav className="sticky top-[-.5px] z-50 mb-6 mt-8 h-16 bg-white pb-16 sm:h-max md:py-8">
       <Container extraClassName={"!p-0"}>

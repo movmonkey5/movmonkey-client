@@ -29,17 +29,26 @@ const formatCurrency = (amount, currency) => {
 const useStore = create((set) => ({
   user: null,
   userLoading: false,
+  initialized: false, // Add initialization state
+  showPendingModal: false, // Add new state for modal
+  showDisabledModal: false, // Add new state for disabled modal
+
+  setInitialized: (value) => set({ initialized: value }),
 
   fetchUser: async () => {
     try {
       set({ userLoading: true });
       const { data } = await ApiKit.me.getMe();
+      console.log("User data:", data);
 
-      // Add currency info based on country code
       const currency = currencyMap[data.country] || {
         code: "usd",
         symbol: "$",
-      }; // default to USD if not listed
+      };
+
+      // Check both pending and disabled status
+      const isPending = data.status && data.status.toUpperCase() === "PENDING";
+      const isDisabled = data.status && data.status.toUpperCase() === "DISABLED";
 
       set({
         user: {
@@ -48,19 +57,33 @@ const useStore = create((set) => ({
           currencySymbol: currency.symbol,
           formatPrice: (amount) => formatCurrency(amount, currency),
         },
+        showPendingModal: isPending, // Set modal visibility based on status
+        showDisabledModal: isDisabled,
+        initialized: true, // Set initialized to true after successful fetch
       });
-      set({ userLoading: false });
     } catch (error) {
       localStorage.removeItem(AUTH_TOKEN_KEY);
       HttpKit.client.defaults.headers.common["Authorization"] = "";
       window.location.reload();
+    } finally {
+      set({ userLoading: false });
     }
   },
 
+  // Add function to close modal
+  closePendingModal: () => set({ showPendingModal: false }),
+  closeDisabledModal: () => set({ showDisabledModal: false }),
+
   logOut: async () => {
-    set({ user: null });
+    set({ 
+      user: null,
+      initialized: false,
+      showPendingModal: false,
+      showDisabledModal: false
+    });
     localStorage.removeItem(AUTH_TOKEN_KEY);
     await HttpKit.removeClientToken();
+    // Removed automatic window.location.reload()
   },
 }));
 
