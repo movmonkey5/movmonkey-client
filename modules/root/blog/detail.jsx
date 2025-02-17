@@ -15,6 +15,9 @@ const BlogDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+
     const fetchPost = async () => {
       try {
         const response = await ApiKit.public.blog.getPost(slug);
@@ -62,15 +65,15 @@ const BlogDetailPage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
         <Container className="relative h-full">
-          <div className="absolute bottom-8 left-0 right-0 text-white">
-            <span className="inline-block bg-secondary px-4 py-1 rounded-full text-sm mb-4">
-              {post.category}
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 max-w-4xl">
-              {post.title}
-            </h1>
-            <div className="flex items-center gap-4 text-gray-200">
-              <div className="flex items-center gap-2">
+          <div className="absolute bottom-8 w-full max-w-4xl mx-auto left-0 right-0">
+            <div className="flex flex-col space-y-4">
+              <span className="inline-block bg-secondary px-4 py-1 rounded-full text-sm text-white w-fit">
+                {post.category}
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold text-white">
+                {post.title}
+              </h1>
+              <div className="flex items-center gap-2 text-gray-200">
                 <Calendar size={18} />
                 <span>{post.formatted_date}</span>
               </div>
