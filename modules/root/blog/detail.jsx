@@ -15,6 +15,9 @@ const BlogDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+
     const fetchPost = async () => {
       try {
         const response = await ApiKit.public.blog.getPost(slug);
@@ -51,7 +54,7 @@ const BlogDetailPage = () => {
   return (
     <div className="bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-[50vh] w-full">
+      <div className="relative h-[60vh] md:h-[50vh] w-full">
         <Image
           src={getImageUrl(post.image)}
           alt={post.title}
@@ -60,18 +63,18 @@ const BlogDetailPage = () => {
           priority
           unoptimized={post.image?.startsWith('https://images.unsplash.com')}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
         <Container className="relative h-full">
-          <div className="absolute bottom-8 left-0 right-0 text-white">
-            <span className="inline-block bg-secondary px-4 py-1 rounded-full text-sm mb-4">
-              {post.category}
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 max-w-4xl">
-              {post.title}
-            </h1>
-            <div className="flex items-center gap-4 text-gray-200">
-              <div className="flex items-center gap-2">
-                <Calendar size={18} />
+          <div className="absolute bottom-6 md:bottom-8 w-full max-w-4xl mx-auto left-0 right-0 px-4 md:px-0">
+            <div className="flex flex-col space-y-3 md:space-y-4">
+              <span className="inline-block bg-secondary px-3 py-1 md:px-4 md:py-1 rounded-full text-xs md:text-sm text-white w-fit">
+                {post.category}
+              </span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                {post.title}
+              </h1>
+              <div className="flex items-center gap-2 text-gray-200 text-sm md:text-base">
+                <Calendar size={16} className="md:w-[18px] md:h-[18px]" />
                 <span>{post.formatted_date}</span>
               </div>
             </div>
@@ -80,23 +83,23 @@ const BlogDetailPage = () => {
       </div>
 
       {/* Content Section */}
-      <Container className="py-12">
-        <div className="max-w-4xl mx-auto">
+      <Container className="py-8 md:py-12">
+        <div className="max-w-4xl mx-auto px-4 md:px-0">
           {/* Back Navigation */}
           <Link 
             href="/blog"
-            className="inline-flex items-center text-secondary hover:text-primary mb-8"
+            className="inline-flex items-center text-secondary hover:text-primary mb-6 md:mb-8 text-sm md:text-base"
           >
-            <ArrowLeft className="mr-2" />
+            <ArrowLeft size={18} className="mr-2" />
             Back to Blog
           </Link>
 
           {/* Article Content */}
-          <article className="prose prose-lg max-w-none">
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed border-l-4 border-secondary pl-6 italic">
+          <article className="prose prose-base md:prose-lg max-w-none">
+            <p className="text-lg md:text-xl text-gray-600 mb-6 md:mb-8 leading-relaxed border-l-4 border-secondary pl-4 md:pl-6 italic">
               {post.excerpt}
             </p>
-            <div className="mt-8 text-gray-700 leading-relaxed space-y-6">
+            <div className="mt-6 md:mt-8 text-gray-700 leading-relaxed space-y-4 md:space-y-6">
               {post.content.split('\n\n').map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}
