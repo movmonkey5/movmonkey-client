@@ -14,7 +14,7 @@ const addressFields = [
     title: "City",
   },
   { accessKey: "postal_area", title: "State/Province/Region" },
-  // { accessKey: "country", title: "Country" },
+  { accessKey: "country", title: "Country" },
 ];
 console.log("addressFields", addressFields);
 const commonFields = [
@@ -238,13 +238,12 @@ console.log(job,"jobccccccccc")
         </div>
 
         {addressFields?.map((field) => (
-  <OverviewItem
-    key={field.title}
-    title={field.title}
-    value={job?.address[0]?.[field.accessKey]} // Access the first address object
-  />
-))}
-
+          <OverviewItem
+            key={field.title}
+            title={field.title}
+            value={job?.address?.[0]?.[field.accessKey]} // Access first item in address array
+          />
+        ))}
 
       {commonFields?.map((field) => (
         <OverviewItem

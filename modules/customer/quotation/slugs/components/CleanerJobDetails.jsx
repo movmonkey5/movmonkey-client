@@ -80,6 +80,12 @@ export default function CleaningJobDetails({ job }) {
             {/* Detail Fee Section */}
             <FeeDetails job={job} />
           </div>
+          <div className="w-full bg-primary/10 rounded-lg shadow-md mt-4 md:mt-2">
+  <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Additional Information</h1>
+  <p className="p-4 rounded-b-lg">
+    The content provided above serves as a reference for cleaning services. Any duplication or unauthorized use of this content without explicit permission for the purpose of facilitating cleaning services is strictly prohibited.
+  </p>
+</div>
 
           {/* Additional Information */}
         </Container>

@@ -21,24 +21,49 @@ import CleanerJobOverview from "./components/CleaningOverview";
 
 export default function CleanerAssignedJobDetailsPage({ params }) {
   const [view, setView] = useState("overview");
-  const uid = params.slugs[1];
-  const kind = params.slugs[0].toUpperCase();
+  
+  // Extract parameters first
+  const uid = params?.slugs?.[1];
+  const kind = params?.slugs?.[0]?.toUpperCase();
+  
+  console.log('Route params:', { uid, kind, params });
 
-  const { data: job, isLoading: jobLoading } = useQuery({
-    queryKey: ["jobDetails", uid,kind],
-    queryFn: () =>
-      ApiKit.me.job.assigned.getJobDeatails(uid,kind).then(({ data }) => data),
+  // First query to get job details
+  const {
+    data: job,
+    isLoading: jobLoading,
+    error
+  } = useQuery({
+    queryKey: ["jobDetails", uid, kind],
+    queryFn: async () => {
+      if (!uid || !kind) throw new Error("Missing job parameters");
+      
+      try {
+        const response = await ApiKit.me.job.assigned.getJobDetails(uid, kind);
+        console.log('Job details response:', response);
+        return response.data;
+      } catch (error) {
+        console.error('Job fetch error:', error);
+        throw error;
+      }
+    },
+    enabled: Boolean(uid && kind)
   });
-  const quotationId = job?.quotation?.uid;
 
+  // Get quotation ID from job data
+  const quotationId = job?.quotation?.uid;
+  console.log('Quotation ID:', quotationId);
+
+  // Then query for user details using quotation ID
   const { data: userDetails, isLoading: driverLoading } = useQuery({
-    queryKey: ["userDetails", uid],
+    queryKey: ["userDetails", quotationId],
     queryFn: () =>
-      uid &&
-      ApiKit.me.quotations.user
+      quotationId && ApiKit.me.quotations.user
         .getUserDetails(quotationId)
         .then(({ data }) => data),
+    enabled: Boolean(quotationId)
   });
+
   const { data: files } = useQuery({
     queryKey: ["cleaning-job-files"],
     queryFn: () =>
@@ -59,6 +84,35 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
 
   if (isLoading) {
     return <Loading className="h-screen" />;
+  }
+
+  // Show loading state
+  if (jobLoading) return <Loading className="h-screen" />;
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="p-4 text-center">
+        <h2 className="text-xl font-semibold text-red-600">
+          {error.message || "Failed to load job details"}
+        </h2>
+        <Link href="/cleaner/assigned-jobs">
+          <Button className="mt-4">Back to Jobs</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  // Show not found state
+  if (!job) {
+    return (
+      <div className="p-4 text-center">
+        <h2 className="text-xl font-semibold">Job not found</h2>
+        <Link href="/cleaner/assigned-jobs">
+          <Button className="mt-4">Back to Jobs</Button>
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -86,7 +140,7 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
                   href={`/cleaner/message?name=${userDetails?.full_name?.split(" ").join("-")} `}
                 >
                   <Button size="lg" className=" w-full md:w-8/12">
-                    Chat With {userDetails?.full_name}
+                    Chat
                   </Button>
                 </Link>
               </div>
@@ -102,11 +156,19 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
 
         {/* Job Details Section */}
         <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">{job.title}</h3>
-          <p className="text-lg font-bold">Job ID: {job.slug}</p>
+          <h3 className="text-2xl font-semibold">
+            {job?.title || 'Untitled Job'}
+          </h3>
+          <p className="text-lg font-bold">
+            Job ID: {job?.slug || 'N/A'}
+          </p>
 
           <h2 className="w-fit bg-primary p-2 text-lg font-bold md:text-2xl">
-            Execution Date: {format(job.moving_date, "PPP")}
+            Execution Date: {
+              job?.moving_date 
+                ? format(new Date(job.moving_date), "PPP") 
+                : 'Not set'
+            }
           </h2>
 
           <div>

@@ -23,43 +23,93 @@ import { useRouter } from "next/router";
 
 export default function CleanerAssignedJobDetailsPage({ params }) {
   const [view, setView] = useState("overview");
-  const uid = params.slugs[1];
-  const kind = params.slugs[0].toUpperCase();
+  
+  // Log params to check if they're being passed correctly
+  console.log("Component Params:", params);
+  console.log("Extracted slugs:", params?.slugs);
+  
+  const uid = params?.slugs?.[1];
+  const kind = params?.slugs?.[0]?.toUpperCase();
+  
+  // Log uid and kind
+  console.log("Job UID:", uid);
+  console.log("Job Kind:", kind);
+
   const { data: job, isLoading: jobLoading } = useQuery({
     queryKey: ["jobDetails", uid, kind],
-    queryFn: () =>
-      ApiKit.me.job.assigned.getJobDeatails(uid, kind).then(({ data }) => data),
-  });
-  const quotationId = job?.quotation?.uid;
-  const { data: userDetails, isLoading: driverLoading } = useQuery({
-    queryKey: ["userDetails", uid],
-    queryFn: () =>
-      uid &&
-      ApiKit.me.quotations.user
-        .getUserDetails(quotationId)
-        .then(({ data }) => data),
-  });
-  const { data: files } = useQuery({
-    queryKey: ["delivery-job-files"],
-    queryFn: () =>
-      ApiKit.me.job.assigned
-        .getFiles(uid, kind)
-        .then(({ data }) => data.results),
+    queryFn: async () => {
+      try {
+        console.log("Making API call with UID:", uid, "Kind:", kind);
+        const response = await ApiKit.me.job.assigned.getJobDetails(uid, kind);
+        console.log("API Response:", response);
+        return response.data;
+      } catch (error) {
+        console.error("API Error:", error);
+        throw error;
+      }
+    },
+    enabled: Boolean(uid && kind),
   });
 
-  let videos;
-  let photos;
+  // Remove the separate userDetails query since it's now included in job data
+
+  // Log job data
+  console.log("Job Data:", job);
+
+  const quotationId = job?.quotation?.uid;
+  console.log("Quotation ID:", quotationId);
+
+  const { data: files } = useQuery({
+    queryKey: ["delivery-job-files", uid, kind],
+    queryFn: async () => {
+      try {
+        console.log("Fetching files for job:", uid, kind);
+        const response = await ApiKit.me.job.assigned.getFiles(uid, kind);
+        console.log("Files Response:", response);
+        return response.data.results;
+      } catch (error) {
+        console.error("Files Error:", error);
+        throw error;
+      }
+    },
+    enabled: Boolean(uid && kind),
+  });
+
+  // Log files data
+  console.log("Files Data:", files);
+
+  let videos = [];
+  let photos = [];
 
   if (files?.length) {
     videos = files.filter((file) => file?.kind === "VIDEO");
     photos = files.filter((file) => file?.kind === "IMAGE");
+    console.log("Filtered Videos:", videos);
+    console.log("Filtered Photos:", photos);
   }
 
-  const isLoading = jobLoading || driverLoading;
+  const isLoading = jobLoading;
+  console.log("Loading State:", { jobLoading, isLoading });
 
   if (isLoading) {
     return <Loading className="h-screen" />;
   }
+
+  // Add more detailed error handling
+  if (!job) {
+    console.log("No job data available:", { uid, kind, job });
+    return (
+      <div className="p-4 text-center">
+        <h2 className="text-xl font-semibold text-red-600">No job details found</h2>
+        <p className="text-gray-600 mt-2">Job ID: {uid}</p>
+        <p className="text-gray-600">Kind: {kind}</p>
+        <Link href="/driver/assigned-jobs">
+          <Button className="mt-4">Back to Jobs</Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       {/* Job Status Section */}
@@ -75,39 +125,37 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
         {/* User Information Section */}
         <div className="mb-8 rounded-lg bg-gray-100 p-4">
           <h2 className="text-2xl font-semibold">Job from User</h2>
-          {userDetails ? (
-            <div className="mt-4 flex items-center justify-between ">
+          {job?.customer_details ? (
+            <div className="mt-4 flex items-center justify-between">
               <div>
-                <h5 className="text-xl font-medium">{userDetails.full_name}</h5>
-                <p>Email: {userDetails.email}</p>
-                <p>Phone: {userDetails.phone}</p>
+                <h5 className="text-xl font-medium">{job.customer_details.full_name}</h5>
+                <p>Email: {job.customer_details.email}</p>
+                <p>Phone: {job.customer_details.phone || 'Not provided'}</p>
               </div>
               <div>
                 <Link
-                  href={`/driver/message?name=${userDetails?.full_name?.split(" ").join("-")} `}
+                  href={`/driver/message?name=${job.customer_details.full_name?.split(" ").join("-")}`}
                 >
-                  <Button size="lg" className=" w-full md:w-8/12">
-                    Chat With {userDetails?.full_name}
+                  <Button size="lg" className="w-full md:w-8/12">
+                    Chat
                   </Button>
                 </Link>
               </div>
             </div>
           ) : (
             <div>
-              <h5 className="text-xl font-medium">Name: XXXXXXX</h5>
-              <p>Email: XXXXXXX@gmail.com</p>
-              <p>Phone: +44 XXXX XXXXX</p>
+              <p className="text-gray-600 mt-2">Customer details not available</p>
             </div>
           )}
         </div>
 
         {/* Job Details Section */}
         <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">{job.title}</h3>
-          <p className="text-lg font-bold">Job ID: {job.slug}</p>
+          <h3 className="text-2xl font-semibold">{job?.title || 'Untitled Job'}</h3>
+          <p className="text-lg font-bold">Job ID: {job?.slug || 'N/A'}</p>
 
           <h2 className="w-fit bg-primary p-2 text-lg font-bold md:text-2xl">
-            Execution Date: {format(job.moving_date, "PPP")}
+            Execution Date: {job?.moving_date ? format(new Date(job.moving_date), "PPP") : 'Not set'}
           </h2>
 
           <div>
@@ -116,7 +164,7 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
                 Moving From
               </div>
               <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
-                {job?.distance.moving_from}
+                {job?.distance?.moving_from || 'Not specified'}
               </div>
             </div>
             <div className="flex flex-col gap-1  md:flex-row md:items-center md:justify-between">
@@ -124,14 +172,14 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
                 Moving To
               </div>
               <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
-                {job?.distance.moving_to}
+                {job?.distance?.moving_to || 'Not specified'}
               </div>
             </div>
             <h2 className="mt-4 text-lg font-bold md:text-2xl">
               Job Description:
             </h2>
             <p className="text-sm md:text-lg">
-              {job.item_description || "No description provided"}
+              {job?.item_description || "No description provided"}
             </p>
           </div>
         </div>

@@ -289,27 +289,62 @@ const ApiKit = {
         },
       },
       assigned: {
-        getJobs: () => {
-          const url = "/me/jobs/assinged";
-          return client.get(url);
+        getJobs: (params) => {
+          const url = "/me/jobs/assigned";
+          return client.get(url, { params });
         },
         patchDriverDistance: (uid, kind, payload) => {
-          const url = `/me/jobs/assinged/${uid}/${kind}/distance`;
-          return client.patch(url, payload, defaultFileUploadConfig);
-        },
+          if (!uid || !kind) {
+            return Promise.reject(new Error('Missing parameters'));
+          }
 
+          const url = `/me/jobs/assigned/${uid}/${kind}/distance`;
+          console.log('Patch distance URL:', url, payload);
+          
+          return client.patch(url, payload)
+            .then(response => {
+              console.log('Distance update success:', response);
+              return response;
+            })
+            .catch(error => {
+              console.error('Distance update error:', error.response?.data || error);
+              throw error;
+            });
+        },
         getJobDeatails: (uid, kind) => {
-          const url = `/me/jobs/assinged/${uid}/${kind}`;
+          const url = `/me/jobs/assigned/${uid}/${kind}`;
           return client.get(url);
         },
+        getJobDetails: (uid, kind) => {
+          if (!uid || !kind) {
+            console.error('Missing parameters:', { uid, kind });
+            return Promise.reject(new Error('Missing required parameters'));
+          }
+
+          // Normalize job kind: remove _job and convert to lowercase
+          const normalizedKind = kind.toLowerCase().replace('_job', '');
+          const url = `/me/jobs/assigned/${uid}/${normalizedKind}`;
+          
+          console.log('Requesting job details:', { url, uid, normalizedKind });
+          
+          return client.get(url)
+            .then(response => {
+              console.log('Job details response:', response);
+              return response;
+            })
+            .catch(error => {
+              console.error('Job details error:', error.response?.data || error);
+              throw error;
+            });
+        },
         getFiles: (uid, kind) => {
-          const url = `/me/jobs/assinged/${uid}/${kind}/files`;
+          const url = `/me/jobs/assigned/${uid}/${kind}/files`;
           return client.get(url);
         },
       },
       jobList: {
         getJobList: (params) => {
-          const url = "/me/jobs";
+          const url = "/me/jobs/";
           return client.get(url, { params });
         },
       },

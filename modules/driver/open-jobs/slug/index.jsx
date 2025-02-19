@@ -67,7 +67,7 @@ export default function DriverOpenJobDetailsPage({ params }) {
     videos = files.filter((file) => file?.kind === "VIDEO");
     photos = files.filter((file) => file?.kind === "IMAGE");
   }
-  console.log(job);
+  console.log(job,"adnan jobsssssssssssssssssssssssssssss");
   const isCompleted = job?.status === "COMPLETED";
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
@@ -93,6 +93,13 @@ export default function DriverOpenJobDetailsPage({ params }) {
           <h2 className="text-lg font-bold md:text-2xl">
             Job Kind: {kind === "delivery" ? "Delivery Job" : "Removal Job"}
           </h2>
+          <h2 className="text-lg font-bold md:text-2xl">
+            {kind === "delivery" ? (
+              <>Delivery Category: {job?.category?.[0]?.title || "N/A"}</>
+            ) : (
+              <>Removal Category: {job?.category?.title || "N/A"}</>
+            )}
+          </h2>
 
           <h2 className="w-fit bg-primary p-2 text-lg font-bold md:text-2xl">
             Required Miles : {job?.distance.total_distance} Miles
@@ -101,31 +108,41 @@ export default function DriverOpenJobDetailsPage({ params }) {
             Job Execution Date: {format(job?.moving_date, "PPP")}
           </h2>
 
-          <div>
-            <div className=" my-5 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
-              <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
-                Moving From
+          {/* Only show addresses if quotation is accepted */}
+          {job?.quotation?.status === "ACCEPTED" ? (
+            <div>
+              <div className="my-5 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
+                  Moving From
+                </div>
+                <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
+                  {job?.distance?.moving_from || "N/A"}
+                </div>
               </div>
-              <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
-                {job?.distance.moving_from}
+              <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+                <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
+                  Moving To
+                </div>
+                <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
+                  {job?.distance?.moving_to || "N/A"}
+                </div>
               </div>
             </div>
-            <div className="flex flex-col gap-1  md:flex-row md:items-center md:justify-between">
-              <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
-                Moving To
-              </div>
-              <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
-                {job?.distance.moving_to}
-              </div>
+          ) : (
+            <div className="my-5 p-4 bg-yellow-50 border border-secondary/20 rounded-lg">
+              <p className="text-secondary font-medium flex items-center gap-2">
+                <InfoIcon className="h-5 w-5 fill-secondary" />
+                The exact pickup and delivery addresses will be visible after your quotation is accepted
+              </p>
             </div>
+          )}
 
-            <h2 className="mt-4 text-lg font-bold md:text-2xl">
-              Description of the job:
-            </h2>
-            <p className="text-sm md:text-lg">
-              {job?.description || "No description provided"}
-            </p>
-          </div>
+          <h2 className="mt-4 text-lg font-bold md:text-2xl">
+            Description of the job:
+          </h2>
+          <p className="text-sm md:text-lg">
+            {job?.description || "No description provided"}
+          </p>
         </div>
         <div className="mt-10 flex flex-wrap items-center justify-between gap-2 lg:gap-10">
           <div

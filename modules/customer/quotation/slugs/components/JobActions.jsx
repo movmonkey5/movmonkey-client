@@ -77,7 +77,7 @@ const JobActions = ({ job, onJobCompleted, userDetails }) => {
       </Button>
       {/* Work need  */}
       <Button size="lg" className=" w-full md:w-4/12" onClick={StartChatting}>
-        Chat With {userDetails.full_name}
+        Chat
       </Button>
       <Button
         size="lg"

@@ -26,9 +26,16 @@ const dynamicFields = {
 
 export default function DeliveryOverview({ job }) {
   const category = job.category[0].slug.replaceAll("_", "-").split("-")[0];
+  const categoryTitle = job.category[0].title;
 
   return (
     <div className="overflow-hidden">
+      <div className="mb-4">
+        <h1 className="text-xl font-bold text-primary">
+          Delivery Item Category: {categoryTitle}
+        </h1>
+      </div>
+      
       <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-8">
         <div className="w-full md:w-[50%] bg-primary/10 rounded-lg shadow-md">
           <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Basic Details</h1>
@@ -44,7 +51,9 @@ export default function DeliveryOverview({ job }) {
         </div>
 
         <div className="w-full md:w-[50%] bg-primary/10 rounded-lg shadow-md">
-          <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Vehicle Details</h1>
+          <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">
+            {categoryTitle} Details
+          </h1>
           <div className="p-4 rounded-b-lg">
             {dynamicFields[category]?.map((field) => (
               <OverviewItem

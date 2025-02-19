@@ -116,13 +116,11 @@ export default function DeliveryJobDetails({ job }) {
 
           {/* Additional Information */}
           <div className="mt-10 bg-primary-bg px-4 py-2 text-xs md:text-xl">
-            <p className="font-semibold">Additional Information</p>
-            <p>
-              The content provided above serves as a reference for the removal
-              of three bedrooms. Any duplication or unauthorized use of this
-              content without explicit permission for the purpose of
-              facilitating the removal of three bedrooms is strictly prohibited.
-            </p>
+          <p className="font-semibold">Additional Information</p>
+              <p>
+                The content provided above serves as a reference for delivery services. Any duplication or unauthorized use of this content without explicit permission for the purpose of facilitating delivery services is strictly prohibited.
+              </p>
+
           </div>
         </div>
       )}

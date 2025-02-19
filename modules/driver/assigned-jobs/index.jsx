@@ -22,7 +22,7 @@ const tabs = [
   { label: "Jobs Completed", value: "/driver/completed-jobs" },
 ];
 
-export default function DriverOpenJobsPage() {
+export default function DriverAssignedJobsPage() {
   const pathname = usePathname();
   const router = useRouter();
   const [params, setParams] = useState({ search: "", page: 1 });
@@ -33,15 +33,29 @@ export default function DriverOpenJobsPage() {
     refetch: refetchJobs,
   } = useQuery({
     queryKey: [`/me/jobs/assigned`, params],
-    queryFn: () =>
-      ApiKit.me.job.assigned
-        .getJobs(sanitizeParams(params))
-        .then(({ data }) => data),
+    queryFn: async () => {
+      try {
+        const response = await ApiKit.me.job.assigned.getJobs(sanitizeParams(params));
+        console.log('Assigned jobs response:', response.data);
+        
+        // Verify job_uid is present in each job
+        response.data.results.forEach(job => {
+          if (!job.job_uid) {
+            console.warn('Missing job_uid for job:', job);
+          }
+        });
+        
+        return response.data;
+      } catch (error) {
+        console.error('Failed to fetch assigned jobs:', error);
+        throw error;
+      }
+    },
     keepPreviousData: true,
   });
 
   useEffect(() => {
-    refetchJobs();
+    refetchJobs(); 
   }, [params.page]);
 
   if (isJobsLoading) {
@@ -99,7 +113,9 @@ export default function DriverOpenJobsPage() {
             />
           </>
         ) : (
-          <p>No available jobs...</p>
+          <div className="text-center p-8 bg-gray-50 rounded-lg">
+            <p className="text-gray-600">No assigned jobs available</p>
+          </div>
         )}
       </Container>
     </div>

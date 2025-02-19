@@ -68,7 +68,11 @@ export default function RemovalJobDetails({ job }) {
         <Container className="" extraClassName='px-0 py-0'>
           <div className="pt-4 pb-8 flex flex-col gap-2">
             <h3 className="text-xl md:text-2xl font-bold">Service Details</h3>
+        
             <div className="h-1 md:h-1.5 w-16 md:w-20 bg-primary rounded-2xl"></div>
+            <h4 className="text-lg md:text-xl text-primary font-semibold">
+                  Removal Item Category: {jobDetails.category?.title}
+                </h4>
           </div>
 
           <div className="flex flex-col gap-4 md:gap-8">
@@ -77,6 +81,12 @@ export default function RemovalJobDetails({ job }) {
             {/* Detail Fee Section */}
             <FeeDetails job={job} />
           </div>
+          <div className="w-full bg-primary/10 rounded-lg shadow-md mt-4 md:mt-2">
+          <h1 className="text-lg font-semibold rounded-t-lg bg-primary/60 p-4">Additional Information</h1>
+          <p className="p-4 rounded-b-lg">
+            The content provided above serves as a reference for removal services. Any duplication or unauthorized use of this content without explicit permission for the purpose of facilitating removal services is strictly prohibited.
+          </p>
+        </div>
 
           {/* Additional Information */}
         </Container>

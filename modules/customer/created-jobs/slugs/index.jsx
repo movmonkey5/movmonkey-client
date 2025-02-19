@@ -105,6 +105,7 @@ console.log(data,data)
             Job Kind: {category} job
              {/* {data?.kind?.split("_").join(" ")} */}
           </h2>
+          
           <h2 className="w-fit bg-primary p-2 text-lg font-bold md:text-2xl">
             Job Execution Date:{" "}
             {data?.moving_date
