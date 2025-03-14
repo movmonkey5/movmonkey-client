@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -14,13 +14,12 @@ import { Textarea } from "@/components/ui/textarea";
 import Container from "@/components/shared/Container";
 
 export default function UserJobDetailsPage({ params }) {
-const category = params.slugs[0].split("-").slice(0, 2).join("_");
+  const category = params.slugs[0].split("-").slice(0, 2).join("_");
   const uid = params.slugs[1];
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [moreInfo, setMoreInfo] = useState("");
-  console.log(params);
-  console.log(category);
+  
   const fetchDetails = (category) => {
     let fetchToApi;
     switch (category) {
@@ -34,13 +33,22 @@ const category = params.slugs[0].split("-").slice(0, 2).join("_");
         return null;
     }
   };
+  
   const handleMoreInfoChange = (e) => {
     setMoreInfo(e.target.value);
   };
+  
   const { data: jobData, isLoading } = useQuery({
     queryKey: [category, uid],
     queryFn: () => fetchDetails(category).then(({ data }) => data),
   });
+
+  // Set the initial value of moreInfo from jobData once it's loaded
+  useEffect(() => {
+    if (jobData && jobData.any_more_move) {
+      setMoreInfo(jobData.any_more_move);
+    }
+  }, [jobData]);
 
   const updateJobMutation = useMutation({
     mutationFn: (formData) => {

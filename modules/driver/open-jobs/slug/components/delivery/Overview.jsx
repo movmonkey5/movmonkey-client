@@ -170,7 +170,7 @@ export default function DeliveryOverview({ job, isCustomer = false }) {
       });
     },
   });
-
+console.log(job,"jobsssssssssssssssssssssssss")
   const category = job.category[0].slug.replaceAll("_", "-").split("-")[0];
 
   return (

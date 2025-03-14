@@ -83,7 +83,7 @@ export default function DriverProfilePage() {
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-6">
         <Container>
           <h3 className="px-4 text-3xl font-bold">
-            Total Earned: {currency}1370
+            Total Earned: {currency}
           </h3>
         </Container>
       </div>

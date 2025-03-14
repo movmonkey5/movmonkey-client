@@ -104,12 +104,12 @@ export default function UserJobDetailsPage({ params }) {
                 Accepted Quotation Details
               </h3>
               {renderQuotationDetails()}
-              <Link
+              {/* <Link
                 href={`/cleaner/assigned-jobs/${jobCategory}/${quotation.uid}`}
                 className="mt-6 block w-fit rounded-lg bg-primary px-4 py-3 font-semibold text-white"
               >
                 Go to Job Details
-              </Link>
+              </Link> */}
             </div>
           )}
         </div>

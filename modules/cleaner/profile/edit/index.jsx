@@ -34,6 +34,7 @@ export default function CleanerProfileEditPage() {
       email: "",
       role: "",
       password: "",
+      country: "", // Add this line
     },
     onSubmit: (values) => {
       setLoading(true);
@@ -95,6 +96,7 @@ export default function CleanerProfileEditPage() {
         username: data.username,
         email: data.email,
         role: data.role,
+        country: data.country || "", // This will now store the country name directly
       });
     }
   }, [data]);
@@ -194,6 +196,9 @@ export default function CleanerProfileEditPage() {
               />
             </div>
           </div>
+
+       
+
           <div className="flex items-center gap-5">
             <Button loading={loading} type="submit" variant="secondary">
               Save Changes

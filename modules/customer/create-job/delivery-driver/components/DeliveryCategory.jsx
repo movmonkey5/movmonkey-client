@@ -11,6 +11,9 @@ export default function DeliveryCategory({
   categories,
   setSubCategory,
 }) {
+  // Check if we're in edit mode by looking at the URL
+  const isEditMode = window.location.pathname.includes('/edit/');
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -21,7 +24,9 @@ export default function DeliveryCategory({
   return (
     <div>
       <div className="flex min-h-16 items-center bg-primary text-2xl font-semibold text-black md:h-20 md:text-2xl lg:mt-10">
-        <p className="mx-auto w-full max-w-7xl px-5 py-2 ">New Delivery</p>
+        <p className="mx-auto w-full max-w-7xl px-5 py-2 ">
+          {isEditMode ? "Edit Delivery" : "New Delivery"}
+        </p>
       </div>
 
       <Container>
@@ -34,6 +39,7 @@ export default function DeliveryCategory({
               category={category}
               setSubCategory={setSubCategory}
               setCurrentStep={setCurrentStep}
+              isEditMode={isEditMode}
             />
           ))}
         </div>

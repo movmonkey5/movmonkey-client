@@ -100,10 +100,10 @@ export default function FurnitureShipment({ formik, setCurrentStep }) {
                   name="measurement_unit"
                   placeholder="E.g. Inches"
                   options={MeasurementUnit}
-                  onChange={(selectValue) =>
-                    formik.setFieldValue("measurement_unit", selectValue.value)
-                  }
-                  value={formik.values.measurement_unit}
+                  onChange={(selectedOption) => {
+                    formik.setFieldValue("measurement_unit", selectedOption?.value || '');
+                  }}
+                  value={MeasurementUnit.find(option => option.value === formik.values.measurement_unit) || ''}
                 />
                 <FormikErrorBox formik={formik} field="measurement_unit" />
               </div>
@@ -123,15 +123,15 @@ export default function FurnitureShipment({ formik, setCurrentStep }) {
                 <FormikErrorBox formik={formik} field="weight" />
               </div>
               <div className="w-full space-y-1">
-                <Label htmlFor="weight_unit">Weight unit Unit</Label>
+                <Label htmlFor="weight_unit">Weight Unit</Label>
                 <SelectField
                   name="weight_unit"
                   placeholder="E.g. Kilograms"
                   options={WeightUnit}
-                  onChange={(selectValue) =>
-                    formik.setFieldValue("weight_unit", selectValue.value)
-                  }
-                  value={formik.values.weight_unit}
+                  onChange={(selectedOption) => {
+                    formik.setFieldValue("weight_unit", selectedOption?.value || '');
+                  }}
+                  value={WeightUnit.find(option => option.value === formik.values.weight_unit) || ''}
                 />
                 <FormikErrorBox formik={formik} field="weight_unit" />
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import ApiKit from "@/common/ApiKit";
 import Loading from "@/components/shared/Loading";
 import Container from "@/components/shared/Container";
@@ -60,88 +61,95 @@ export default function UserJobDetailsPage({ params }) {
     : job.quotation.kind.toLowerCase();
 
   return (
-    <div>
-      {/* <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
-        <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-2 px-6 md:h-20">
-          <h3>{quotation.title}</h3>
-          <p className="text-xl text-red-500">
-            Valid for{" "}
-            <span className="text-red-500">
-              {quotation.quotation_validity} days{" "}
-            </span>
-          </p>
-        </div>
-      </div> */}
-      <Container className="w-full">
-        {/* Handle Declined Status */}
-        {quotation.status === "DECLINED" ? (
-          <div>
-          <div className="my-6 border border-red-500 bg-red-100 p-4 text-red-700">
-            <h2 className="text-2xl font-semibold">Quotation Declined</h2>
-            <p>
-              {job?.message || "Your quotation has been declined for this job."}
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <Container className="py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Status Banner with adjusted text size */}
+          <div className={`rounded-2xl shadow-lg p-6 mb-8 transform hover:scale-[1.01] transition-transform ${
+            quotation.status === "DECLINED" ? 
+            "bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500" : 
+            "bg-gradient-to-r from-green-50 to-green-100 border-l-4 border-green-500"
+          }`}>
+            <h1 className={`text-2xl md:text-3xl font-bold mb-2 ${
+              quotation.status === "DECLINED" ? "text-red-700" : "text-green-700"
+            }`}>
+              {quotation.status === "DECLINED" ? "Quotation Declined" : "Job Assignment Status"}
+            </h1>
+            <p className="text-gray-700 text-base">
+              {quotation.status === "DECLINED" 
+                ? (job?.message || "Your quotation has been declined for this job.") 
+                : "Your job has been successfully assigned and is ready for review"}
             </p>
+          </div>
+
+          {/* Main Content Card */}
+          <div className="bg-white rounded-xl shadow-xl p-6 backdrop-blur-sm backdrop-filter">
+            {/* Quotation Header */}
+            <div className="border-b border-gray-200 pb-4 mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 hover:text-primary transition-colors">
+                {quotation.title}
+              </h2>
+              <div className="inline-block px-4 py-2 bg-blue-50 rounded-full shadow-sm hover:shadow-md transition-shadow">
+                <p className="text-blue-700 font-medium text-sm">
+                  {quotation.kind.replace('_', ' ')}
+                </p>
+              </div>
             </div>
 
-            <div className="mt-4">
-              <h3 className="text-lg font-bold">Quotation Details</h3>
-              <p>Title: {quotation.title}</p>
-              <p>Kind: {quotation.kind}</p>
-              <p>Extra Services: {quotation.extra_services || "None"}</p>
-              <p>Extra Services Charge: {quotation.extra_services_charge}</p>
-              <p>Subtotal: {quotation.subtotal}</p>
-              <p>Total VAT: {quotation.total_vat}</p>
-              <p>Total Amount: {quotation.total_amount}</p>
-              <p>
-                Created At: {new Date(quotation.created_at).toLocaleString()}
-              </p>
-          </div>
-          <Link href="/driver/assigned-jobs">
-            <Button className="mt-4">Back to Assigned Jobs</Button>
-           </ Link>
-          </div>
-        ) : (
-          <div>
-            <div className="my-8  flex flex-col justify-between bg-[#366935] p-4  md:px-10">
-              <h1 className="text-3xl font-semibold text-white">
-                Job is already assigned
-              </h1>
-            </div>
-
-            {/* Handle other statuses like ACCEPTED */}
-            <div className="flex w-full items-center justify-between py-6">
-              {quotation.status === "ACCEPTED" && (
-                <>
-                  <div className="flex flex-col font-semibold test-2xl">
-                    <h3 className="text-2xl font-bold my-4">Quotation Details</h3>
-                    <p>Title: {quotation.title}</p>
-                    <p>Kind: {quotation.kind}</p>
-                    <p>Extra Services: {quotation.extra_services || "None"}</p>
-                    <p>
-                      Extra Services Charge: {quotation.extra_services_charge}
-                    </p>
-                    <p>Subtotal: {quotation.subtotal}</p>
-                    <p>Total VAT: {quotation.total_vat}</p>
-                    <p>Total Amount: {quotation.total_amount}</p>
+            {/* Quotation Details Grid */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4 p-4 rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-sm">
+                <h3 className="text-lg font-bold text-gray-800 border-b pb-2">Financial Summary</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                    <span className="text-gray-600 text-sm">Subtotal:</span>
+                    <span className="font-medium">£{quotation.subtotal}</span>
                   </div>
-                </>
-              )}
+                  <div className="flex justify-between items-center hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                    <span className="text-gray-600 text-sm">VAT:</span>
+                    <span className="font-medium">£{quotation.total_vat}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-green-50 p-3 rounded-lg">
+                    <span className="text-gray-800 font-semibold text-sm">Total Amount:</span>
+                    <span className="text-green-600 font-bold text-lg">£{quotation.total_amount}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4 p-4 rounded-lg bg-gradient-to-br from-gray-50 to-white shadow-sm">
+                <h3 className="text-lg font-bold text-gray-800 border-b pb-2">Additional Services</h3>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-gray-700 font-medium text-sm mb-2">Extra Services:</p>
+                  <p className="text-gray-600 text-sm">{quotation.extra_services || "No additional services requested"}</p>
+                  {quotation.extra_services_charge > 0 && (
+                    <p className="text-gray-700 mt-3 text-sm">
+                      Additional Charge: <span className="text-blue-600 font-semibold">£{quotation.extra_services_charge}</span>
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/* Quotation Details */}
+            {/* Creation Date */}
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              <p className="text-gray-500 text-xs italic">
+                Created: {format(new Date(quotation.created_at), "PPP 'at' p")}
+              </p>
+            </div>
 
-            {/* Add link based on job status */}
-            <div className="mt-8">
-              <Link
-                href={`/${quotation?.status === "ACCEPTED" ? "driver/assigned-jobs" : "driver/completed-jobs"}/${jobCategory}/${quotation?.uid}`}
-                key={job?.uid}
-                className="mb-3 block w-fit cursor-pointer rounded-lg bg-primary px-4 font-semibold max-lg:py-4 lg:rounded-full lg:px-6 lg:py-5"
-              >
-                Go to job Details {job?.title}
+            {/* Action Button */}
+            <div className="mt-6 flex justify-center">
+              <Link href="/driver/assigned-jobs">
+                <Button 
+                  variant="outline" 
+                  className="px-6 py-3 text-base font-medium rounded-lg hover:shadow-md transition-all duration-300 bg-primary text-white hover:bg-primary/90"
+                >
+                  ← Return to Assigned Jobs
+                </Button>
               </Link>
             </div>
           </div>
-        )}
+        </div>
       </Container>
     </div>
   );

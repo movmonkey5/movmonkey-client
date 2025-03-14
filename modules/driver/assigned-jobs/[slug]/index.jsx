@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { CircleChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import dynamic from 'next/dynamic';
 
 import ApiKit from "@/common/ApiKit";
 
@@ -19,21 +21,30 @@ import CleanerJobPhotos from "./components/CleanerJobPhotos";
 import CleanerJobVideos from "./components/CleanerJobVideos";
 import RemovalOverview from "./components/RemovalOverView";
 import MapWrapper from "./components/Location";
-import { useRouter } from "next/router";
+import Loader from "lucide-react";
+
+const MapComponent = dynamic(() => import('./components/Location'), {
+  ssr: false,
+  loading: () => (
+    <div className="min-h-[400px] bg-gray-50 rounded-xl flex items-center justify-center">
+      <div className="text-center">
+        <Loader className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-gray-600 mt-2">Loading map...</p>
+      </div>
+    </div>
+  )
+});
 
 export default function CleanerAssignedJobDetailsPage({ params }) {
+  const router = useRouter();
   const [view, setView] = useState("overview");
   
-  // Log params to check if they're being passed correctly
-  console.log("Component Params:", params);
-  console.log("Extracted slugs:", params?.slugs);
+
   
   const uid = params?.slugs?.[1];
   const kind = params?.slugs?.[0]?.toUpperCase();
   
-  // Log uid and kind
-  console.log("Job UID:", uid);
-  console.log("Job Kind:", kind);
+
 
   const { data: job, isLoading: jobLoading } = useQuery({
     queryKey: ["jobDetails", uid, kind],
@@ -41,10 +52,10 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
       try {
         console.log("Making API call with UID:", uid, "Kind:", kind);
         const response = await ApiKit.me.job.assigned.getJobDetails(uid, kind);
-        console.log("API Response:", response);
+       
         return response.data;
       } catch (error) {
-        console.error("API Error:", error);
+        
         throw error;
       }
     },
@@ -54,12 +65,12 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
   // Remove the separate userDetails query since it's now included in job data
 
   // Log job data
-  console.log("Job Data:", job);
+  
 
   const quotationId = job?.quotation?.uid;
   console.log("Quotation ID:", quotationId);
 
-  const { data: files } = useQuery({
+  const { data: files, error: filesError } = useQuery({
     queryKey: ["delivery-job-files", uid, kind],
     queryFn: async () => {
       try {
@@ -69,14 +80,15 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
         return response.data.results;
       } catch (error) {
         console.error("Files Error:", error);
-        throw error;
+        // Return empty array instead of throwing
+        return [];
       }
     },
     enabled: Boolean(uid && kind),
   });
 
   // Log files data
-  console.log("Files Data:", files);
+  console.log("Job Datassssssssssssssssssssssssssssssssssssssssssssssssss:",job );
 
   let videos = [];
   let photos = [];
@@ -110,6 +122,21 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
     );
   }
 
+  const handleGoBack = () => {
+    try {
+      if (window.history.length > 2) {
+        router.back();
+      } else {
+        // Fallback to a specific route if there's no history
+        router.push('/driver/assigned-jobs');
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+      // Fallback using window.history
+      window.history.back();
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       {/* Job Status Section */}
@@ -120,8 +147,22 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
       </div>
 
       <Container>
-        <MapWrapper jobUid={uid} kind={kind} />
-
+        {job?.distance && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Route Information</h2>
+            <Suspense fallback={
+              <div className="min-h-[400px] bg-gray-50 rounded-xl flex items-center justify-center">
+                <div className="text-center">
+                  <Loader className="h-8 w-8 animate-spin text-primary" />
+                  <p className="text-gray-600 mt-2">Loading map component...</p>
+                </div>
+              </div>
+            }>
+              <MapWrapper jobUid={uid} kind={kind} job={job} />
+            </Suspense>
+          </div>
+        )}
+        
         {/* User Information Section */}
         <div className="mb-8 rounded-lg bg-gray-100 p-4">
           <h2 className="text-2xl font-semibold">Job from User</h2>
@@ -239,9 +280,14 @@ export default function CleanerAssignedJobDetailsPage({ params }) {
 
         {/* Back Button */}
         <div className="mt-10">
-          <Link href="/cleaner/assigned-jobs">
-            <Button size="lg">Back</Button>
-          </Link>
+          <Button 
+            size="lg" 
+            onClick={handleGoBack}
+            className="hover:bg-primary/90 transition-colors flex items-center gap-2"
+          >
+            <CircleChevronLeft className="w-5 h-5" />
+            Back
+          </Button>
         </div>
       </Container>
     </div>

@@ -338,8 +338,26 @@ const ApiKit = {
             });
         },
         getFiles: (uid, kind) => {
-          const url = `/me/jobs/assigned/${uid}/${kind}/files`;
-          return client.get(url);
+          if (!uid || !kind) {
+            console.error('Missing parameters:', { uid, kind });
+            return Promise.reject(new Error('Missing required parameters'));
+          }
+
+          // Normalize job kind: remove _job and convert to lowercase
+          const normalizedKind = kind.toLowerCase().replace('_job', '');
+          const url = `/me/jobs/assigned/${uid}/${normalizedKind}/files`;
+          
+          console.log('Requesting files:', { url, uid, normalizedKind });
+          
+          return client.get(url)
+            .then(response => {
+              console.log('Files response:', response);
+              return response;
+            })
+            .catch(error => {
+              console.error('Files error:', error.response?.data || error);
+              throw error;
+            });
         },
       },
       jobList: {
