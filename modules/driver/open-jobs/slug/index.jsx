@@ -67,7 +67,7 @@ export default function DriverOpenJobDetailsPage({ params }) {
     videos = files.filter((file) => file?.kind === "VIDEO");
     photos = files.filter((file) => file?.kind === "IMAGE");
   }
-  console.log(job,"adnan jobsssssssssssssssssssssssssssss");
+  console.log(job,"adnan job");
   const isCompleted = job?.status === "COMPLETED";
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
@@ -80,9 +80,10 @@ export default function DriverOpenJobDetailsPage({ params }) {
           </Link>
           <h3>{job?.title}</h3>
           {isCompleted && (
-            <span className="rounded-fullpx-2 ml-auto py-1 text-white">
-              This Job has Completed
-            </span>
+            <div className="ml-auto flex items-center gap-1.5 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 px-4 py-1.5 text-black shadow-md animate-fadeIn">
+              <span className="h-2.5 w-2.5 rounded-full bg-white animate-pulse"></span>
+              <span className="text-sm font-medium">Job Successfully Completed</span>
+            </div>
           )}
         </div>
       </div>
@@ -108,8 +109,8 @@ export default function DriverOpenJobDetailsPage({ params }) {
             Job Execution Date: {format(job?.moving_date, "PPP")}
           </h2>
 
-          {/* Only show addresses if quotation is accepted */}
-          {job?.quotation?.status === "ACCEPTED" ? (
+          {/* Show addresses if quotation is accepted OR job is completed */}
+          {(job?.quotation?.status === "ACCEPTED" || isCompleted) ? (
             <div>
               <div className="my-5 flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
                 <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
@@ -166,6 +167,7 @@ export default function DriverOpenJobDetailsPage({ params }) {
             />
             Information
           </div>
+          
           {!isCompleted && (
             <>
               <div
@@ -235,7 +237,20 @@ export default function DriverOpenJobDetailsPage({ params }) {
             <Photos photos={photos} />
           )}
         </div>
+        {isCompleted && (
+            <div className="mt-6 flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-yellow-400 to-yellow-500 p-4 text-black shadow-lg animate-fadeIn">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <div>
+                <h3 className="text-lg font-bold">Job Successfully Completed!</h3>
+                <p className="text-sm">Well done! All tasks for this job have been completed successfully.</p>
+              </div>
+            </div>
+          )}
       </Container>
+      
     </div>
   );
 }

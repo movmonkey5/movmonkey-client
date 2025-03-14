@@ -4,7 +4,7 @@ import Link from "next/link";
 import ApiKit from "@/common/ApiKit";
 
 const QuotationButton = ({ job }) => {
-  console.log("job", job);
+  console.log(job, "jobsxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleReject = async () => {

@@ -36,7 +36,7 @@ export default function JobCard({ job }) {
   
   // Keep the original link structure
   const jobId = job?.job_uid || job?.uid;
-  const jobUrl = `/driver/completed-jobs/${jobPath}/${jobId}`;
+  const jobUrl = `/driver/open-jobs/${job?.slug}?kind=${job?.kind?.split("_")[0].toLowerCase()}`;
 
   const jobTypeStyle = jobTypeThemes[jobType] || { 
     gradient: "bg-gradient-to-br from-gray-200 to-gray-300",

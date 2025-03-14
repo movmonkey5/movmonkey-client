@@ -3,6 +3,7 @@ import Map, { Marker, Source, Layer } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import ApiKit from "@/common/ApiKit";
 import { CarFront } from 'lucide-react';
+
 const MapWrapper = ({ jobUid, category }) => {
   const [coords, setCoords] = useState(null);
   const [viewport, setViewport] = useState({
@@ -23,11 +24,26 @@ const MapWrapper = ({ jobUid, category }) => {
     try {
       const response = await ApiKit.me.job.distance.getDistance(jobUid, category);
       setCoords(response.data);
-      setDriverLocation(
-        response.data.current_location 
-          ? response.data.current_location.split(",").map(Number) 
-          : null
-      );
+      
+      // Fix: Parse driver location correctly - ensure lat and lng are within valid ranges
+      if (response.data.current_location) {
+        try {
+          // Split coordinates and properly map them
+          const [lng, lat] = response.data.current_location.split(",").map(Number);
+          
+          // Validate coordinate ranges
+          if (isValidLatitude(lat) && isValidLongitude(lng)) {
+            setDriverLocation([lng, lat]);
+          } else {
+            console.error("Invalid driver location coordinates:", lng, lat);
+            setDriverLocation(null);
+          }
+        } catch (err) {
+          console.error("Error parsing driver location:", err);
+          setDriverLocation(null);
+        }
+      }
+      
       setError(null);
     } catch (err) {
       console.error("Error fetching distance data:", err);
@@ -36,6 +52,15 @@ const MapWrapper = ({ jobUid, category }) => {
       setIsLoading(false);
     }
   }, [jobUid, category]);
+
+  // Helper functions to validate coordinates
+  const isValidLatitude = (lat) => {
+    return typeof lat === 'number' && !isNaN(lat) && lat >= -90 && lat <= 90;
+  };
+  
+  const isValidLongitude = (lng) => {
+    return typeof lng === 'number' && !isNaN(lng) && lng >= -180 && lng <= 180;
+  };
 
   // Fetch route function
   const fetchRoute = useCallback(async (origin, destination) => {
@@ -90,9 +115,19 @@ const MapWrapper = ({ jobUid, category }) => {
   // Fetch route when coordinates are available
   useEffect(() => {
     if (coords?.origin_coords && coords?.destination_coords) {
-      const origin = coords.origin_coords.split(",").map(Number);
-      const destination = coords.destination_coords.split(",").map(Number);
-      fetchRoute(origin, destination);
+      try {
+        const origin = coords.origin_coords.split(",").map(Number);
+        const destination = coords.destination_coords.split(",").map(Number);
+        
+        if (isValidLongitude(origin[0]) && isValidLatitude(origin[1]) && 
+            isValidLongitude(destination[0]) && isValidLatitude(destination[1])) {
+          fetchRoute(origin, destination);
+        } else {
+          console.error("Invalid origin or destination coordinates");
+        }
+      } catch (err) {
+        console.error("Error parsing coordinates for route:", err);
+      }
     }
   }, [coords, fetchRoute]);
 
@@ -127,23 +162,36 @@ const MapWrapper = ({ jobUid, category }) => {
     );
   }
 
-  // Ensure we have valid coordinates before rendering
-  const origin = coords?.origin_coords 
-    ? coords.origin_coords.split(",").map(Number) 
-    : null;
-  const destination = coords?.destination_coords 
-    ? coords.destination_coords.split(",").map(Number) 
-    : null;
+  // Parse origin and destination with validation
+  let origin = null;
+  let destination = null;
+  
+  try {
+    if (coords?.origin_coords) {
+      const [lng, lat] = coords.origin_coords.split(",").map(Number);
+      if (isValidLongitude(lng) && isValidLatitude(lat)) {
+        origin = [lng, lat];
+      }
+    }
+    
+    if (coords?.destination_coords) {
+      const [lng, lat] = coords.destination_coords.split(",").map(Number);
+      if (isValidLongitude(lng) && isValidLatitude(lat)) {
+        destination = [lng, lat];
+      }
+    }
+  } catch (err) {
+    console.error("Error parsing coordinates:", err);
+  }
 
   if (!origin || !destination) {
     return (
       <div className="h-[450px] w-[80%] flex items-center justify-center text-yellow-500">
-        Insufficient location data
+        Insufficient or invalid location data
       </div>
     );
   }
-console.log(coords)
-console.log(driverLocation)
+
   return (
     <div className="relative h-[450px] w-[80%] overflow-hidden rounded-lg">
       <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-md shadow-md">
@@ -157,20 +205,24 @@ console.log(driverLocation)
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       >
         {/* Origin Marker */}
-        <Marker latitude={origin[1]} longitude={origin[0]} color="blue" />
+        {origin && (
+          <Marker latitude={origin[1]} longitude={origin[0]} color="blue" />
+        )}
         
         {/* Destination Marker */}
-        <Marker latitude={destination[1]} longitude={destination[0]} color="red" />
+        {destination && (
+          <Marker latitude={destination[1]} longitude={destination[0]} color="red" />
+        )}
 
-        Driver Location Marker
-        {driverLocation && (
+        {/* Driver Location Marker */}
+        {driverLocation && isValidLatitude(driverLocation[1]) && isValidLongitude(driverLocation[0]) && (
           <Marker
-            latitude={driverLocation[0]}
-            longitude={driverLocation[1]}
-            color="green"
+            latitude={driverLocation[1]} 
+            longitude={driverLocation[0]}
           >
-            <div className="h-4 w-4 font-bold " >
-            <CarFront />  Driver            </div>
+            <div className="bg-green-500 p-1 rounded-full text-white">
+              <CarFront size={20} />
+            </div>
           </Marker>
         )}
 

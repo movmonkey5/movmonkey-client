@@ -49,7 +49,7 @@ export default function DriverCompletedJobsPage() {
     isLoading: reviewLoading,
     refetch: refetchReview,
   } = useQuery({
-    queryKey: ["me/jobs/tatings"],
+    queryKey: ["me/jobs/ratings"],
     queryFn: () => ApiKit.me.getRatings().then(({ data }) => data),
     keepPreviousData: true,
     staleTime: 60000, // Cache for a minute
