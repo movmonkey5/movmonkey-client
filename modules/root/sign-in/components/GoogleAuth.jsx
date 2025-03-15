@@ -28,13 +28,14 @@ export default function GoogleAuth({ origin }) {
   );
 
   return (
-    <Link href={googleURL}>
-      <Button className="w-full bg-[#F5F5F5] text-[#6F6F6F] hover:bg-[#F5F5F5]/90">
-        <div>
-          <GoogleColorful className="mr-2 flex h-5 w-5 items-center" />
-        </div>
-        Sign in With Google
-      </Button>
-    </Link>
+    // <Link href={googleURL}>
+    //   <Button className="w-full bg-[#F5F5F5] text-[#6F6F6F] hover:bg-[#F5F5F5]/90">
+    //     <div>
+    //       <GoogleColorful className="mr-2 flex h-5 w-5 items-center" />
+    //     </div>
+    //     Sign in With Google
+    //   </Button>
+    // </Link>
+    <></>
   );
 }

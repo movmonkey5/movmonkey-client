@@ -29,6 +29,33 @@ const labels = [
 
 export default function FreightShipment({ formik, setCurrentStep }) {
   useScrollToTop();
+  
+  // Function to find the matching option object for a value
+  const getOptionObject = (options, currentValue) => {
+    if (!currentValue) return null;
+    
+    // If it's already an object with value and label, return it
+    if (typeof currentValue === 'object' && currentValue.value) {
+      return currentValue;
+    }
+    
+    // Find the option with matching value
+    const option = options.find(opt => {
+      const optionValue = typeof opt.value === 'string' ? 
+        opt.value.replace(/^["']|["']$/g, '') : opt.value;
+      const valueToMatch = typeof currentValue === 'string' ? 
+        currentValue.replace(/^["']|["']$/g, '') : currentValue;
+        
+      return optionValue === valueToMatch;
+    });
+    
+    return option || null;
+  };
+  
+  // Get the properly formatted option objects for current values
+  const measurementOption = getOptionObject(MeasurementUnit, formik.values.measurement_unit);
+  const weightOption = getOptionObject(WeightUnit, formik.values.weight_unit);
+
   return (
     <div>
       <div className="flex min-h-16 items-center bg-primary text-2xl font-semibold text-black md:h-20 md:text-2xl lg:mt-10">
@@ -131,10 +158,29 @@ export default function FreightShipment({ formik, setCurrentStep }) {
                   name="measurement_unit"
                   placeholder="E.g. Inches"
                   options={MeasurementUnit}
-                  onChange={(selectValue) =>
-                    formik.setFieldValue("measurement_unit", selectValue)
-                  }
-                  value={formik.values.measurement_unit}
+                  onChange={(selectValue) => {
+                    let value = "";
+                    console.log("Original selectValue:", selectValue);
+                    
+                    if (selectValue) {
+                      // If object with value property
+                      if (typeof selectValue === 'object' && selectValue.value) {
+                        value = selectValue.value;
+                      } else if (typeof selectValue === 'string') {
+                        value = selectValue;
+                      }
+                      
+                      // Clean the value
+                      if (typeof value === 'string') {
+                        value = value.replace(/^["']|["']$/g, '');
+                      }
+                    }
+                    
+                    console.log("Setting measurement unit to:", value);
+                    formik.setFieldValue("measurement_unit", value);
+                  }}
+                  value={measurementOption}
+                  defaultValue={measurementOption}
                 />
                 <FormikErrorBox formik={formik} field="measurement_unit" />
               </div>
@@ -159,10 +205,29 @@ export default function FreightShipment({ formik, setCurrentStep }) {
                   name="weight_unit"
                   placeholder="E.g. Kilograms"
                   options={WeightUnit}
-                  onChange={(selectValue) =>
-                    formik.setFieldValue("weight_unit", selectValue)
-                  }
-                  value={formik.values.weight_unit}
+                  onChange={(selectValue) => {
+                    let value = "";
+                    console.log("Original selectValue:", selectValue);
+                    
+                    if (selectValue) {
+                      // If object with value property
+                      if (typeof selectValue === 'object' && selectValue.value) {
+                        value = selectValue.value;
+                      } else if (typeof selectValue === 'string') {
+                        value = selectValue;
+                      }
+                      
+                      // Clean the value
+                      if (typeof value === 'string') {
+                        value = value.replace(/^["']|["']$/g, '');
+                      }
+                    }
+                    
+                    console.log("Setting weight unit to:", value);
+                    formik.setFieldValue("weight_unit", value);
+                  }}
+                  value={weightOption}
+                  defaultValue={weightOption}
                 />
                 <FormikErrorBox formik={formik} field="weight_unit" />
               </div>
@@ -235,7 +300,7 @@ export default function FreightShipment({ formik, setCurrentStep }) {
             onClick={() => setCurrentStep(4)}
             type="button"
             variant="accent"
-            className="w-full sm:w-fit  sm:px-20"
+            className="w-full sm:w-fit sm:px-20"
           >
             Back
           </Button>
@@ -246,7 +311,7 @@ export default function FreightShipment({ formik, setCurrentStep }) {
               });
             }}
             type="button"
-            className="w-full sm:w-fit  sm:px-20"
+            className="w-full sm:w-fit sm:px-20"
           >
             Next
           </Button>

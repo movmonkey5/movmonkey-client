@@ -181,7 +181,7 @@ export default function SignInPage() {
                 </div>
               </form>
 
-              <div className="relative py-3 lg:py-6">
+              {/* <div className="relative py-3 lg:py-6">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
                 </div>
@@ -190,9 +190,9 @@ export default function SignInPage() {
                     Or continue with
                   </span>
                 </div>
-              </div>
+              </div> */}
 
-              <GoogleAuth origin={location?.origin} />
+              {/* <GoogleAuth origin={location?.origin} /> */}
             </div>
           </div>
         </div>
