@@ -1,14 +1,14 @@
 import { format } from "date-fns";
 import Link from "next/link";
-import { Calendar, Clock, CheckCircle } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 
-// Define job type themes matching the other components
+// Define beautiful job type themes with cleaning-specific styles
 const jobTypeThemes = {
   CLEANING_JOB: { 
     gradient: "bg-gradient-to-br from-[#EDD1E0] to-[#D6A5C9]",
     icon: "🧹", 
     accentColor: "border-[#EDD1E0]",
-    lightBg: "bg-[#F1EFF0]",
+    lightBg: "bg-[#F1EFF0]",  // Updated to match the provided color
     iconBg: "bg-gradient-to-br from-[#F1E0EB] to-[#E5C1D9]"
   },
   DEEP_CLEANING_JOB: { 
@@ -29,20 +29,11 @@ const jobTypeThemes = {
 };
 
 export default function JobCard({ job }) {
-  const completedDate = job?.completed_at || job?.updated_at || new Date();
+  const postedDate = job?.created_at || new Date();
   const executionDate = job?.moving_date || new Date();
   
-  // Extract job type from job_type field or kind field
-  let jobKind = "cleaning"; // Default for cleaner
-  
-  if (job?.job_type) {
-    jobKind = job.job_type.split('_')[0].toLowerCase();
-  } else if (job?.kind) {
-    jobKind = job.kind.toLowerCase().includes("cleaning") ? "cleaning" : "cleaning";
-  }
-  
-  // Generate URL in the same format as driver's jobs
-  const jobUrl = `/cleaner/open-jobs/${job?.slug}?kind=${jobKind}`;
+  // URL structure for cleaning jobs
+  const jobUrl = `/cleaner/open-jobs/${job?.slug}?kind=cleaning`;
   
   // Get appropriate theme based on job type, with fallback
   const jobTypeStyle = jobTypeThemes[job?.kind] || jobTypeThemes.DEFAULT;
@@ -57,28 +48,22 @@ export default function JobCard({ job }) {
         {/* Decorative gradient element */}
         <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full ${jobTypeStyle.gradient} opacity-20 transition-all group-hover:opacity-30`}></div>
         
-        {/* Add completed badge */}
-        <div className="absolute top-2 right-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-green-200 flex items-center gap-1">
-          <CheckCircle className="h-3 w-3" />
-          <span>Completed</span>
-        </div>
-        
         <div className="flex items-start">
           <div className="flex gap-4 items-center">
-            {/* Job Type Icon with gradient background */}
+            {/* Job Type Icon with gradient background - using emoji instead of SVG */}
             <div className={`flex items-center justify-center w-12 h-12 rounded-full ${jobTypeStyle.iconBg} text-2xl shadow-sm`}>
               {jobTypeStyle.icon}
             </div>
             
             {/* Job Title and Type */}
             <div>
-              <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{job?.title || job?.job_title || "Untitled Job"}</h3>
+              <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{job?.title || "Untitled Job"}</h3>
               <p className="text-sm text-gray-600">{cleaningType}</p>
             </div>
           </div>
         </div>
         
-        {/* Job Details - Cleaning Date and Completion Date */}
+        {/* Job Details - Cleaning Date and Post Date */}
         <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
           {/* Cleaning Date */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -88,12 +73,12 @@ export default function JobCard({ job }) {
             <span>Cleaning Date: {format(executionDate, "dd MMM yyyy")}</span>
           </div>
           
-          {/* Completed Date */}
+          {/* Post Date */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <div className={`p-1.5 rounded-full ${jobTypeStyle.lightBg} ${jobTypeStyle.accentColor} border`}>
               <Clock className="h-3.5 w-3.5" />
             </div>
-            <span>Completed: {format(completedDate, "dd MMM yyyy")}</span>
+            <span>Posted: {format(postedDate, "dd MMM yyyy")}</span>
           </div>
         </div>
 
@@ -103,12 +88,6 @@ export default function JobCard({ job }) {
             <span className="font-medium">{job.room_count}</span> Rooms
           </div>
         )}
-        
-        {/* Completion indicator */}
-        <div className="mt-3 flex items-center gap-2 text-green-600 text-sm font-medium">
-          <CheckCircle className="h-4 w-4" />
-          <span>Job successfully completed</span>
-        </div>
       </div>
     </Link>
   );

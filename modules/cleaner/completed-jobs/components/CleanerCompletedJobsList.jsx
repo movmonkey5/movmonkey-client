@@ -1,6 +1,6 @@
 import JobCard from "./JobCard";
 
-export default function CleanerOpenJobsList({ jobs = [] }) {
+export default function CleanerCompletedJobsList({ jobs = [] }) {
   if (!jobs || jobs.length === 0) {
     return null;
   }

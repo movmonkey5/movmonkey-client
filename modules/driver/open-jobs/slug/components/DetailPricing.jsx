@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 const calcTotalCharge = (...charges) => {
   return charges.reduce((accu, curr) => +accu + +curr, 0);
@@ -9,10 +10,25 @@ const calcTotalCharge = (...charges) => {
 
 export default function DetailPricing({ formik, job }) {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleConfirmSubmit = () => {
-    setShowOverlay(false);
-    formik.handleSubmit();
+  const handleConfirmSubmit = async () => {
+    try {
+      setIsSubmitting(true);
+      await formik.submitForm();
+      
+      // Show success toast and reload the page
+      toast.success("Quote submitted successfully!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (error) {
+      toast.error("Failed to submit quote. Please try again.");
+      console.error("Quote submission error:", error);
+    } finally {
+      setShowOverlay(false);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,11 +105,11 @@ export default function DetailPricing({ formik, job }) {
       <div className="mt-10">
         <Button
           className="w-full rounded-sm text-xl font-semibold text-white shadow disabled:cursor-not-allowed"
-          disabled={job?.is_applied}
+          disabled={job?.is_applied || isSubmitting}
           size="lg"
           onClick={() => setShowOverlay(true)}
         >
-          {job?.is_applied ? "Already submitted" : "Submit Your Quote Now"}
+          {job?.is_applied ? "Already submitted" : isSubmitting ? "Submitting..." : "Submit Your Quote Now"}
         </Button>
       </div>
 
@@ -106,14 +122,26 @@ export default function DetailPricing({ formik, job }) {
               <Button
                 className="px-4 py-2 text-white bg-red-500 rounded"
                 onClick={() => setShowOverlay(false)}
+                disabled={isSubmitting}
               >
                 Cancel
               </Button>
               <Button
                 className="px-4 py-2 text-white bg-green-500 rounded"
                 onClick={handleConfirmSubmit}
+                disabled={isSubmitting}
               >
-                Yes, Submit
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  "Yes, Submit"
+                )}
               </Button>
             </div>
           </div>

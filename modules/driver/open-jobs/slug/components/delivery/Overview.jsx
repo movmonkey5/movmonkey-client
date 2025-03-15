@@ -145,7 +145,7 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function DeliveryOverview({ job, isCustomer = false }) {
-  const isCompleted = job.status === "COMPLETED";
+  const isCompleted = job?.status === "COMPLETED";
   const formik = useFormik({
     initialValues: {
       quotation_validity: 0,
@@ -171,7 +171,14 @@ export default function DeliveryOverview({ job, isCustomer = false }) {
     },
   });
 console.log(job,"jobsssssssssssssssssssssssss")
-  const category = job.category[0].slug.replaceAll("_", "-").split("-")[0];
+  
+  // Add safe category access with fallback
+  const category = job?.category && job.category[0]?.slug 
+    ? job.category[0].slug.replaceAll("_", "-").split("-")[0] 
+    : "freight"; // Default to freight if category is undefined
+
+  // Only render fields if the category exists in dynamicFields
+  const fieldsToRender = dynamicFields[category] || [];
 
   return (
     <div>
@@ -188,16 +195,16 @@ console.log(job,"jobsssssssssssssssssssssssss")
           <OverviewItem
             key={field.title}
             title={field.title}
-            value={job[field.accessKey]}
+            value={job?.[field.accessKey]}
           />
         ))}
 
-        {dynamicFields[category].map((field) => (
+        {fieldsToRender.map((field) => (
           <OverviewItem
             key={field.title}
             title={field.title}
-            value={job.delivery_items[0][field.accessKey]}
-            extraValue={job.delivery_items[0][field.extraAccessKey]}
+            value={job?.delivery_items?.[0]?.[field.accessKey]}
+            extraValue={job?.delivery_items?.[0]?.[field.extraAccessKey]}
           />
         ))}
       </div>

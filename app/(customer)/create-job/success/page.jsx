@@ -1,7 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function DeliveryDriverJobPostSuccess() {
+  const router = useRouter();
+  
+  const handleCloseClick = () => {
+    // Navigate to the create-job route and force a full page reload
+    window.location.href = '/create-job';
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-5">
       <h1 className="mb-8 text-3xl">WHAT HAPPENS NEXT ?</h1>
@@ -26,11 +35,12 @@ export default function DeliveryDriverJobPostSuccess() {
         </div>
         <div className="flex justify-center">
           <div className="mt-5 ">
-            <Link href="/create-job">
-              <Button className="bg-green-500 px-14 font-medium text-white hover:bg-black hover:text-white">
-                Close
-              </Button>
-            </Link>
+            <Button 
+              onClick={handleCloseClick}
+              className="bg-green-500 px-14 font-medium text-white hover:bg-black hover:text-white"
+            >
+              Close
+            </Button>
           </div>
         </div>
       </div>

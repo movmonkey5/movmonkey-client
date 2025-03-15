@@ -91,7 +91,7 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function Overview({ job, isCustomer = false }) {
-  const isCompleted = job.status === "COMPLETED";
+  const isCompleted = job?.status === "COMPLETED";
 
   const formik = useFormik({
     initialValues: {
@@ -134,7 +134,7 @@ export default function Overview({ job, isCustomer = false }) {
             &#9733; What type of property are you moving
           </div>
           <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
-            {job.category.title}
+            {job?.category?.title || "N/A"}
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function Overview({ job, isCustomer = false }) {
           <OverviewItem
             key={field.title}
             title={field.title}
-            value={job[field.accessKey]}
+            value={job?.[field.accessKey]}
           />
         ))}
       </div>

@@ -1,8 +1,8 @@
 import { format } from "date-fns";
 import Link from "next/link";
-import { Calendar, Clock, CheckCircle } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 
-// Define job type themes matching the other components
+// Define job type themes with the specific colors provided
 const jobTypeThemes = {
   CLEANING_JOB: { 
     gradient: "bg-gradient-to-br from-[#EDD1E0] to-[#D6A5C9]",
@@ -29,20 +29,23 @@ const jobTypeThemes = {
 };
 
 export default function JobCard({ job }) {
-  const completedDate = job?.completed_at || job?.updated_at || new Date();
+  const postedDate = job?.created_at || new Date();
   const executionDate = job?.moving_date || new Date();
   
   // Extract job type from job_type field or kind field
-  let jobKind = "cleaning"; // Default for cleaner
+  let jobType = "cleaning"; // Default for cleaner
   
   if (job?.job_type) {
-    jobKind = job.job_type.split('_')[0].toLowerCase();
+    jobType = job.job_type.split('_')[0].toLowerCase();
   } else if (job?.kind) {
-    jobKind = job.kind.toLowerCase().includes("cleaning") ? "cleaning" : "cleaning";
+    jobType = job.kind.toLowerCase().includes("cleaning") ? "cleaning" : "cleaning";
   }
   
-  // Generate URL in the same format as driver's jobs
-  const jobUrl = `/cleaner/open-jobs/${job?.slug}?kind=${jobKind}`;
+  // Get the appropriate job ID for the link
+  const jobIdentifier = job?.job_uid || job?.uid;
+  
+  // URL structure for assigned cleaning jobs
+  const jobUrl = `/cleaner/assigned-jobs/${jobType}/${jobIdentifier}`;
   
   // Get appropriate theme based on job type, with fallback
   const jobTypeStyle = jobTypeThemes[job?.kind] || jobTypeThemes.DEFAULT;
@@ -51,16 +54,19 @@ export default function JobCard({ job }) {
   const cleaningType = job?.category?.title || 
                       (job?.title?.includes("Deep") ? "Deep Cleaning" : "Regular Cleaning");
 
+  // Clean up job location for display
+  const jobLocation = job?.distance?.moving_from || "Location not specified";
+  const shortLocation = jobLocation.split(',').slice(0, 2).join(',');
+
   return (
     <Link href={jobUrl}>
       <div className={`relative rounded-xl border ${jobTypeStyle.accentColor} ${jobTypeStyle.lightBg} p-5 shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden group`}>
         {/* Decorative gradient element */}
         <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full ${jobTypeStyle.gradient} opacity-20 transition-all group-hover:opacity-30`}></div>
         
-        {/* Add completed badge */}
-        <div className="absolute top-2 right-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-green-200 flex items-center gap-1">
-          <CheckCircle className="h-3 w-3" />
-          <span>Completed</span>
+        {/* Add assigned badge - only difference from open jobs */}
+        <div className="absolute top-2 right-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-green-200">
+          Assigned
         </div>
         
         <div className="flex items-start">
@@ -78,7 +84,7 @@ export default function JobCard({ job }) {
           </div>
         </div>
         
-        {/* Job Details - Cleaning Date and Completion Date */}
+        {/* Job Details - Cleaning Date and Post Date - same as open jobs */}
         <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
           {/* Cleaning Date */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -88,12 +94,12 @@ export default function JobCard({ job }) {
             <span>Cleaning Date: {format(executionDate, "dd MMM yyyy")}</span>
           </div>
           
-          {/* Completed Date */}
+          {/* Post Date */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <div className={`p-1.5 rounded-full ${jobTypeStyle.lightBg} ${jobTypeStyle.accentColor} border`}>
               <Clock className="h-3.5 w-3.5" />
             </div>
-            <span>Completed: {format(completedDate, "dd MMM yyyy")}</span>
+            <span>Posted: {format(postedDate, "dd MMM yyyy")}</span>
           </div>
         </div>
 
@@ -103,12 +109,6 @@ export default function JobCard({ job }) {
             <span className="font-medium">{job.room_count}</span> Rooms
           </div>
         )}
-        
-        {/* Completion indicator */}
-        <div className="mt-3 flex items-center gap-2 text-green-600 text-sm font-medium">
-          <CheckCircle className="h-4 w-4" />
-          <span>Job successfully completed</span>
-        </div>
       </div>
     </Link>
   );

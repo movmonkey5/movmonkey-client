@@ -20,6 +20,9 @@ export default function UserJobDetailsPage({ params }) {
   const router = useRouter();
   const [moreInfo, setMoreInfo] = useState("");
   
+  // Determine if this is a cleaning job for field name selection
+  const isCleaningJob = category === "cleaning_job";
+  
   const fetchDetails = (category) => {
     let fetchToApi;
     switch (category) {
@@ -43,12 +46,16 @@ export default function UserJobDetailsPage({ params }) {
     queryFn: () => fetchDetails(category).then(({ data }) => data),
   });
 
-  // Set the initial value of moreInfo from jobData once it's loaded
+  // Set the initial value based on job type
   useEffect(() => {
-    if (jobData && jobData.any_more_move) {
-      setMoreInfo(jobData.any_more_move);
+    if (jobData) {
+      if (isCleaningJob && jobData.additional_cleaning_information) {
+        setMoreInfo(jobData.additional_cleaning_information);
+      } else if (jobData.any_more_move) {
+        setMoreInfo(jobData.any_more_move);
+      }
     }
-  }, [jobData]);
+  }, [jobData, isCleaningJob]);
 
   const updateJobMutation = useMutation({
     mutationFn: (formData) => {
@@ -93,10 +100,16 @@ export default function UserJobDetailsPage({ params }) {
   const handleSubmitJob = async () => {
     setIsSubmitting(true);
 
-    // Prepare the data to patch only the status field
+    // Prepare the data to patch
     const formData = new FormData();
     formData.append("status", "ACTIVE");
-    formData.append("any_more_move", moreInfo);
+    
+    // Use the appropriate field name based on job category
+    if (isCleaningJob) {
+      formData.append("additional_cleaning_information", moreInfo);
+    } else {
+      formData.append("any_more_move", moreInfo);
+    }
 
     updateJobMutation.mutate(formData);
   };
@@ -104,6 +117,17 @@ export default function UserJobDetailsPage({ params }) {
   if (isLoading) {
     return <Loading className="h-screen" />;
   }
+
+  // Define title and placeholder based on job category
+  const infoTitle = isCleaningJob 
+    ? "Do you have any additional information about this cleaning job?"
+    : category === "removal_job" 
+      ? "Is there any more you can tell us about your removal?"
+      : "Is there any more you can tell us about your delivery?";
+  
+  const infoPlaceholder = isCleaningJob
+    ? "Add any specific instructions about cleaning..."
+    : "Write here...";
 
   return (
     <div>
@@ -113,11 +137,12 @@ export default function UserJobDetailsPage({ params }) {
         {category === "delivery_job" && <DeliveryDetails job={jobData} />}
         <div>
           <p className="mb-4 text-xl font-semibold">
-            In there any more you can tell us about your delivery?
+            {infoTitle}
           </p>
           <Textarea
-            id="any_more_move"
-            placeholder="Write here..."
+            id={isCleaningJob ? "additional_cleaning_information" : "any_more_move"}
+            name={isCleaningJob ? "additional_cleaning_information" : "any_more_move"}
+            placeholder={infoPlaceholder}
             value={moreInfo}
             onChange={handleMoreInfoChange}
           />

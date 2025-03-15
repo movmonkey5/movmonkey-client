@@ -6,7 +6,7 @@ import Loading from "@/components/shared/Loading";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, isValid, parseISO } from "date-fns";
 import { CircleChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -69,6 +69,25 @@ export default function DriverOpenJobDetailsPage({ params }) {
   }
   console.log(job,"adnan job");
   const isCompleted = job?.status === "COMPLETED";
+  
+  // Function to safely format date or return a fallback message
+  const formatDate = (dateString) => {
+    if (!dateString) return "Date not specified";
+    
+    try {
+      // Try to parse the date if it's a string
+      const date = typeof dateString === 'string' ? parseISO(dateString) : new Date(dateString);
+      
+      // Check if the date is valid
+      if (!isValid(date)) return "Invalid date";
+      
+      // If valid, format the date
+      return format(date, "PPP");
+    } catch (error) {
+      return "Invalid date format";
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-10">
@@ -106,7 +125,7 @@ export default function DriverOpenJobDetailsPage({ params }) {
             Required Miles : {job?.distance.total_distance} Miles
           </h2>
           <h2 className="w-fit bg-primary p-2 text-lg font-bold md:text-2xl">
-            Job Execution Date: {format(job?.moving_date, "PPP")}
+            Job Execution Date: {formatDate(job?.moving_date)}
           </h2>
 
           {/* Show addresses if quotation is accepted OR job is completed */}

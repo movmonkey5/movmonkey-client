@@ -225,7 +225,7 @@ export default function CleanerJobOverview({ job, isCustomer = false }) {
     .split("-")
     .slice(0, 3)
     .join("_");
-console.log(job,"jobccccccccc")
+
   return (
     <div>
       <div className="space-y-4">
