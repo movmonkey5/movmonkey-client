@@ -181,6 +181,23 @@ const ApiKit = {
       const url = `/me/inbox/${uid}`;
       return client.post(url, payload);
     },
+
+    // Add earnings API endpoints
+    earnings: {
+      getEarnings: () => {
+        const url = "/me/earnings";
+        return client.get(url);
+      },
+      getWithdrawnList: () => {
+        const url = "/me/earnings/withdrawns";
+        return client.get(url);
+      },
+      requestWithdrawal: (payload) => {
+        const url = "/me/earnings/withdrawns";
+        return client.post(url, payload);
+      }
+    },
+
     job: {
       delivery: {
         postJob: (payload) => {

@@ -15,8 +15,9 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import JobActions from "./components/JobActions";
 import ReviewDialog from "./components/ReviewDialog";
-import { Star } from "lucide-react"; // Import icon for star rating
+import { Star, Clock, CheckCircle, AlertTriangle, User, Mail, Phone, Star as StarIcon } from "lucide-react";
 import Link from "next/link";
+
 export default function UserJobDetailsPage({ params }) {
   const notificationUid = params.slugs[1];
   const searchParams = useSearchParams();
@@ -94,200 +95,336 @@ export default function UserJobDetailsPage({ params }) {
   const isAccepted = (quotation || job)?.status === "ACCEPTED";
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       {isDispute ? (
-        <div className=" flex  w-full flex-col  items-center justify-center p-6 text-center">
-          <h1 className="text-3xl font-bold text-red-600">
-            Your Job in Dispute
-          </h1>
-          <p className="text-lg text-red-500">
-            There is a dispute regarding this job. Our support team is looking
-            into it.
-          </p>
-          <p className="text-md mt-4">
-            Please check your email for any updates regarding the dispute
-            resolution, or contact support if you need further assistance.
-          </p>
-          <Link href="/quotation" className="w-full max-w-[200px] my-4 ">
-            <Button size="lg" className="w-full">
-              Back to Quotations
-            </Button>
-          </Link>
-
-            {jobCategory === "cleaning_job" && (
-              <CleanerJobDetails job={quotation || job} />
-            )}
-            {jobCategory === "removal_job" && (
-              <RemovalJobDetails job={quotation || job} />
-            )}
-            {jobCategory === "delivery_job" && (
-              <DeliveryJobDetails job={quotation || job} />
-            )}
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="rounded-2xl bg-white p-8 shadow-lg border border-red-200">
+            <div className="text-center">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
+                <AlertTriangle className="h-10 w-10 text-red-600" />
+              </div>
+              <h1 className="mb-4 text-3xl font-bold text-red-600">
+                Your Job is in Dispute
+              </h1>
+              <p className="mb-6 text-lg text-red-500">
+                There is a dispute regarding this job. Our support team is looking into it.
+              </p>
+              <p className="mb-8 text-gray-600">
+                Please check your email for any updates regarding the dispute resolution, 
+                or contact support if you need further assistance.
+              </p>
+              <Link href="/quotation" className="inline-block">
+                <Button size="lg" className="px-8 py-3">
+                  Back to Quotations
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="mt-8 border-t pt-8">
+              {jobCategory === "cleaning_job" && (
+                <CleanerJobDetails job={quotation || job} />
+              )}
+              {jobCategory === "removal_job" && (
+                <RemovalJobDetails job={quotation || job} />
+              )}
+              {jobCategory === "delivery_job" && (
+                <DeliveryJobDetails job={quotation || job} />
+              )}
+            </div>
+          </div>
         </div>
       ) : isCompleted ? (
-        <div className=" flex flex-col gap-2 bg-gray-200 p-6 text-center ">
-          <h1 className="text-3xl font-bold">This Job has Completed</h1>
-          <p className="text-lg">Thank you for using our services!</p>
-          {quotation.is_rated === "False" ? (
-            <Button className="mb-8 mt-4" onClick={() => setShowReview(true)}>
-              Submit Review
-            </Button>
-          ) : (
-            <>
-              <div className="mt-8">
-                <span className="mb-8 block text-center font-bold">
-                  You have successfully rated this job
-                </span>
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="rounded-2xl bg-white p-8 shadow-lg">
+            <div className="text-center">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle className="h-10 w-10 text-green-600" />
+              </div>
+              <h1 className="mb-4 text-3xl font-bold text-green-600">
+                Job Completed Successfully!
+              </h1>
+              <p className="mb-8 text-lg text-gray-600">
+                Thank you for using our services!
+              </p>
+            </div>
 
-                <div className="rounded-lg border border-gray-200 bg-gray-100 p-4 shadow-md">
-                  <p className="mb-2 text-lg font-semibold">Your Review</p>
-
+            {quotation.is_rated === "False" ? (
+              <div className="text-center">
+                <Button 
+                  className="mb-8 px-8 py-3" 
+                  onClick={() => setShowReview(true)}
+                >
+                  Submit Review
+                </Button>
+              </div>
+            ) : (
+              <div className="mb-8">
+                <div className="rounded-xl bg-gradient-to-r from-yellow-50 to-orange-50 p-6 border border-yellow-200">
+                  <p className="mb-4 text-center text-lg font-semibold text-gray-800">
+                    ✨ Your Review
+                  </p>
+                  
                   <div className="mb-4 flex items-center justify-center">
-                    {/* Display star icons based on the rating */}
                     {Array.from({ length: 5 }, (_, index) => (
                       <Star
                         key={index}
-                        className={`h-5 w-5 ${
+                        className={`h-6 w-6 ${
                           index < quotation.rating.rating
-                            ? "text-yellow-500"
+                            ? "text-yellow-500 fill-current"
                             : "text-gray-300"
                         }`}
                       />
                     ))}
                   </div>
 
-                  {/* Display review details */}
-                  <p className="text-sm text-gray-500">
-                    <span className="font-bold">Date:</span>{" "}
-                    {new Date(quotation.rating.created_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    <span className="font-bold">Rating:</span>{" "}
-                    {quotation.rating.rating} / 5
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    <span className="font-bold">Message:</span>{" "}
-                    {quotation.rating.description}
-                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="text-center">
+                      <p className="font-semibold text-gray-700">Date</p>
+                      <p className="text-gray-600">
+                        {new Date(quotation.rating.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <p className="font-semibold text-gray-700">Rating</p>
+                      <p className="text-gray-600">{quotation.rating.rating} / 5</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="font-semibold text-gray-700">Message</p>
+                      <p className="text-gray-600">{quotation.rating.description}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </>
-          )}
-          <ReviewDialog
-            isOpen={showReview}
-            onOpenChange={setShowReview}
-            jobUid={quotation[jobCategory]?.uid}
-            jobkind={quotation?.kind || job?.quotation?.kind}
-            userDetails={userDetails}
-          />
-          <div>
-            {jobCategory === "cleaning_job" && (
-              <CleanerJobDetails job={quotation || job} />
             )}
-            {jobCategory === "removal_job" && (
-              <RemovalJobDetails job={quotation || job} />
-            )}
-            {jobCategory === "delivery_job" && (
-              <DeliveryJobDetails job={quotation || job} />
-            )}
+
+            <ReviewDialog
+              isOpen={showReview}
+              onOpenChange={setShowReview}
+              jobUid={quotation[jobCategory]?.uid}
+              jobkind={quotation?.kind || job?.quotation?.kind}
+              userDetails={userDetails}
+            />
+
+            <div className="border-t pt-8">
+              {jobCategory === "cleaning_job" && (
+                <CleanerJobDetails job={quotation || job} />
+              )}
+              {jobCategory === "removal_job" && (
+                <RemovalJobDetails job={quotation || job} />
+              )}
+              {jobCategory === "delivery_job" && (
+                <DeliveryJobDetails job={quotation || job} />
+              )}
+            </div>
           </div>
         </div>
       ) : (
-        <>
-          {/* Work need */}
-          <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-2">
-            <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-2 px-4 md:h-20 md:px-6">
-              <h3>{quotation.title}</h3>
-              <p className="text-xl text-white">
-                Valid for
-                {!fromNotification ? (
-                  <span> {quotation.quotation_validity} days </span>
-                ) : (
-                  <span> {job.quotation.quotation_validity} days </span>
-                )}
-              </p>
+        <div className="min-h-screen">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-[#49B74B] to-[#3a9639] text-white">
+            <div className="mx-auto max-w-7xl px-4 py-6 md:px-6">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <h3 className="text-2xl md:text-3xl font-bold">{quotation.title}</h3>
+                <div className="flex items-center gap-2 rounded-lg bg-white/20 px-4 py-2 backdrop-blur-sm">
+                  <Clock className="h-5 w-5" />
+                  <span className="text-lg font-semibold">
+                    Valid for{" "}
+                    {!fromNotification ? (
+                      <span>{quotation.quotation_validity} days</span>
+                    ) : (
+                      <span>{job.quotation.quotation_validity} days</span>
+                    )}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <Container className="w-full">
-            <div>
-              {isAccepted && (
-                <div className="flex flex-col justify-between bg-[#366935] p-6">
-                  <h1 className="mb-8  text-2xl font-semibold text-white lg:text-3xl">
-                    Your Job is Active now
+          <Container className="py-8">
+            {/* Active Job Status */}
+            {isAccepted && (
+              <div className="mb-8 rounded-2xl bg-gradient-to-r from-[#49B74B] to-[#3a9639] p-8 text-white shadow-lg">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
+                    <CheckCircle className="h-6 w-6" />
+                  </div>
+                  <h1 className="text-2xl lg:text-3xl font-bold">
+                    Your Job is Active Now
                   </h1>
-                  <JobActions job={quotation || job} userDetails={userDetails} />
                 </div>
-              )}
-            </div>
-            <div className="w-full">
-              <h1 className="my-2  w-full  text-center text-2xl font-bold md:my-8 lg:text-left lg:text-4xl">
-                Job Assigned to
-              </h1>
-            </div>
+                <JobActions job={quotation || job} userDetails={userDetails} />
+              </div>
+            )}
 
-            <div className="flex w-full items-center justify-between pb-6">
-              {isAccepted ? (
-                <div className="w-full md:w-2/3">
-                  <div className="flex flex-col">
-                    <h5 className=" my-2 text-2xl font-semibold md:my-0 lg:text-3xl">
-                      {userDetails.full_name}
-                    </h5>
-                    <p className="text-sm md:text-lg">{userDetails.email}</p>
-                    <p>XXXXXX</p>
-                    <p>{userDetails.phone}</p>
+            {/* Optimized Driver Assignment Card */}
+            <div className="mb-6 rounded-xl bg-white shadow-lg border border-gray-100 overflow-hidden">
+              {/* Compact Header Section */}
+              <div className="px-6 py-4" style={{
+                backgroundColor: "#49B74B"
+              }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg lg:text-xl font-bold text-white">Service Provider</h2>
+                    <p className="text-green-100 text-xs">Your dedicated professional</p>
                   </div>
                 </div>
-              ) : (
-                <div className="flex flex-col">
-                  <h5 className="text-xl font-medium"> Name : XXXXXXX</h5>
-                  <p>XXXXXXX@gmail.com</p>
-                  <p>XXXXXX</p>
-                  <p>+44 XXXX XXXXX</p>
+              </div>
+
+              <div className="p-6">
+                <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+                  {/* Compact Driver Details */}
+                  <div className="flex-1">
+                    {isAccepted ? (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-green-600 font-medium text-xs uppercase tracking-wide">Active</span>
+                        </div>
+                        
+                        <h3 className="text-2xl lg:text-3xl font-bold text-gray-800">
+                          {userDetails.full_name}
+                        </h3>
+                        
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-md flex items-center justify-center">
+                              <Mail className="h-4 w-4 text-white" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-medium text-gray-600">Email</p>
+                              <p className="text-sm font-semibold text-gray-800">{userDetails.email}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                            <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-md flex items-center justify-center">
+                              <Phone className="h-4 w-4 text-white" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-medium text-gray-600">Phone</p>
+                              <p className="text-sm font-semibold text-gray-800">{userDetails.phone}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+                          <span className="text-yellow-600 font-medium text-xs uppercase tracking-wide">Pending</span>
+                        </div>
+                        
+                        <h3 className="text-2xl lg:text-3xl font-bold text-gray-400">
+                          Not Yet Assigned
+                        </h3>
+                        
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                            <div className="w-8 h-8 bg-gray-400 rounded-md flex items-center justify-center">
+                              <Mail className="h-4 w-4 text-white" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-medium text-gray-500">Email</p>
+                              <p className="text-sm font-semibold text-gray-400">The Details Will be revealed once accepted</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                            <div className="w-8 h-8 bg-gray-400 rounded-md flex items-center justify-center">
+                              <Phone className="h-4 w-4 text-white" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-medium text-gray-500">Phone</p>
+                              <p className="text-sm font-semibold text-gray-400">The Details Will be revealed once accepted</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Compact Driver Image and Rating */}
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="relative">
+                      <div className={`w-20 h-20 rounded-full p-0.5 ${isAccepted ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`}>
+                        <div className="w-full h-full bg-white rounded-full p-1">
+                          <Image
+                            alt="Service Provider"
+                            src={DrivrIcon}
+                            width={80}
+                            height={80}
+                            className="w-full h-full rounded-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      {isAccepted && (
+                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+                          <CheckCircle className="h-3 w-3 text-white" />
+                        </div>
+                      )}
+                      {!isAccepted && (
+                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                          <Clock className="h-3 w-3 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="text-center">
+                      <div className={`p-3 rounded-lg ${isAccepted ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200' : 'bg-gradient-to-r from-gray-50 to-slate-50 border border-gray-200'}`}>
+                        <div className="flex items-center justify-center gap-1 mb-1">
+                          <StarIcon className={`h-4 w-4 ${isAccepted ? 'text-yellow-500 fill-current' : 'text-gray-400'}`} />
+                          <span className="text-lg font-bold text-gray-800">
+                            {isAccepted ? userDetails.rating?.toFixed(1) : "---"}
+                          </span>
+                        </div>
+                        <p className="text-xs font-medium text-gray-600">
+                          ({isAccepted ? userDetails?.rating_count : "--"} reviews)
+                        </p>
+                        <div className="mt-1 flex justify-center">
+                          {Array.from({ length: 5 }, (_, index) => (
+                            <StarIcon
+                              key={index}
+                              className={`h-3 w-3 ${
+                                isAccepted && index < Math.floor(userDetails.rating)
+                                  ? "text-yellow-500 fill-current"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
-              <div className="flex flex-col items-center justify-center  gap-4 md:gap-4">
-                <Image
-                  alt="Driver Icon"
-                  src={DrivrIcon}
-                  width={100}
-                  height={100}
-                  className="h-20 w-20 rounded-full"
-                />
-                <h1 className="text-sm font-bold ">
-                  {" "}
-                  Ratings {isAccepted
-                    ? userDetails.rating?.toFixed(2)
-                    : "XXX"}{" "}
-                  <span className="text-yellow-500">★ </span> ({" "}
-                  <span className="text-gray-500">
-                    {userDetails?.rating_count} reviews)
-                  </span>
-                </h1>
               </div>
             </div>
 
-            {/* Job and Quotation Details */}
-            {jobCategory === "cleaning_job" && (
-              <CleanerJobDetails job={quotation || job} />
-            )}
-            {jobCategory === "removal_job" && (
-              <RemovalJobDetails job={quotation || job} />
-            )}
-            {jobCategory === "delivery_job" && (
-              <DeliveryJobDetails job={quotation || job} />
-            )}
-            {/* Additional Information */}
-        
+            {/* Compact Job Details Card */}
+            <div className="mb-6 rounded-xl bg-white shadow-lg border border-gray-100">
+              {jobCategory === "cleaning_job" && (
+                <CleanerJobDetails job={quotation || job} />
+              )}
+              {jobCategory === "removal_job" && (
+                <RemovalJobDetails job={quotation || job} />
+              )}
+              {jobCategory === "delivery_job" && (
+                <DeliveryJobDetails job={quotation || job} />
+              )}
+            </div>
 
-            {/* Action Buttons */}
-            <QuotationButton
-              onReject={() => {}}
-              onAccept={() => {}}
-              job={quotation || job}
-            />
+            {/* Compact Action Buttons Card */}
+            <div className="rounded-xl bg-white p-6 shadow-lg border border-gray-100">
+              <QuotationButton
+                onReject={() => {}}
+                onAccept={() => {}}
+                job={quotation || job}
+              />
+            </div>
           </Container>
-        </>
+        </div>
       )}
     </div>
   );

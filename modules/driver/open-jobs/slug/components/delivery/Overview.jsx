@@ -133,12 +133,17 @@ const OverviewItem = ({ title, value, extraValue }) => {
     : content;
 
   return (
-    <div className="flex flex-col gap-1 px-5 md:flex-row md:items-center md:justify-between">
-      <div className="text-base capitalize md:w-2/4 md:text-xl md:font-semibold">
-        &#9733; {title}
+    <div className="flex items-center justify-between py-3 px-4 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 transition-all duration-300 rounded-lg group border-b border-gray-100 last:border-b-0">
+      <div className="flex items-center gap-3 flex-1">
+        <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full group-hover:scale-125 transition-transform duration-300"></div>
+        <span className="text-gray-700 font-medium text-sm md:text-base group-hover:text-green-800 transition-colors duration-300">
+          {title}
+        </span>
       </div>
-      <div className="text-base font-semibold capitalize md:w-2/4 md:text-xl">
-        {content}
+      <div className="bg-gradient-to-r from-gray-50 to-slate-50 px-3 py-1.5 rounded-lg border border-gray-200 group-hover:border-green-300 transition-all duration-300 min-w-fit">
+        <span className="text-gray-900 font-semibold text-sm md:text-base capitalize">
+          {content}
+        </span>
       </div>
     </div>
   );
@@ -181,37 +186,102 @@ console.log(job,"jobsssssssssssssssssssssssss")
   const fieldsToRender = dynamicFields[category] || [];
 
   return (
-    <div>
-      <div className="space-y-4">
-        <div className="flex items-center justify-start bg-primary px-5 py-2 text-xl font-bold">
-          <div className="hidden md:block md:w-2/4">Services Info</div>
-          <div className="hidden md:block md:w-2/4">Quantity/About</div>
-          <div className="text-base md:hidden">
-            Services Info and Quantity/About
+    <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+      <div className="w-full p-4">
+        {/* Full Width Enhanced Header */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 mb-6 overflow-hidden w-full">
+          <div className="px-6 py-4" style={{
+            backgroundColor: "#49B74B"
+          }}>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold text-white">Service Overview</h1>
+                <p className="text-green-100 text-sm">Detailed job information</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Compact Table Header */}
+          <div className="bg-gradient-to-r from-gray-50 to-slate-50 px-6 py-3 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="text-base font-bold text-gray-800">Service Details</div>
+              <div className="text-base font-bold text-gray-800">Information</div>
+            </div>
+          </div>
+
+          {/* Full Width Content Grid */}
+          <div className="p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Basic Information Section */}
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-5">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base">Basic Information</h3>
+                </div>
+                <div className="space-y-2">
+                  {commonFields.map((field, index) => (
+                    <OverviewItem
+                      key={field.title}
+                      title={field.title}
+                      value={job?.[field.accessKey]}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Specific Details Section */}
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-lg border border-gray-200 p-5">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base">Specific Details</h3>
+                </div>
+                <div className="space-y-2">
+                  {fieldsToRender.map((field, index) => (
+                    <OverviewItem
+                      key={field.title}
+                      title={field.title}
+                      value={job?.delivery_items?.[0]?.[field.accessKey]}
+                      extraValue={job?.delivery_items?.[0]?.[field.extraAccessKey]}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {commonFields.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job?.[field.accessKey]}
-          />
-        ))}
-
-        {fieldsToRender.map((field) => (
-          <OverviewItem
-            key={field.title}
-            title={field.title}
-            value={job?.delivery_items?.[0]?.[field.accessKey]}
-            extraValue={job?.delivery_items?.[0]?.[field.extraAccessKey]}
-          />
-        ))}
+        {!isCustomer && !isCompleted && (
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 w-full">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{
+                backgroundColor: "#49B74B"
+              }}>
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-gray-800">Pricing Details</h2>
+                <p className="text-gray-500 text-sm">Set your quotation for this job</p>
+              </div>
+            </div>
+            <DetailPricing formik={formik} job={job} />
+          </div>
+        )}
       </div>
-
-      {!isCustomer && !isCompleted && (
-        <DetailPricing formik={formik} job={job} />
-      )}
     </div>
   );
 }

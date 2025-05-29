@@ -3,14 +3,10 @@ import InfoIcon from "@/components/icon/InfoIcon";
 import PhotosIcon from "@/components/icon/PhotosIcon";
 import VideoIcon from "@/components/icon/VideoIcon";
 import Container from "@/components/shared/Container";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import DeliveryOverview from "@/modules/driver/open-jobs/slug/components/delivery/Overview";
 import DeliveryVideo from "@/modules/driver/open-jobs/slug/components/delivery/Video";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { CircleChevronLeft, PencilLineIcon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import JobPhotos from "../../components/Photos";
@@ -36,82 +32,152 @@ export default function DeliveryDetails({ job }) {
   }
 
   return (
-    <div className="min-h-[calc(100vh-60px)] lg:min-h-[calc(100vh-80px)]">
-      <Container>
-      <div className=" grid grid-cols-3 place-items-center w-full gap-3 sm:gap-5 md:gap-10 p-1 sm:p-5">
-    
-    <div className="bg-[#FFF2DE] px-1.5 py-2 md:p-4 border-primary rounded-2xl border flex flex-col items-center justify-center w-full sm:w-48 md:w-60 ">
-      <InfoIcon
-        className={`size-10 md:size-16 mx-auto mt-1 mb-4 text-secondary`}
-      />
+    <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen">
+      <Container className="py-6">
+        {/* Compact Tab Navigation */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* Info Tab */}
+          <div
+            className={`bg-white rounded-xl shadow-md border transition-all duration-300 cursor-pointer ${
+              view === "overview"
+                ? "border-green-300 shadow-lg ring-1 ring-green-200"
+                : "border-gray-200 hover:border-green-200 hover:shadow-lg"
+            }`}
+            onClick={() => setView("overview")}
+          >
+            <div className="p-4">
+              <div className="flex flex-col items-center text-center">
+                <div
+                  className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 transition-all duration-300`}
+                  style={{
+                    backgroundColor: view === "overview" ? "#49B74B" : "#6b7280",
+                  }}
+                >
+                  <InfoIcon className="w-6 h-6 text-white" />
+                </div>
+                <h3
+                  className={`text-base font-bold mb-1 ${
+                    view === "overview" ? "text-green-700" : "text-gray-700"
+                  }`}
+                >
+                  Job Information
+                </h3>
+                <p className="text-xs text-gray-500 mb-3">
+                  Service details & specifications
+                </p>
+                <div
+                  className={`w-full py-2 px-4 rounded-lg font-medium text-xs transition-all duration-300`}
+                  style={{
+                    backgroundColor: view === "overview" ? "#49B74B" : "#f3f4f6",
+                    color: view === "overview" ? "white" : "#6b7280",
+                  }}
+                >
+                  {view === "overview" ? "Active" : "View"}
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <button
-        onClick={() => {
-          setView("overview");
-        }}
-        className={cn(
-          "cursor-pointer rounded-full px-2 md:px-8 py-1 md:py-2 text-sm sm:font-semibold sm:text-base md:text-lg w-full",
-          {
-            "bg- border-2 border-secondary bg-secondary text-white":
-              view === "overview",
-            "border-2 border-secondary bg-white text-secondary":
-              view !== "overview",
-          },
-        )}
-      >
-        Info
-      </button>
-    </div>
+          {/* Photos Tab */}
+          <div
+            className={`bg-white rounded-xl shadow-md border transition-all duration-300 cursor-pointer ${
+              view === "photos"
+                ? "border-green-300 shadow-lg ring-1 ring-green-200"
+                : "border-gray-200 hover:border-green-200 hover:shadow-lg"
+            }`}
+            onClick={() => setView("photos")}
+          >
+            <div className="p-4">
+              <div className="flex flex-col items-center text-center">
+                <div
+                  className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 transition-all duration-300`}
+                  style={{
+                    backgroundColor: view === "photos" ? "#49B74B" : "#6b7280",
+                  }}
+                >
+                  <PhotosIcon className="w-6 h-6 text-white" />
+                </div>
+                <h3
+                  className={`text-base font-bold mb-1 ${
+                    view === "photos" ? "text-green-700" : "text-gray-700"
+                  }`}
+                >
+                  Photo Gallery
+                </h3>
+                <p className="text-xs text-gray-500 mb-3">
+                  Images & documentation
+                </p>
+                <div
+                  className={`w-full py-2 px-4 rounded-lg font-medium text-xs transition-all duration-300`}
+                  style={{
+                    backgroundColor: view === "photos" ? "#49B74B" : "#f3f4f6",
+                    color: view === "photos" ? "white" : "#6b7280",
+                  }}
+                >
+                  {view === "photos" ? "Active" : "View"}
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <div className="bg-[#FFF2DE] px-1.5 py-2 md:p-4 border-primary rounded-2xl border w-full sm:w-48 md:w-60 ">
-      <PhotosIcon
-        className={`size-10 md:size-16 mx-auto mt-1 mb-4 text-secondary`}
-      />
-      <button
-        onClick={() => {
-          setView("photos");
-        }}
-        className={cn(
-          "cursor-pointer rounded-full px-2 py-1 md:px-10 md:py-2 text-sm font-semibold w-full sm:text-base md:text-lg",
-          {
-            "bg- border-2 border-secondary bg-secondary text-white":
-              view === "photos",
-            "border-2 border-secondary bg-white text-secondary":
-              view !== "photos",
-          },
-        )}
-      >
-        Photos
-      </button>
-    </div>
-    <div className="bg-[#FFF2DE] px-1.5 py-2 md:p-4 border-primary rounded-2xl border w-full sm:w-48 md:w-60 ">
-      <VideoIcon
-        className={`size-10 md:size-16 mx-auto mt-1 mb-4 text-secondary`}
-      />
-      <button
-        onClick={() => {
-          setView("videos");
-        }}
-        className={cn(
-          "cursor-pointer rounded-full px-2 py-1 md:px-10 md:py-2 text-sm font-semibold w-full sm:text-base md:text-lg",
-          {
-            "bg- border-2 border-secondary bg-secondary text-white":
-              view === "videos",
-            "border-2 border-secondary bg-white text-secondary":
-              view !== "videos",
-          },
-        )}
-      >
-        Videos
-      </button>
-    </div>
-  </div> 
-        <div className="mt-5">
+          {/* Videos Tab */}
+          <div
+            className={`bg-white rounded-xl shadow-md border transition-all duration-300 cursor-pointer ${
+              view === "videos"
+                ? "border-green-300 shadow-lg ring-1 ring-green-200"
+                : "border-gray-200 hover:border-green-200 hover:shadow-lg"
+            }`}
+            onClick={() => setView("videos")}
+          >
+            <div className="p-4">
+              <div className="flex flex-col items-center text-center">
+                <div
+                  className={`w-12 h-12 rounded-lg flex items-center justify-center mb-3 transition-all duration-300`}
+                  style={{
+                    backgroundColor: view === "videos" ? "#49B74B" : "#6b7280",
+                  }}
+                >
+                  <VideoIcon className="w-6 h-6 text-white" />
+                </div>
+                <h3
+                  className={`text-base font-bold mb-1 ${
+                    view === "videos" ? "text-green-700" : "text-gray-700"
+                  }`}
+                >
+                  Video Content
+                </h3>
+                <p className="text-xs text-gray-500 mb-3">
+                  Visual documentation
+                </p>
+                <div
+                  className={`w-full py-2 px-4 rounded-lg font-medium text-xs transition-all duration-300`}
+                  style={{
+                    backgroundColor: view === "videos" ? "#49B74B" : "#f3f4f6",
+                    color: view === "videos" ? "white" : "#6b7280",
+                  }}
+                >
+                  {view === "videos" ? "Active" : "View"}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Full Width Content Area */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden w-full">
           {view === "overview" && (
             <DeliveryOverview job={job} isCustomer={true} />
           )}
-          {view === "videos" && <DeliveryVideo videos={videos} />}
-          {view === "photos" && <JobPhotos photos={photos} />}
+          {view === "videos" && (
+            <div className="p-6">
+              <DeliveryVideo videos={videos} />
+            </div>
+          )}
+          {view === "photos" && (
+            <div className="p-6">
+              <JobPhotos photos={photos} />
+            </div>
+          )}
         </div>
       </Container>
     </div>

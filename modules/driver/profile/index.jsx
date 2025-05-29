@@ -27,6 +27,12 @@ export default function DriverProfilePage() {
     }
   }, [user]);
 
+  // Add query to fetch earnings data
+  const { data: earnings, isLoading: earningsLoading } = useQuery({
+    queryKey: ["me.earnings"],
+    queryFn: () => ApiKit.me.earnings.getEarnings().then(({ data }) => data),
+  });
+
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["me.getProfile"],
     queryFn: () => ApiKit.me.getProfile().then(({ data }) => data),
@@ -51,10 +57,10 @@ export default function DriverProfilePage() {
     queryFn: () => ApiKit.me.job.favourite.getJobs().then(({ data }) => data),
   });
 
-  if (profileLoading) {
+  if (profileLoading || earningsLoading) {
     return <Loading className="min-h-[calc(100vh-8rem)]" />;
   }
-
+console.log(earnings,"earningsssssssssssssssssssssssssssssssssss" )
   // Define tab colors for consistent styling
   const tabColors = {
     actives: {
@@ -209,8 +215,8 @@ export default function DriverProfilePage() {
     <div className="min-h-[calc(100vh-80px)] bg-gray-50 pb-8">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-6">
         <Container>
-          <h3 className="px-4 text-3xl font-bold">
-            Total Earned: {currency} 
+          <h3 className="px-4 py-3 text-3xl font-bold">
+            Total Earned: {currency} {earnings?.balance_for_clear || 0}
           </h3>
         </Container>
       </div>
@@ -243,6 +249,7 @@ export default function DriverProfilePage() {
                 completed
               </p>
               <p>Total Rated : {review?.count || 0}</p>
+              <p className="font-medium text-green-600">Available Balance: {currency} {earnings?.balance_for_clear || 0}</p>
             </div>
           </div>
           <div className="flex items-center justify-center gap-5 max-xs:mt-0 max-xs:w-full sm:flex-row">
