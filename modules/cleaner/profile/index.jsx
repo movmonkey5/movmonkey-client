@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { ClipboardList, Pencil } from "lucide-react";
+import { ClipboardList, Pencil, Wallet, X } from "lucide-react";
+import toast from "react-hot-toast";
 import ApiKit from "@/common/ApiKit";
 import Container from "@/components/shared/Container";
 import Loading from "@/components/shared/Loading";
@@ -17,14 +18,112 @@ import useStore from "@/store";
 
 export default function CleanerProfilePage() {
   const [activeTab, setActiveTab] = useState("actives");
+  const [currency, setCurrency] = useState("$"); // Default currency symbol
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  
+  // Filter states for withdrawal history
+  const [historyFilters, setHistoryFilters] = useState({
+    status: '',
+    date_from: '',
+    date_to: ''
+  });
+
+  // Get user from store using the hook directly
   const user = useStore((state) => state.user);
-  const [currency, setCurrency] = useState("$");
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (user?.currencySymbol) {
       setCurrency(user.currencySymbol);
     }
   }, [user]);
+
+  // Add query to fetch earnings data
+  const { data: earnings, isLoading: earningsLoading, refetch: refetchEarnings } = useQuery({
+    queryKey: ["me.earnings"],
+    queryFn: () => ApiKit.me.earnings.getEarnings().then(({ data }) => data),
+  });
+
+  // Add query to fetch withdrawal history
+  const { data: withdrawalHistory, isLoading: historyLoading, refetch: refetchHistory } = useQuery({
+    queryKey: ["me.withdrawalHistory", historyFilters],
+    queryFn: () => ApiKit.me.earnings.getWithdrawalHistory(historyFilters).then(({ data }) => data),
+    enabled: showHistoryModal, // Only fetch when modal is open
+  });
+
+  // Handle filter changes
+  const handleFilterChange = (filterKey, value) => {
+    setHistoryFilters(prev => ({
+      ...prev,
+      [filterKey]: value
+    }));
+  };
+
+  // Clear all filters
+  const clearFilters = () => {
+    setHistoryFilters({
+      status: '',
+      date_from: '',
+      date_to: ''
+    });
+  };
+
+  // Add withdrawal mutation
+  const withdrawMutation = useMutation({
+    mutationFn: () => ApiKit.me.earnings.withdrawRequest(),
+    onSuccess: (response) => {
+      console.log("Withdrawal request successful:", response);
+      // Refetch earnings to update the balances
+      refetchEarnings();
+      // Close modals
+      setShowWithdrawModal(false);
+      setShowConfirmModal(false);
+      // Show success toast
+      toast.success("Withdrawal request submitted successfully!", {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#10B981',
+          color: 'white',
+          fontWeight: '500',
+        },
+        icon: '✅',
+      });
+    },
+    onError: (error) => {
+      console.error("Withdrawal request failed:", error);
+      // Close confirmation modal but keep withdraw modal open
+      setShowConfirmModal(false);
+      // Show error toast
+      toast.error("Failed to submit withdrawal request. Please try again.", {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#EF4444',
+          color: 'white',
+          fontWeight: '500',
+        },
+        icon: '❌',
+      });
+    },
+  });
+
+  // Handle withdrawal request button click
+  const handleWithdrawRequest = () => {
+    setShowConfirmModal(true);
+  };
+
+  // Handle confirmation of withdrawal
+  const handleConfirmWithdraw = () => {
+    withdrawMutation.mutate();
+  };
+
+  // Handle cancellation of withdrawal
+  const handleCancelWithdraw = () => {
+    setShowConfirmModal(false);
+  };
 
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ["me.getProfile"],
@@ -51,9 +150,21 @@ export default function CleanerProfilePage() {
     queryFn: () => ApiKit.me.job.favourite.getJobs().then(({ data }) => data),
   });
 
-  if (profileLoading) {
+  if (profileLoading || earningsLoading) {
     return <Loading className="min-h-[calc(100vh-8rem)]" />;
   }
+
+  // Check if user has any pending withdrawal requests (PROCESSING status)
+  const hasProcessingWithdrawal = earnings?.balance_for_clear > 0;
+  // Use the backend's has_unrequested_balance field to determine if withdraw button should be enabled
+  const hasAvailableBalance = earnings?.has_unrequested_balance === true;
+
+console.log(earnings,"earningsssssssssssssssssssssssssssssssssss" )
+  
+  // Calculate total earned (withdrawn + available + processing)
+  const totalEarned = (earnings?.with_drawn_balance || 0) + 
+                     (earnings?.balance_for_use || 0) + 
+                     (earnings?.balance_for_clear || 0);
   
   // Define tab colors for consistent styling
   const tabColors = {
@@ -185,8 +296,8 @@ export default function CleanerProfilePage() {
     <div className="min-h-[calc(100vh-80px)] bg-gray-50 pb-8">
       <div className="bg-primary text-lg font-semibold text-black md:text-2xl lg:mt-6">
         <Container>
-          <h3 className="px-4 text-3xl font-bold">
-            Total Earned: {currency}
+          <h3 className="px-4 py-3 text-3xl font-bold">
+            Total Earned: {currency} {totalEarned.toFixed(2)}
           </h3>
         </Container>
       </div>
@@ -214,19 +325,35 @@ export default function CleanerProfilePage() {
                 Currency : <b>{currency}</b>
               </p>
               <p className="text-base text-[#0588d1] lg:text-xl">
-                {profile?.job_count} {profile?.job_count !== 1 ? "Jobs" : "Job"}{" "}
+                {completedJobs?.count || 0} {(completedJobs?.count || 0) !== 1 ? "Jobs" : "Job"}{" "}
                 Completed
               </p>
               <p>Total Rated : {rating?.count || 0}</p>
+              <p className="font-medium text-green-600">Available Balance: {currency} {earnings?.balance_for_use || 0}</p>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-5 max-xs:mt-0 max-xs:w-full sm:flex-row">
+          <div className="flex items-center justify-center gap-3 max-xs:mt-0 max-xs:w-full sm:flex-row">
             <Link href="/cleaner/profile/edit" className="block">
               <Button variant="secondary" className="gap-2 max-xs:w-full">
                 <Pencil className="size-5" />
                 <span className="hidden md:block"> Edit Profile</span>
               </Button>
             </Link>
+            <Button 
+              onClick={() => setShowHistoryModal(true)}
+              className="gap-2 max-xs:w-full bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 shadow-lg hover:shadow-green-500/25 border-0"
+            >
+              <ClipboardList className="size-5" />
+              <span className="hidden md:block">History</span>
+            </Button>
+            <Button 
+              onClick={() => setShowWithdrawModal(true)}
+              className="gap-2 max-xs:w-full bg-green-600 hover:bg-green-700 text-white disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled={!hasAvailableBalance}
+            >
+              <Wallet className="size-5" />
+              <span className="hidden md:block">Withdraw</span>
+            </Button>
           </div>
         </div>
 
@@ -339,6 +466,311 @@ export default function CleanerProfilePage() {
         {/* Review list from existing code */}
         <ReviewList reviewList={rating?.results} />
       </Container>
+
+      {/* Withdrawal Modal */}
+      {showWithdrawModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Withdrawal Dashboard</h2>
+              <button
+                onClick={() => setShowWithdrawModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="size-6" />
+              </button>
+            </div>
+
+            {/* Balance Information */}
+            <div className="space-y-4 mb-6">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                <div className="text-center">
+                  <p className="text-sm text-gray-600 mb-1">Available for Withdrawal</p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {currency} {earnings?.balance_for_use || 0}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                  <p className="text-xs text-blue-600 mb-1">Processing</p>
+                  <p className="text-lg font-semibold text-blue-700">
+                    {currency} {earnings?.balance_for_clear || 0}
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                  <p className="text-xs text-gray-600 mb-1">Withdrawn</p>
+                  <p className="text-lg font-semibold text-gray-700">
+                    {currency} {earnings?.with_drawn_balance || 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Button
+                onClick={handleWithdrawRequest}
+                disabled={!hasAvailableBalance || withdrawMutation.isPending || hasProcessingWithdrawal}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {withdrawMutation.isPending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Processing...
+                  </div>
+                ) : hasProcessingWithdrawal ? (
+                  <>
+                    <Wallet className="mr-2 size-5" />
+                    Withdrawal Already Requested
+                  </>
+                ) : (
+                  <>
+                    <Wallet className="mr-2 size-5" />
+                    Request for Withdraw
+                  </>
+                )}
+              </Button>
+
+              {!hasAvailableBalance && !hasProcessingWithdrawal && (
+                <p className="text-sm text-red-600 text-center">
+                  All available commissions have already been requested for withdrawal
+                </p>
+              )}
+
+              {hasProcessingWithdrawal && (
+                <p className="text-sm text-blue-600 text-center">
+                  You have a withdrawal request being processed. Please wait for completion before requesting another withdrawal.
+                </p>
+              )}
+
+              <Button
+                onClick={() => setShowWithdrawModal(false)}
+                variant="outline"
+                className="w-full"
+              >
+                Cancel
+              </Button>
+            </div>
+
+            {/* Information Text */}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-xs text-blue-700">
+                <strong>Note:</strong> Once you request a withdrawal, the amount will be moved to "Processing" 
+                status and will be reviewed by our team. Processing typically takes 1-3 business days.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-60">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm mx-4">
+            {/* Modal Header */}
+            <div className="text-center mb-6">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 mb-4">
+                <svg className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 19.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Confirm Withdrawal Request</h3>
+              <p className="text-sm text-gray-600">
+                Are you sure you want to request a withdrawal of{" "}
+                <span className="font-semibold text-green-600">
+                  {currency} {earnings?.balance_for_use || 0}
+                </span>
+                ?
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                This action cannot be undone and the funds will be moved to processing status.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex space-x-3">
+              <Button
+                onClick={handleCancelWithdraw}
+                variant="outline"
+                className="flex-1"
+                disabled={withdrawMutation.isPending}
+              >
+                No, Cancel
+              </Button>
+              <Button
+                onClick={handleConfirmWithdraw}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                disabled={withdrawMutation.isPending || hasProcessingWithdrawal}
+              >
+                {withdrawMutation.isPending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Processing...
+                  </div>
+                ) : (
+                  "Yes, Withdraw"
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Withdrawal History Modal */}
+      {showHistoryModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-6xl mx-4 max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Withdrawal History</h2>
+              <button
+                onClick={() => setShowHistoryModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="size-6" />
+              </button>
+            </div>
+
+            {/* Filter Section */}
+            <div className="bg-gray-50 p-4 rounded-lg mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <select
+                    value={historyFilters.status}
+                    onChange={(e) => handleFilterChange('status', e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">All Statuses</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="PROCESSING">Processing</option>
+                    <option value="SUCCEEDED">Succeeded</option>
+                    <option value="FAILED">Failed</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+                  <input
+                    type="date"
+                    value={historyFilters.date_from}
+                    onChange={(e) => handleFilterChange('date_from', e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+                  <input
+                    type="date"
+                    value={historyFilters.date_to}
+                    onChange={(e) => handleFilterChange('date_to', e.target.value)}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end mt-4">
+                <Button
+                  onClick={clearFilters}
+                  variant="outline"
+                  size="sm"
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+
+            {/* Summary Cards */}
+            {withdrawalHistory?.summary && (
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-600 mb-1">Total Requests</p>
+                  <p className="text-2xl font-bold text-blue-700">
+                    {withdrawalHistory.summary.total_requests}
+                  </p>
+                </div>
+                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <p className="text-sm text-yellow-600 mb-1">Processing</p>
+                  <p className="text-2xl font-bold text-yellow-700">
+                    {currency} {withdrawalHistory.summary.total_processing.toFixed(2)}
+                  </p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <p className="text-sm text-green-600 mb-1">Withdrawn</p>
+                  <p className="text-2xl font-bold text-green-700">
+                    {currency} {withdrawalHistory.summary.total_withdrawn.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* History Table */}
+            <div className="overflow-y-auto max-h-96">
+              {historyLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <span className="ml-2">Loading history...</span>
+                </div>
+              ) : withdrawalHistory?.history?.length > 0 ? (
+                <div className="space-y-3">
+                  {withdrawalHistory.history.map((item) => (
+                    <div key={item.id} className="bg-gray-50 p-4 rounded-lg border">
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">{item.job_title}</h4>
+                          <p className="text-sm text-gray-600">{item.job_type} • ID: {item.job_id?.substring(0, 8)}...</p>
+                        </div>
+                        <div className="text-right ml-4">
+                          <p className="text-lg font-bold text-green-600">
+                            {currency} {item.withdrawal_amount.toFixed(2)}
+                          </p>
+                          <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
+                            item.status === 'SUCCEEDED' 
+                              ? 'bg-green-100 text-green-800' 
+                              : item.status === 'PROCESSING'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-gray-100 text-gray-800'
+                          }`}>
+                            {item.status}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-sm text-gray-500">
+                        <span>Requested: {new Date(item.withdrawal_requested_date).toLocaleDateString()}</span>
+                        <div className="text-right">
+                          <div>Payment: {currency} {item.payment_amount.toFixed(2)}</div>
+                          <div>Commission: -{currency} {item.commission_amount.toFixed(2)}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <ClipboardList className="size-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-500">No withdrawal history found</p>
+                  {Object.values(historyFilters).some(filter => filter !== '') && (
+                    <p className="text-sm text-gray-400 mt-2">Try adjusting your filters</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Close Button */}
+            <div className="mt-6 flex justify-end">
+              <Button
+                onClick={() => setShowHistoryModal(false)}
+                variant="outline"
+                className="px-6"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

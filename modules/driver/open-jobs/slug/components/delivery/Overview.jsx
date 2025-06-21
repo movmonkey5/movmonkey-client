@@ -179,7 +179,7 @@ console.log(job,"jobsssssssssssssssssssssssss")
   
   // Add safe category access with fallback
   const category = job?.category && job.category[0]?.slug 
-    ? job.category[0].slug.replaceAll("_", "-").split("-")[0] 
+    ? job?.category?.[0]?.slug?.replaceAll("_", "-")?.split("-")?.[0] 
     : "freight"; // Default to freight if category is undefined
 
   // Only render fields if the category exists in dynamicFields

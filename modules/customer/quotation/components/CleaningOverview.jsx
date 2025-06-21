@@ -116,11 +116,13 @@ const dynamicFields = {
 };
 
 export default function CleanerJobOverview({ job }) {
-  const category = job.category[0].slug
-    .replaceAll("_", "-")
-    .split("-")
-    .slice(0, 3)
-    .join("_");
+  const category = job?.category?.[0]?.slug
+    ? job.category[0].slug
+        .replaceAll("_", "-")
+        .split("-")
+        .slice(0, 3)
+        .join("_")
+    : "cleaning"; // Default fallback
 
   return (
     <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-2">
@@ -203,7 +205,7 @@ export default function CleanerJobOverview({ job }) {
                   >
                     <OverviewItem
                       title={field.title}
-                      value={job.address[0][field.accessKey]}
+                      value={job?.address?.[0]?.[field.accessKey] || "N/A"}
                     />
                   </div>
                 ))}

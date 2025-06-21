@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import PendingStatusModal from '../components/PendingStatusModal';
 
 function MyApp({ Component, pageProps }) {
@@ -5,6 +6,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <Component {...pageProps} />
       <PendingStatusModal />
+      <Toaster />
     </>
   );
 }

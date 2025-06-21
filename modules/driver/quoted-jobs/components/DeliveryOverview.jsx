@@ -47,7 +47,7 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function DeliveryOverview({ job }) {
-  const category = job.category[0].slug.replaceAll("_", "-").split("-")[0];
+  const category = job?.category?.[0]?.slug?.replaceAll("_", "-")?.split("-")?.[0];
 
   return (
     <div className="overflow-hidden  bg-primary-bg  shadow-md">

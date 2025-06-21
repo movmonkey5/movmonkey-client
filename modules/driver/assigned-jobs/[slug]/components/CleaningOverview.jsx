@@ -154,7 +154,7 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function CleanerJobOverview({ job }) {
-  const category = job.category[0].slug
+  const category = job?.category?.[0]?.slug
     .replaceAll("_", "-")
     .split("-")
     .slice(0, 3)
@@ -167,7 +167,7 @@ export default function CleanerJobOverview({ job }) {
           <OverviewItem
             key={field.title}
             title={field.title}
-            value={job.address[field.accessKey]}
+            value={job?.address?.[field.accessKey]}
           />
         ))} */}
         {commonFields.map((field) => (

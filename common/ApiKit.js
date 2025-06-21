@@ -180,9 +180,7 @@ const ApiKit = {
     postMessage: (uid, payload) => {
       const url = `/me/inbox/${uid}`;
       return client.post(url, payload);
-    },
-
-    // Add earnings API endpoints
+    },    // Add earnings API endpoints
     earnings: {
       getEarnings: () => {
         const url = "/me/earnings";
@@ -195,6 +193,12 @@ const ApiKit = {
       requestWithdrawal: (payload) => {
         const url = "/me/earnings/withdrawns";
         return client.post(url, payload);
+      },      withdrawRequest: () => {
+        const url = "/me/earnings/withdraw";
+        return client.post(url, {});
+      },      getWithdrawalHistory: (params = {}) => {
+        const url = "/me/earnings/history";
+        return client.get(url, { params });
       }
     },
 

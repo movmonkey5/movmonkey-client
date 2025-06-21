@@ -30,7 +30,7 @@ export default function AssignedJobDetails({ params }) {
 
         // Determine job type from category
         let type = '';
-        const categorySlug = assignedJob.category[0].slug.toLowerCase();
+        const categorySlug = assignedJob?.category?.[0]?.slug?.toLowerCase();
         
         if (categorySlug.includes('delivery')) {
           type = 'delivery';

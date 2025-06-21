@@ -154,7 +154,7 @@ const OverviewItem = ({ title, value, extraValue }) => {
 };
 
 export default function CleanerJobOverview({ job }) {
-  const category = job.category[0].slug
+  const category = job?.category?.[0]?.slug
     .replaceAll("_", "-")
     .split("-")
     .slice(0, 3)

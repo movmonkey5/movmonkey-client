@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import { Toaster } from 'react-hot-toast';
 import GlobalProvider from "@/components/hoc/GlobalProvider";
 import dynamic from 'next/dynamic';
 import Head from "next/head";
@@ -33,10 +34,10 @@ export default function RootLayout({ children }) {
         <Script
           src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAdepi4YsrlSYhTp8NeWrCKTRVOF2N6naA&libraries=places`}
           strategy="beforeInteractive"
-        />
-        <GlobalProvider>
+        />        <GlobalProvider>
           {children}
           <PendingStatusModal />
+          <Toaster />
         </GlobalProvider>
       </body>
     </html>
