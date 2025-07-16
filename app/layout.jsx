@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       </Head>
       <body className={poppins.className}>
         <Script
-          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyAdepi4YsrlSYhTp8NeWrCKTRVOF2N6naA&libraries=places`}
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
           strategy="beforeInteractive"
         />        <GlobalProvider>
           {children}
