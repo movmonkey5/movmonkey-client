@@ -883,30 +883,60 @@ export default function InventoryDetailPage() {
 
       {/* Preview Modal */}
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
-        <DialogContent className="max-w-7xl max-h-[95vh] overflow-hidden">
+        {/* Dark background overlay */}
+        {showPreview && (
+          <div className="fixed inset-0 bg-black/80 z-40" />
+        )}
+        
+        <DialogContent className="max-w-7xl max-h-[95vh] overflow-hidden z-50">
           <DialogHeader className="print:hidden">
             <DialogTitle className="text-2xl font-bold text-gray-900 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Eye className="h-6 w-6 text-blue-600" />
-                Inventory List
+              <div className="flex items-center gap-4">
+                {/* MovMonkey Logo - Full Size */}
+                <img 
+                  src="/_next/static/media/logo.d83fe626.svg" 
+                  alt="MovMonkey Logo" 
+                  className="max-h-16 w-auto object-contain"
+                />
+                <div className="flex items-center gap-3">
+                  <Eye className="h-6 w-6 text-blue-600" />
+                  <span>Inventory List</span>
+                </div>
               </div>
-              <Button
-                onClick={() => window.print()}
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-                Print
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => window.print()}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowPreview(false)}
+                  className="px-4 py-2"
+                >
+                  Close
+                </Button>
+              </div>
             </DialogTitle>
           </DialogHeader>
           
           <div className="overflow-y-auto max-h-[calc(95vh-140px)]">
             {/* Print Header */}
             <div className="hidden print:block mb-8 text-center border-b-2 border-gray-800 pb-4">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">INVENTORY LIST</h1>
+              {/* MovMonkey Logo for Print - Full Size */}
+              <div className="flex justify-center mb-6">
+                <img 
+                  src="/_next/static/media/logo.d83fe626.svg" 
+                  alt="MovMonkey Logo" 
+                  className="max-h-24 w-auto object-contain"
+                />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">MovMonkey - INVENTORY LIST</h1>
               <div className="text-lg text-gray-700">
                 <p><strong>{inventory?.name}</strong></p>
                 <p>{inventory?.description}</p>
@@ -1011,17 +1041,6 @@ export default function InventoryDetailPage() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Footer - Hidden on Print */}
-          <div className="mt-6 pt-4 border-t border-gray-200 flex justify-end print:hidden">
-            <Button
-              variant="outline"
-              onClick={() => setShowPreview(false)}
-              className="px-6 py-2"
-            >
-              Close
-            </Button>
           </div>
         </DialogContent>
       </Dialog>
