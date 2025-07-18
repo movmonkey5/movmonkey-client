@@ -414,6 +414,85 @@ const ApiKit = {
         },
       },
     },
+    
+    // Inventory Management API
+    inventory: {
+      // Categories
+      getCategories: () => {
+        const url = "/inventory/categories/";
+        return client.get(url);
+      },
+      
+      // Preset Items
+      getPresetItems: (params) => {
+        const url = "/inventory/preset-items/";
+        return client.get(url, { params });
+      },
+      
+      // User Inventory Lists
+      getLists: () => {
+        const url = "/inventory/lists/";
+        return client.get(url);
+      },
+      
+      createList: (payload) => {
+        const url = "/inventory/lists/";
+        return client.post(url, payload);
+      },
+      
+      getList: (uid) => {
+        const url = `/inventory/lists/${uid}/`;
+        return client.get(url);
+      },
+      
+      updateList: (uid, payload) => {
+        const url = `/inventory/lists/${uid}/`;
+        return client.patch(url, payload);
+      },
+      
+      deleteList: (uid) => {
+        const url = `/inventory/lists/${uid}/`;
+        return client.delete(url);
+      },
+      
+      // Items in Lists
+      getItems: (listUid) => {
+        const url = `/inventory/lists/${listUid}/items/`;
+        return client.get(url);
+      },
+      
+      addItem: (listUid, payload) => {
+        const url = `/inventory/lists/${listUid}/items/`;
+        return client.post(url, payload, defaultFileUploadConfig);
+      },
+      
+      updateItem: (listUid, itemUid, payload) => {
+        const url = `/inventory/lists/${listUid}/items/${itemUid}/`;
+        return client.patch(url, payload, defaultFileUploadConfig);
+      },
+      
+      deleteItem: (listUid, itemUid) => {
+        const url = `/inventory/lists/${listUid}/items/${itemUid}/`;
+        return client.delete(url);
+      },
+      
+      // Bulk Operations
+      bulkAddItems: (listUid, payload) => {
+        const url = `/inventory/lists/${listUid}/bulk-add/`;
+        return client.post(url, payload);
+      },
+      
+      // Statistics
+      getStats: () => {
+        const url = "/inventory/stats/";
+        return client.get(url);
+      },
+      
+      getListStats: (listUid) => {
+        const url = `/inventory/lists/${listUid}/stats/`;
+        return client.get(url);
+      },
+    },
   },
 };
 
