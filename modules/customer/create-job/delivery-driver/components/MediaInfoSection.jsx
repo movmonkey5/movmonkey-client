@@ -135,7 +135,19 @@ export default function MediaInfoSection({
             loading={loading}
             type="submit"
             onClick={(e) => {
-              e.preventDefault();
+              console.log("Preview Job button clicked");
+              console.log("Formik errors:", formik.errors);
+              console.log("Formik values:", formik.values);
+              console.log("Loading state:", loading);
+              
+              if (loading) {
+                console.log("Already loading, preventing submission");
+                e.preventDefault();
+                return;
+              }
+              
+              console.log("Calling formik.handleSubmit()");
+              // Don't prevent default - let the form submit naturally
               formik.handleSubmit();
             }}
             className="w-full sm:w-fit  sm:px-20"

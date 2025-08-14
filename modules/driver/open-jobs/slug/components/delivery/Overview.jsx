@@ -184,6 +184,10 @@ console.log(job,"jobsssssssssssssssssssssssss")
 
   // Only render fields if the category exists in dynamicFields
   const fieldsToRender = dynamicFields[category] || [];
+  
+  // Get delivery items array (could be multiple items)
+  const deliveryItems = job?.delivery_items || [];
+  const totalItems = deliveryItems.length;
 
   return (
     <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
@@ -246,17 +250,80 @@ console.log(job,"jobsssssssssssssssssssssssss")
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-gray-800 text-base">Specific Details</h3>
+                  <h3 className="font-bold text-gray-800 text-base">
+                    Items Details ({totalItems} {totalItems === 1 ? 'item' : 'items'})
+                  </h3>
                 </div>
-                <div className="space-y-2">
-                  {fieldsToRender.map((field, index) => (
-                    <OverviewItem
-                      key={field.title}
-                      title={field.title}
-                      value={job?.delivery_items?.[0]?.[field.accessKey]}
-                      extraValue={job?.delivery_items?.[0]?.[field.extraAccessKey]}
-                    />
+                
+                {/* Show total items count as first item */}
+                <div className="space-y-2 mb-4">
+                  <OverviewItem
+                    title="Total Number of Items"
+                    value={totalItems}
+                  />
+                </div>
+
+                {/* Render each delivery item */}
+                <div className="space-y-6">
+                  {deliveryItems.map((item, itemIndex) => (
+                    <div key={itemIndex} className="border-l-4 border-purple-400 pl-4 pb-4">
+                      <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                        <span className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-sm font-bold">
+                          {itemIndex + 1}
+                        </span>
+                        Item #{itemIndex + 1}
+                        {/* Show item type if available */}
+                        {item?.furniture && (
+                          <span className="text-sm text-gray-500 font-normal">- {item.furniture}</span>
+                        )}
+                        {item?.vehicle_brand && item?.vehicle_model && (
+                          <span className="text-sm text-gray-500 font-normal">- {item.vehicle_brand} {item.vehicle_model}</span>
+                        )}
+                        {item?.handling_unit && (
+                          <span className="text-sm text-gray-500 font-normal">- {item.handling_unit}</span>
+                        )}
+                        {item?.animal_name && (
+                          <span className="text-sm text-gray-500 font-normal">- {item.animal_name}</span>
+                        )}
+                      </h4>
+                      <div className="space-y-2 bg-gray-50 rounded-lg p-3">
+                        {fieldsToRender.map((field, fieldIndex) => {
+                          const value = item?.[field.accessKey];
+                          const extraValue = item?.[field.extraAccessKey];
+                          
+                          // Only show fields that have values
+                          if (value !== null && value !== undefined && value !== '' && value !== 0) {
+                            return (
+                              <OverviewItem
+                                key={`${itemIndex}-${field.accessKey}`}
+                                title={field.title}
+                                value={value}
+                                extraValue={extraValue}
+                              />
+                            );
+                          }
+                          return null;
+                        })}
+                        
+                        {/* If no fields have values, show a message */}
+                        {fieldsToRender.every(field => {
+                          const value = item?.[field.accessKey];
+                          return value === null || value === undefined || value === '' || value === 0;
+                        }) && (
+                          <div className="text-gray-500 text-sm italic">
+                            No additional details available for this item
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   ))}
+                  
+                  {/* If no items exist */}
+                  {deliveryItems.length === 0 && (
+                    <div className="text-gray-500 text-center py-4">
+                      No delivery items found
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

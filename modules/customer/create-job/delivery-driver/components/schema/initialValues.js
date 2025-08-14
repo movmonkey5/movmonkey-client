@@ -44,4 +44,37 @@ export const initialValues = {
   agree_terms: null,
   specific_need_detail: "",
   status: "DRAFT",
+  // Multiple delivery items support
+  delivery_items: [
+    {
+      // Vehicle fields
+      vehicle_year: "",
+      vehicle_brand: "",
+      vehicle_model: "",
+      vehicle_type: null,
+      service_type: null,
+      // Furniture/Household fields
+      furniture: "",
+      length: "",
+      width: "",
+      height: "",
+      measurement_unit: null,
+      weight: 0,
+      weight_unit: null,
+      quantity: "",
+      // Freight fields
+      handling_unit: null,
+      is_hazardous: null,
+      is_stackable: null,
+      // Animal fields
+      animal_type: null,
+      identification_mark: "",
+      animal_name: "",
+      animal_breed: "",
+      is_vaccinated: null,
+      in_kennel_carrier: null,
+      specific_need: null,
+      specific_need_detail: "",
+    }
+  ]
 };

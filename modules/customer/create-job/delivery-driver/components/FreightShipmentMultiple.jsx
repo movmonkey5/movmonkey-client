@@ -44,71 +44,27 @@ export default function FreightShipment({ formik, setCurrentStep }) {
   };
 
   const validateAllItems = () => {
-    console.log("=== Starting validation ===");
-    console.log("Category slug:", formik.values.category_slug);
-    console.log("Delivery items:", formik.values.delivery_items);
-    
     const categoryEntity = formik.values.category_slug.split("-")[0];
-    console.log("Category entity:", categoryEntity);
-    
     let hasErrors = false;
-    const allErrors = {};
     
     formik.values.delivery_items.forEach((item, index) => {
-      console.log(`Validating item ${index}:`, item);
       const itemErrors = validateDeliveryItem(item, categoryEntity);
-      console.log(`Item ${index} errors:`, itemErrors);
-      
       if (Object.keys(itemErrors).length > 0) {
         hasErrors = true;
         // Set errors for each field
         Object.keys(itemErrors).forEach(field => {
-          const errorKey = `delivery_items[${index}].${field}`;
-          allErrors[errorKey] = itemErrors[field];
-          formik.setFieldError(errorKey, itemErrors[field]);
+          formik.setFieldError(`delivery_items[${index}].${field}`, itemErrors[field]);
         });
       }
     });
 
-    console.log("Has errors:", hasErrors);
-    console.log("All errors:", allErrors);
-    console.log("=== Validation complete ===");
     return !hasErrors;
   };
 
   const handleNext = () => {
-    console.log("Next button clicked");
-    console.log("Current formik values:", formik.values);
-    
-    // Clear any existing errors first
-    formik.setErrors({});
-    
-    // Force a small delay to ensure state is updated
-    setTimeout(() => {
-      // Validate duration fields first
-      const durationErrors = {};
-      if (!formik.values.moving_date) {
-        durationErrors.moving_date = "Moving date is required";
-      }
-      if (!formik.values.dropoff) {
-        durationErrors.dropoff = "Drop-off date is required";
-      }
-      
-      if (Object.keys(durationErrors).length > 0) {
-        Object.keys(durationErrors).forEach(field => {
-          formik.setFieldError(field, durationErrors[field]);
-        });
-        console.log("Duration validation failed:", durationErrors);
-        return;
-      }
-      
-      if (validateAllItems()) {
-        console.log("All validations passed, moving to next step");
-        setCurrentStep(6);
-      } else {
-        console.log("Validation failed, staying on current step");
-      }
-    }, 100);
+    if (validateAllItems()) {
+      setCurrentStep(6);
+    }
   };
 
   // Function to find the matching option object for a value
