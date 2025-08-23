@@ -8,11 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     ports:
-<<<<<<< HEAD
-      - "3000:3000"
-=======
       - "3001:3000"
->>>>>>> dev
 
     environment:
       - NODE_ENV=development
