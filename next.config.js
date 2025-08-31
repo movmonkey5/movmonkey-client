@@ -5,7 +5,7 @@ const nextConfig = {
     domains: [
       "",
       "movmonkey.stringify.tech",
-      "backend.movmonkey.com",
+      "testit.movmonkey.com",
       "127.0.0.1", // Add your local domain
       'images.unsplash.com',
     ],
