@@ -130,7 +130,10 @@ const BlogPage = () => {
                           alt={post.title || 'Blog post image'}
                           fill
                           className="object-cover"
-                          unoptimized={post.image?.startsWith('https://images.unsplash.com')}
+                          unoptimized={true} // Disable optimization for external images
+                          onError={(e) => {
+                            e.target.src = '/placeholder-image.jpg'; // Fallback image
+                          }}
                         />
                         <div className="absolute top-4 right-4">
                           <span className="bg-secondary text-white px-3 py-1 rounded-full text-sm">

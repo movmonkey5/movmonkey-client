@@ -14,7 +14,19 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'testit.movmonkey.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'testit.movmonkey.com',
+      },
     ],
+    // Add these settings for better Vercel compatibility
+    unoptimized: false, // Keep optimization enabled
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 
