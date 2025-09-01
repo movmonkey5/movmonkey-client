@@ -61,14 +61,15 @@ const BlogPage = () => {
   const getImageUrl = (imageUrl) => {
     // Handle null, undefined or empty image URLs
     if (!imageUrl) {
-      return '/placeholder-image.jpg'; // Add a default placeholder image in your public folder
+      return '/image/card-img.png'; // Use existing placeholder image
     }
     // If it's already an absolute URL (starts with http or https), return as is
     if (imageUrl.startsWith('http')) {
       return imageUrl;
     }
-    // Otherwise, append the backend URL
-    return `${process.env.NEXT_PUBLIC_API_URL}${imageUrl}`;
+    // Use the same base URL as the API, but remove the /api/v1 part for media files
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace('/api/v1', '') || 'http://testit.movmonkey.com';
+    return `${baseUrl}${imageUrl}`;
   };
 
   return (
@@ -132,7 +133,7 @@ const BlogPage = () => {
                           className="object-cover"
                           unoptimized={true} // Disable optimization for external images
                           onError={(e) => {
-                            e.target.src = '/placeholder-image.jpg'; // Fallback image
+                            e.target.src = '/image/card-img.png'; // Use existing placeholder image
                           }}
                         />
                         <div className="absolute top-4 right-4">
