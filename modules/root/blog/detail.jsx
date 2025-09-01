@@ -33,9 +33,11 @@ const BlogDetailPage = () => {
   }, [slug]);
 
   const getImageUrl = (imageUrl) => {
-    if (!imageUrl) return '/placeholder-image.jpg';
+    if (!imageUrl) return '/image/card-img.png'; // Use existing placeholder image
     if (imageUrl.startsWith('http')) return imageUrl;
-    return `${process.env.NEXT_PUBLIC_API_URL}${imageUrl}`;
+    // Use the same base URL as the API, but remove the /api/v1 part for media files
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace('/api/v1', '') || 'http://testit.movmonkey.com';
+    return `${baseUrl}${imageUrl}`;
   };
 
   if (loading) return <Loading />;
@@ -61,7 +63,10 @@ const BlogDetailPage = () => {
           fill
           className="object-cover"
           priority
-          unoptimized={post.image?.startsWith('https://images.unsplash.com')}
+          unoptimized={true}
+          onError={(e) => {
+            e.target.src = '/image/card-img.png'; // Use existing placeholder image
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
         <Container className="relative h-full">
