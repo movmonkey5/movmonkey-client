@@ -17,10 +17,21 @@ export async function GET(request) {
   const apiKey = process.env.GOOGLE_DISTANCE_API_KEY;
   
   // Debug: Check if API key is loaded
+  console.log("Environment check:", {
+    hasApiKey: !!apiKey,
+    apiKeyLength: apiKey ? apiKey.length : 0,
+    apiKeyPreview: apiKey ? `${apiKey.substring(0, 10)}...` : "NOT_FOUND",
+    allEnvKeys: Object.keys(process.env).filter(k => k.includes('GOOGLE')),
+  });
+  
   if (!apiKey) {
     return NextResponse.json({ 
       error: "API key not found in environment variables",
-      env_check: "GOOGLE_DISTANCE_API_KEY is missing"
+      debug: {
+        env_check: "GOOGLE_DISTANCE_API_KEY is missing",
+        available_env_vars: Object.keys(process.env).filter(k => k.includes('GOOGLE')),
+        all_env_count: Object.keys(process.env).length
+      }
     }, { status: 500 });
   }
   
