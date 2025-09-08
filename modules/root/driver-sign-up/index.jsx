@@ -201,11 +201,24 @@ export default function DriverSignUpPage() {
         loading: "Creating your account...",
         success: "Account created successfully",
         error: (error) => {
-          const errorKeys = Object.keys(error?.response?.data);
+          // Safely handle error response
+          if (error?.response?.data && typeof error.response.data === 'object') {
+            const errorKeys = Object.keys(error.response.data);
+            if (errorKeys.length > 0) {
+              return (
+                error.response.data[errorKeys[0]][0] ||
+                error.response.data[errorKeys[0]] ||
+                error.response.data?.detail ||
+                "Failed to create account"
+              );
+            }
+          }
+          
+          // Fallback error messages
           return (
-            error.response?.data[errorKeys[0]][0] ||
-            error.response.data?.detail ||
-            "Failed to create account"
+            error?.response?.data?.detail ||
+            error?.message ||
+            "Failed to create account. Please try again."
           );
         },
       });

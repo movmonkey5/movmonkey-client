@@ -15,27 +15,52 @@ export async function GET(request) {
   }
 
   const apiKey = process.env.GOOGLE_DISTANCE_API_KEY;
+  
+  // Debug: Check if API key is loaded
+  if (!apiKey) {
+    return NextResponse.json({ 
+      error: "API key not found in environment variables",
+      env_check: "GOOGLE_DISTANCE_API_KEY is missing"
+    }, { status: 500 });
+  }
+  
   const url = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${apiKey}`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
+    
+    console.log("Google Distance Matrix API Response:", data);
+    
     if (data.status === "OK") {
       const result = data.rows[0].elements[0];
-      // Extract the numeric part of distance.text
-      const distanceValue = parseFloat(
-        result.distance.text.replace(/[^\d.]/g, ""),
-      );
-      return NextResponse.json({
-        distance: distanceValue,
-        duration: result.duration.text,
-      });
+      
+      if (result.status === "OK") {
+        // Extract the numeric part of distance.text
+        const distanceValue = parseFloat(
+          result.distance.text.replace(/[^\d.]/g, ""),
+        );
+        return NextResponse.json({
+          distance: distanceValue,
+          duration: result.duration.text,
+        });
+      } else {
+        return NextResponse.json({ 
+          error: `Route calculation failed: ${result.status}`,
+          details: result 
+        }, { status: 500 });
+      }
     } else {
-      return NextResponse.json({ error: data.error_message }, { status: 500 });
+      return NextResponse.json({ 
+        error: data.error_message || `API Error: ${data.status}`,
+        details: data,
+        apiKey: apiKey ? "API key present" : "API key missing"
+      }, { status: 500 });
     }
   } catch (error) {
+    console.error("Distance Matrix API Error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Internal Server Error", details: error.message },
       { status: 500 },
     );
   }
