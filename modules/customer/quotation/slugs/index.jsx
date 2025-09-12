@@ -97,7 +97,7 @@ export default function UserJobDetailsPage({ params }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {isDispute ? (
-        <div className="mx-auto max-w-4xl px-4 py-8">
+        <div className="mx-auto max-w-7xl px-4 py-8">
           <div className="rounded-2xl bg-white p-8 shadow-lg border border-red-200">
             <div className="text-center">
               <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
@@ -134,7 +134,7 @@ export default function UserJobDetailsPage({ params }) {
           </div>
         </div>
       ) : isCompleted ? (
-        <div className="mx-auto max-w-4xl px-4 py-8">
+        <div className="mx-auto max-w-7xl px-4 py-8">
           <div className="rounded-2xl bg-white p-8 shadow-lg">
             <div className="text-center">
               <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -240,7 +240,7 @@ export default function UserJobDetailsPage({ params }) {
             </div>
           </div>
 
-          <Container className="py-8">
+          <Container className="py-8 max-w-none px-4 md:px-8">
             {/* Active Job Status */}
             {isAccepted && (
               <div className="mb-8 rounded-2xl bg-gradient-to-r from-[#49B74B] to-[#3a9639] p-8 text-white shadow-lg">
@@ -259,7 +259,7 @@ export default function UserJobDetailsPage({ params }) {
             {/* Optimized Driver Assignment Card */}
             <div className="mb-6 rounded-xl bg-white shadow-lg border border-gray-100 overflow-hidden">
               {/* Compact Header Section */}
-              <div className="px-6 py-4" style={{
+              <div className="px-8 py-4" style={{
                 backgroundColor: "#49B74B"
               }}>
                 <div className="flex items-center gap-3">
@@ -273,8 +273,8 @@ export default function UserJobDetailsPage({ params }) {
                 </div>
               </div>
 
-              <div className="p-6">
-                <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+              <div className="p-8">
+                <div className="flex flex-col xl:flex-row xl:items-center gap-8">
                   {/* Compact Driver Details */}
                   <div className="flex-1">
                     {isAccepted ? (
@@ -288,24 +288,24 @@ export default function UserJobDetailsPage({ params }) {
                           {userDetails.full_name}
                         </h3>
                         
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
-                            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-md flex items-center justify-center">
-                              <Mail className="h-4 w-4 text-white" />
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-md flex items-center justify-center">
+                              <Mail className="h-5 w-5 text-white" />
                             </div>
                             <div>
-                              <p className="text-xs font-medium text-gray-600">Email</p>
-                              <p className="text-sm font-semibold text-gray-800">{userDetails.email}</p>
+                              <p className="text-sm font-medium text-gray-600">Email</p>
+                              <p className="text-base font-semibold text-gray-800">{userDetails.email}</p>
                             </div>
                           </div>
                           
-                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
-                            <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-md flex items-center justify-center">
-                              <Phone className="h-4 w-4 text-white" />
+                          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                            <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-green-600 rounded-md flex items-center justify-center">
+                              <Phone className="h-5 w-5 text-white" />
                             </div>
                             <div>
-                              <p className="text-xs font-medium text-gray-600">Phone</p>
-                              <p className="text-sm font-semibold text-gray-800">{userDetails.phone}</p>
+                              <p className="text-sm font-medium text-gray-600">Phone</p>
+                              <p className="text-base font-semibold text-gray-800">{userDetails.phone}</p>
                             </div>
                           </div>
                         </div>
@@ -321,24 +321,24 @@ export default function UserJobDetailsPage({ params }) {
                           Not Yet Assigned
                         </h3>
                         
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
-                            <div className="w-8 h-8 bg-gray-400 rounded-md flex items-center justify-center">
-                              <Mail className="h-4 w-4 text-white" />
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                            <div className="w-10 h-10 bg-gray-400 rounded-md flex items-center justify-center">
+                              <Mail className="h-5 w-5 text-white" />
                             </div>
                             <div>
-                              <p className="text-xs font-medium text-gray-500">Email</p>
-                              <p className="text-sm font-semibold text-gray-400">The Details Will be revealed once accepted</p>
+                              <p className="text-sm font-medium text-gray-500">Email</p>
+                              <p className="text-base font-semibold text-gray-400">The Details Will be revealed once accepted</p>
                             </div>
                           </div>
                           
-                          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
-                            <div className="w-8 h-8 bg-gray-400 rounded-md flex items-center justify-center">
-                              <Phone className="h-4 w-4 text-white" />
+                          <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg border border-gray-200">
+                            <div className="w-10 h-10 bg-gray-400 rounded-md flex items-center justify-center">
+                              <Phone className="h-5 w-5 text-white" />
                             </div>
                             <div>
-                              <p className="text-xs font-medium text-gray-500">Phone</p>
-                              <p className="text-sm font-semibold text-gray-400">The Details Will be revealed once accepted</p>
+                              <p className="text-sm font-medium text-gray-500">Phone</p>
+                              <p className="text-base font-semibold text-gray-400">The Details Will be revealed once accepted</p>
                             </div>
                           </div>
                         </div>
@@ -347,47 +347,47 @@ export default function UserJobDetailsPage({ params }) {
                   </div>
 
                   {/* Compact Driver Image and Rating */}
-                  <div className="flex flex-col items-center gap-4">
+                  <div className="flex flex-col items-center gap-6">
                     <div className="relative">
-                      <div className={`w-20 h-20 rounded-full p-0.5 ${isAccepted ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`}>
+                      <div className={`w-24 h-24 rounded-full p-0.5 ${isAccepted ? 'bg-gradient-to-r from-green-500 to-emerald-500' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`}>
                         <div className="w-full h-full bg-white rounded-full p-1">
                           <Image
                             alt="Service Provider"
                             src={DrivrIcon}
-                            width={80}
-                            height={80}
+                            width={96}
+                            height={96}
                             className="w-full h-full rounded-full object-cover"
                           />
                         </div>
                       </div>
                       {isAccepted && (
-                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                          <CheckCircle className="h-3 w-3 text-white" />
+                        <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
+                          <CheckCircle className="h-4 w-4 text-white" />
                         </div>
                       )}
                       {!isAccepted && (
-                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                          <Clock className="h-3 w-3 text-white" />
+                        <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                          <Clock className="h-4 w-4 text-white" />
                         </div>
                       )}
                     </div>
                     
                     <div className="text-center">
-                      <div className={`p-3 rounded-lg ${isAccepted ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200' : 'bg-gradient-to-r from-gray-50 to-slate-50 border border-gray-200'}`}>
-                        <div className="flex items-center justify-center gap-1 mb-1">
-                          <StarIcon className={`h-4 w-4 ${isAccepted ? 'text-yellow-500 fill-current' : 'text-gray-400'}`} />
-                          <span className="text-lg font-bold text-gray-800">
+                      <div className={`p-4 rounded-lg ${isAccepted ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200' : 'bg-gradient-to-r from-gray-50 to-slate-50 border border-gray-200'}`}>
+                        <div className="flex items-center justify-center gap-1 mb-2">
+                          <StarIcon className={`h-5 w-5 ${isAccepted ? 'text-yellow-500 fill-current' : 'text-gray-400'}`} />
+                          <span className="text-xl font-bold text-gray-800">
                             {isAccepted ? userDetails.rating?.toFixed(1) : "---"}
                           </span>
                         </div>
-                        <p className="text-xs font-medium text-gray-600">
+                        <p className="text-sm font-medium text-gray-600 mb-2">
                           ({isAccepted ? userDetails?.rating_count : "--"} reviews)
                         </p>
-                        <div className="mt-1 flex justify-center">
+                        <div className="flex justify-center">
                           {Array.from({ length: 5 }, (_, index) => (
                             <StarIcon
                               key={index}
-                              className={`h-3 w-3 ${
+                              className={`h-4 w-4 ${
                                 isAccepted && index < Math.floor(userDetails.rating)
                                   ? "text-yellow-500 fill-current"
                                   : "text-gray-300"
@@ -416,7 +416,7 @@ export default function UserJobDetailsPage({ params }) {
             </div>
 
             {/* Compact Action Buttons Card */}
-            <div className="rounded-xl bg-white p-6 shadow-lg border border-gray-100">
+            <div className="rounded-xl bg-white p-8 shadow-lg border border-gray-100">
               <QuotationButton
                 onReject={() => {}}
                 onAccept={() => {}}
