@@ -3,30 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useStore from "@/store";
-
-// const calcTotalCharge = (...charges) => {
-//   return charges.reduce((accu, curr) => +accu + +curr, 0);
-// };
-
-const calcTotalCharge = (vatPercent, ...charges) => {
-  const subtotal = charges.reduce((accu, curr) => +accu + +curr, 0);
-  const vatAmount = (subtotal * +vatPercent) / 100;
-  console.log("subtotal", subtotal);
-  return subtotal + vatAmount;
-};
+import { useVATConfig, calculateVAT, formatCurrency } from "@/hooks/useVATConfig";
 
 export default function DetailPricing({ formik, job }) {
   const [showOverlay, setShowOverlay] = useState(false);
-  const [currency, setCurrency] = useState("$"); // Default currency symbol
 
   // Get user from store using the hook directly
   const user = useStore((state) => state.user);
-
+  
+  // Get user's country code (fallback to GB if not available)
+  const countryCode = user?.address?.country_code || user?.country_code || "GB";
+  
+  // Fetch VAT configuration from backend
+  const { data: vatConfig, isLoading: vatLoading } = useVATConfig(countryCode);
+  
+  // Update formik VAT percentage when VAT config is loaded
   useEffect(() => {
-    if (user?.currencySymbol) {
-      setCurrency(user.currencySymbol);
+    if (vatConfig?.vat_percentage && !formik.values.total_vat) {
+      formik.setFieldValue('total_vat', vatConfig.vat_percentage);
     }
-  }, [user]);
+  }, [vatConfig, formik]);
 
   const handleConfirmSubmit = () => {
     setShowOverlay(false);
@@ -83,30 +79,41 @@ export default function DetailPricing({ formik, job }) {
         </div>
         <hr />
         <div className="flex flex-col gap-2 bg-primary-bg px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-          <Label htmlFor="total_vat">Vat</Label>
+          <Label htmlFor="total_vat">
+            VAT ({vatLoading ? "Loading..." : `${vatConfig?.vat_percentage || 20}%`})
+          </Label>
           <Input
             id="total_vat"
             name="total_vat"
             type="number"
             value={formik.values.total_vat}
             className="w-60 bg-primary-bg focus-visible:ring-primary"
-            placeholder="Enter vat amount"
+            placeholder={`Default: ${vatConfig?.vat_percentage || 20}%`}
             onChange={formik.handleChange}
+            disabled={vatLoading}
           />
         </div>
         <div className="flex items-center justify-between bg-primary px-4 py-2 text-lg font-medium">
-          <p className="bg-primary text-xl font-bold text-black">TOTAL</p>
-          <p className="text-xl">
-            {calcTotalCharge(
-              //formik.values.subtotal,
-              //formik.values.extra_services_charge,
-              //formik.values.total_vat,
-              formik.values.total_vat, // VAT percentage
-              formik.values.subtotal, // Subtotal
-              formik.values.extra_services_charge, // Additional charges
-            )}{" "}
-            <small>{currency}</small>
-          </p>
+          <p className="bg-primary text-xl font-bold text-black">TOTAL (inc. VAT)</p>
+          <div className="text-right">
+            {(() => {
+              const calculations = calculateVAT(
+                formik.values.subtotal,
+                formik.values.extra_services_charge,
+                formik.values.total_vat
+              );
+              return (
+                <div>
+                  <p className="text-xl font-bold">
+                    {formatCurrency(calculations.totalWithVAT, countryCode)}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    (VAT: {formatCurrency(calculations.vatAmount, countryCode)})
+                  </p>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       </div>
       <div className="mt-10">

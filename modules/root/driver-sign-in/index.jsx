@@ -79,12 +79,16 @@ export default function DriverLogInPage() {
         loading: "Logging in...",
         success: "Logged in successfully",
         error: (error) => {
-          const errorKeys = Object.keys(error?.response?.data);
-          return (
-            error.response?.data[errorKeys[0]][0] ||
-            error.response.data?.detail ||
-            "Failed to create account"
-          );
+          const errorData = error?.response?.data;
+          if (errorData && typeof errorData === 'object') {
+            const errorKeys = Object.keys(errorData);
+            return (
+              errorData[errorKeys[0]][0] ||
+              errorData?.detail ||
+              "Failed to login"
+            );
+          }
+          return error?.message || "Failed to login";
         },
       });
     },

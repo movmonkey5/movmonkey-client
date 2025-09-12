@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-
-const calcTotalCharge = (...charges) => {
-  return charges.reduce((accu, curr) => +accu + +curr, 0);
-};
+import useStore from "@/store";
+import { useVATConfig, calculateVAT, formatCurrency } from "@/hooks/useVATConfig";
 
 export default function DetailPricing({ formik, job }) {
   const [showOverlay, setShowOverlay] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Get user from store
+  const user = useStore((state) => state.user);
+  
+  // Get user's country code (fallback to GB if not available)
+  const countryCode = user?.address?.country_code || user?.country_code || "GB";
+  
+  // Fetch VAT configuration from backend
+  const { data: vatConfig, isLoading: vatLoading } = useVATConfig(countryCode);
+  
+  // Update formik VAT percentage when VAT config is loaded
+  useEffect(() => {
+    if (vatConfig?.vat_percentage && !formik.values.total_vat) {
+      formik.setFieldValue('total_vat', vatConfig.vat_percentage);
+    }
+  }, [vatConfig, formik]);
 
   const handleConfirmSubmit = async () => {
     try {
@@ -79,27 +93,34 @@ export default function DetailPricing({ formik, job }) {
         </div>
         <hr />
         <div className="flex flex-col gap-2 bg-primary-bg px-4 py-2 text-base md:flex-row md:items-center md:justify-between md:text-xl">
-          <Label htmlFor="total_vat">Vat</Label>
-          <Input
-            id="total_vat"
-            name="total_vat"
-            type="number"
-            value={formik.values.total_vat}
-            className="w-60 bg-primary-bg focus-visible:ring-primary"
-            placeholder="Enter vat amount"
-            onChange={formik.handleChange}
-          />
+          <Label>
+            VAT Rate
+          </Label>
+          <div className="w-60 px-3 py-2 text-right font-medium">
+            {vatLoading ? "Loading..." : `${vatConfig?.vat_percentage || 20}%`}
+          </div>
         </div>
         <div className="flex items-center justify-between bg-primary px-4 py-2 text-lg font-medium">
-          <p className="bg-primary text-xl font-bold text-black">TOTAL</p>
-          <p className="text-xl">
-            £
-            {calcTotalCharge(
-              formik.values.subtotal,
-              formik.values.extra_services_charge,
-              formik.values.total_vat
-            )}
-          </p>
+          <p className="bg-primary text-xl font-bold text-black">TOTAL (inc. VAT)</p>
+          <div className="text-right">
+            {(() => {
+              const calculations = calculateVAT(
+                formik.values.subtotal,
+                formik.values.extra_services_charge,
+                formik.values.total_vat
+              );
+              return (
+                <div>
+                  <p className="text-xl font-bold">
+                    {formatCurrency(calculations.totalWithVAT, countryCode)}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    (VAT: {formatCurrency(calculations.vatAmount, countryCode)})
+                  </p>
+                </div>
+              );
+            })()}
+          </div>
         </div>
       </div>
       <div className="mt-10">
